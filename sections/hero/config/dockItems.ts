@@ -11,6 +11,25 @@ export interface DockItem {
 
 export const dockItems: DockItem[] = [
   {
+    id: "blog",
+    icon: FaPenNib,
+    label: "Blog",
+    href: "/blog",
+  },
+  {
+    id: "resume",
+    icon: FaFileAlt,
+    label: "Resume",
+    href: "/resume.pdf",
+    external: true,
+  },
+  {
+    id: "separator",
+    icon: () => null,
+    label: "separator",
+    href: "#",
+  },
+  {
     id: "github",
     icon: FaGithub,
     label: "GitHub",
@@ -36,19 +55,6 @@ export const dockItems: DockItem[] = [
     icon: FaLinkedin,
     label: "LinkedIn",
     href: "https://linkedin.com",
-    external: true,
-  },
-  {
-    id: "blog",
-    icon: FaPenNib,
-    label: "Blog",
-    href: "/blog",
-  },
-  {
-    id: "resume",
-    icon: FaFileAlt,
-    label: "Resume",
-    href: "/resume.pdf",
     external: true,
   },
 ];

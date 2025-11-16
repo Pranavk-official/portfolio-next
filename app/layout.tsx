@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
-import { MagnifiedDock } from "@/components/hero/MagnifiedDock";
+import { NavDock } from "@/components/shared/NavDock";
+// import { MagnifiedDock } from "@/components/hero/MagnifiedDock";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,9 +52,10 @@ export default function RootLayout({
         <div className="fixed top-6 right-6 z-50">
           <AnimatedThemeToggler />
         </div>
-        
+
         {children}
-        <MagnifiedDock />
+        {/* Dock */}
+        <NavDock />
       </body>
     </html>
   );
