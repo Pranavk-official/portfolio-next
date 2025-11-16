@@ -33,7 +33,7 @@ export const dockItems: DockItem[] = [
     id: "github",
     icon: FaGithub,
     label: "GitHub",
-    href: "https://github.com",
+    href: "https://github.com/Pranavk-Official",
     external: true,
   },
   {
@@ -47,14 +47,14 @@ export const dockItems: DockItem[] = [
     id: "email",
     icon: FaEnvelope,
     label: "Email",
-    href: "mailto:contact@example.com",
+    href: "mailto:pranavkcse@gmail.com",
     external: true,
   },
   {
     id: "linkedin",
     icon: FaLinkedin,
     label: "LinkedIn",
-    href: "https://linkedin.com",
+    href: "https://linkedin.com/in/pranav-k-cse",
     external: true,
   },
 ];

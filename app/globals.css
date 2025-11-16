@@ -125,7 +125,21 @@
       transform: translateY(calc(-100% - var(--gap)));
     }
   }
-}
+  --animate-meteor: meteor 5s linear infinite
+;
+  @keyframes meteor {
+  0% {
+    transform: rotate(var(--angle)) translateX(0);
+    opacity: 1;
+    }
+  70% {
+    opacity: 1;
+    }
+  100% {
+    transform: rotate(var(--angle)) translateX(-500px);
+    opacity: 0;
+    }
+  }}
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -189,5 +203,45 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animated-text {
+    background: radial-gradient(
+      circle at var(--text-mouse-x) var(--text-mouse-y),
+      var(--gradient-text-center) 0%,
+      var(--gradient-text-edge) 40%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .dark .animated-text {
+    --gradient-text-center: oklch(0.92 0.004 286.32);
+    --gradient-text-edge: oklch(0.552 0.016 285.938);
+  }
+  
+  .animated-text:not(.dark *) {
+    --gradient-text-center: oklch(0.21 0.006 285.885);
+    --gradient-text-edge: oklch(0.552 0.016 285.938);
+  }
+
+  /* Footer styles */
+  .radial-gradient-bg {
+    background: radial-gradient(
+      circle at center,
+      var(--gradient-center) 0%,
+      var(--gradient-edge) 100%
+    );
+  }
+
+  .newFont {
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  }
+
+  .rounded-xs {
+    border-radius: 0.5rem;
   }
 }
