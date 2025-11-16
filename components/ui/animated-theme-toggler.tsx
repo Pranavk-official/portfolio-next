@@ -16,36 +16,40 @@ export const AnimatedThemeToggler = ({
   duration = 400,
   ...props
 }: AnimatedThemeTogglerProps) => {
-  const [isDark, setIsDark] = useState(false)
-  const buttonRef = useRef<HTMLButtonElement>(null)
+  const [isDark, setIsDark] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      (localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches))
+  );
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.body.classList.contains("dark"))
+    if (isDark) {
+      document.body.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
-
-    updateTheme()
-
-    const observer = new MutationObserver(updateTheme)
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["class"],
-    })
-
-    return () => observer.disconnect()
-  }, [])
+  }, [isDark]);
 
   const toggleTheme = useCallback(async () => {
-    if (!buttonRef.current) return
+    if (!buttonRef.current) return;
+
+    const newIsDark = !isDark;
+
+    if (!document.startViewTransition) {
+      setIsDark(newIsDark);
+      return;
+    }
 
     await document.startViewTransition(() => {
       flushSync(() => {
-        const newTheme = !isDark
-        setIsDark(newTheme)
-        document.body.classList.toggle("dark")
-        localStorage.setItem("theme", newTheme ? "dark" : "light")
-      })
-    }).ready
+        setIsDark(newIsDark);
+      });
+    }).ready;
 
     const { top, left, width, height } =
       buttonRef.current.getBoundingClientRect()
