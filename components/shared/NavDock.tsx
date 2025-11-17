@@ -1,24 +1,30 @@
 "use client";
 
 import { Dock, DockIcon } from "@/components/ui/dock";
-import { dockItems } from "@/sections/hero/config/dockItems";
+import { dockItems } from "@/src/sections/config/dockItems";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { buttonVariants } from "@components/ui/button";
+import { Separator } from "@components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { usePathname } from "next/navigation";
 
 export function NavDock() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
     <div className="fixed bottom-10 left-1/2 -translate-x-1/2">
       <TooltipProvider>
         <Dock direction="middle">
-          {dockItems.map((item) =>
+          {dockItems
+            .filter((item) => !item.showOnlyWhenNotHome || !isHome)
+            .map((item) =>
             item.id === "separator" ? (
               <Separator
                 key={item.id}

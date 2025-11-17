@@ -4,7 +4,7 @@ import { Marquee } from "@/components/ui/marquee";
 import { tools } from "./config/tools";
 import { cn } from "@/lib/utils";
 
-export function SkillSection() {
+const SkillSection = () => {
   const firstRow = tools.slice(0, Math.ceil(tools.length / 2));
   const secondRow = tools.slice(Math.ceil(tools.length / 2));
 
@@ -42,14 +42,15 @@ export function SkillSection() {
       </div>
     </section>
   );
-}
+};
 
-const ToolCard = ({ name, icon: Icon }: { name: string; icon: React.ElementType }) => {
+
+export const ToolCard = ({ name, icon: Icon }: { name: string; icon: React.ElementType }) => {
   return (
     <div
-      className={cn(
-        "relative mx-2 flex h-24 w-44 shrink-0 items-center justify-center overflow-hidden rounded-xl border bg-card/50 p-4 shadow-md backdrop-blur-sm transition-all hover:scale-105 hover:shadow-lg"
-      )}
+    className={cn(
+      "relative mx-2 flex h-24 w-44 shrink-0 items-center justify-center overflow-hidden rounded-xl border bg-card/50 p-4 shadow-md backdrop-blur-sm transition-all hover:scale-105 hover:shadow-lg"
+    )}
     >
       <div className="flex flex-col items-center gap-2.5">
         <Icon className="h-10 w-10 text-primary" />
@@ -58,3 +59,5 @@ const ToolCard = ({ name, icon: Icon }: { name: string; icon: React.ElementType 
     </div>
   );
 };
+
+export default SkillSection;

@@ -19,6 +19,28 @@ export const metadata: Metadata = {
   title: "Pranav K - Full Stack Developer",
   description:
     "Full Stack Developer with proven expertise in designing, developing, and deploying scalable web applications. Proficient in MongoDB, Express.js, React.js, and Node.js, with strong command over front-end and back-end development, RESTful API integration, and database management.",
+  openGraph: {
+    title: "Pranav K - Full Stack Developer",
+    description:
+      "Full Stack Developer with proven expertise in designing, developing, and deploying scalable web applications. Proficient in MongoDB, Express.js, React.js, and Node.js, with strong command over front-end and back-end development, RESTful API integration, and database management.",
+    images: [
+      {
+        url: "/og-image.png", // Add your OG image to /public/og-image.png
+        width: 1200,
+        height: 630,
+        alt: "Pranav K - Full Stack Developer",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pranav K - Full Stack Developer",
+    description:
+      "Full Stack Developer with proven expertise in designing, developing, and deploying scalable web applications. Proficient in MongoDB, Express.js, React.js, and Node.js, with strong command over front-end and back-end development, RESTful API integration, and database management.",
+    images: ["/og-image.png"], // Same image for Twitter
+  },
 };
 
 export default function RootLayout({

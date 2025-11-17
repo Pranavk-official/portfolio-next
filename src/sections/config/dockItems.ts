@@ -1,5 +1,6 @@
 import { IconType } from "react-icons";
-import { FaGithub, FaTwitter, FaEnvelope, FaLinkedin, FaPenNib, FaFileAlt } from "react-icons/fa";
+import { FaGithub, FaEnvelope, FaLinkedin, FaPenNib, FaFileAlt, FaHome } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
 
 export interface DockItem {
   id: string;
@@ -7,9 +8,17 @@ export interface DockItem {
   label: string;
   href: string;
   external?: boolean;
+  showOnlyWhenNotHome?: boolean;
 }
 
 export const dockItems: DockItem[] = [
+  {
+    id: "home",
+    icon: FaHome,
+    label: "Home",
+    href: "/",
+    showOnlyWhenNotHome: true,
+  },
   {
     id: "blog",
     icon: FaPenNib,
@@ -38,9 +47,9 @@ export const dockItems: DockItem[] = [
   },
   {
     id: "twitter",
-    icon: FaTwitter,
+    icon: FaSquareXTwitter,
     label: "Twitter",
-    href: "https://twitter.com",
+    href: "https://twitter.com/@Arch_Lad_",
     external: true,
   },
   {

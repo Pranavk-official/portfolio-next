@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
-import ScrollElement from '@/components/ui/scroll-animation';
-import { ProjectCard } from '@/components/projects/ProjectCard';
+import ScrollElement from '@components/ui/scroll-animation';
+import { ProjectCard } from '@components/projects/ProjectCard';
 import { projects } from './config/projects';
 import {
   Dialog,
@@ -12,14 +11,14 @@ import {
   DialogClose,
   DialogTitle,
   DialogDescription,
-} from '@/components/ui/linear-modal';
-import { Badge } from '@/components/ui/badge';
+} from '@components/ui/linear-modal';
+import { Badge } from '@components/ui/badge';
 import {  ExternalLink, Calendar, Code2 } from 'lucide-react';
 import {SiGithub} from 'react-icons/si';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@components/ui/button';
+import { Separator } from '@components/ui/separator';
 
-export function ProjectsSection() {
+const ProjectsSection = () => {
   return (
     <section className="relative py-20">
       <div className="container mx-auto px-4">
@@ -220,3 +219,5 @@ export function ProjectsSection() {
     </section>
   );
 }
+
+export default ProjectsSection;

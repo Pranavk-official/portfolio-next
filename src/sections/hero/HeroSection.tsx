@@ -3,7 +3,7 @@
 import { ProfileCard } from "@components/hero/ProfileCard";
 import { Quote } from "@components/hero/Quote";
 
-export function HeroSection() {
+const HeroSection = () => {
   return (
     <section className="relative flex h-screen w-full items-center justify-center">
       {/* Content */}
@@ -25,3 +25,5 @@ export function HeroSection() {
     </section>
   );
 }
+
+export default HeroSection;
