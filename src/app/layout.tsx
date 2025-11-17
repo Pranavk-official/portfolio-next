@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { NavDock } from "@/components/shared/NavDock";
+import { siteConfig } from "@config/site";
 // import { MagnifiedDock } from "@/components/hero/MagnifiedDock";
 
 const geistSans = Geist({
@@ -16,31 +17,49 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pranav K - Full Stack Developer",
-  description:
-    "Full Stack Developer with proven expertise in designing, developing, and deploying scalable web applications. Proficient in MongoDB, Express.js, React.js, and Node.js, with strong command over front-end and back-end development, RESTful API integration, and database management.",
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [
+    {
+      name: siteConfig.author.name,
+      url: siteConfig.author.url,
+    },
+  ],
+  creator: siteConfig.author.name,
   openGraph: {
-    title: "Pranav K - Full Stack Developer",
-    description:
-      "Full Stack Developer with proven expertise in designing, developing, and deploying scalable web applications. Proficient in MongoDB, Express.js, React.js, and Node.js, with strong command over front-end and back-end development, RESTful API integration, and database management.",
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
     images: [
       {
-        url: "/og-image.png", // Add your OG image to /public/og-image.png
+        url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "Pranav K - Full Stack Developer",
+        alt: siteConfig.name,
       },
     ],
-    locale: "en_US",
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pranav K - Full Stack Developer",
-    description:
-      "Full Stack Developer with proven expertise in designing, developing, and deploying scalable web applications. Proficient in MongoDB, Express.js, React.js, and Node.js, with strong command over front-end and back-end development, RESTful API integration, and database management.",
-    images: ["/og-image.png"], // Same image for Twitter
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+    creator: "@pranavk", // Update with your actual Twitter handle
   },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
+  metadataBase: new URL(siteConfig.url),
 };
 
 export default function RootLayout({

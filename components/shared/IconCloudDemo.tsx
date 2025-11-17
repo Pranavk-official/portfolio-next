@@ -37,13 +37,13 @@ import { VscVscode } from "react-icons/vsc";
 
 export function IconCloudDemo() {
     const [iconColor, setIconColor] = useState("#212121")
-    const size = 85
+    const size = 95
 
     useEffect(() => {
         const updateIconColor = () => {
             const isDark = document.body.classList.contains("dark")
             // Light mode: dark color (foreground), Dark mode: light color (primary)
-            setIconColor(isDark ? "black" : "white")
+            setIconColor(isDark ? "#ebebeb" : "#212121")
         }
 
         // Set initial color
