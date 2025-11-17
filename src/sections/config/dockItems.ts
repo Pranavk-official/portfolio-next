@@ -49,7 +49,7 @@ export const dockItems: DockItem[] = [
     id: "twitter",
     icon: FaSquareXTwitter,
     label: "Twitter",
-    href: "https://twitter.com/@Arch_Lad_",
+    href: "https://x.com/@Arch_Lad_",
     external: true,
   },
   {
