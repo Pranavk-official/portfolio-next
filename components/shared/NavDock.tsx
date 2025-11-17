@@ -13,13 +13,52 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function NavDock() {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const [isHidden, setIsHidden] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Find the footer element
+      const footer = document.querySelector("footer");
+      if (!footer) return;
+
+      // Get the footer's position
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate the dock's approximate position (bottom-10 = 2.5rem = 40px from bottom)
+      const dockBottomPosition = windowHeight - 40;
+      
+      // Hide dock if footer's top is above the dock's position
+      // Adding a buffer of 100px to start hiding earlier for smoother transition
+      setIsHidden(footerRect.top < dockBottomPosition + 100);
+    };
+
+    // Initial check
+    handleScroll();
+
+    // Add scroll listener
+    window.addEventListener("scroll", handleScroll);
+    // Also listen to resize in case viewport changes
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
 
   return (
-    <div className="fixed bottom-10 left-1/2 -translate-x-1/2">
+    <div 
+      className={cn(
+        "fixed bottom-10 left-1/2 -translate-x-1/2 transition-all duration-300",
+        isHidden ? "opacity-0 pointer-events-none translate-y-20" : "opacity-100"
+      )}
+    >
       <TooltipProvider>
         <Dock direction="middle">
           {dockItems
