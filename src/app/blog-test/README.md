@@ -133,7 +133,7 @@ The following packages were installed with bun:
 ## Accessing the Blog
 
 - **Blog Homepage**: `/blog`
-- **Individual Post**: `/blog/posts/[slug]`
+- **Individual Post**: `/blog-test/posts/[slug]`
 
 Where `[slug]` is the filename of the markdown file without the `.md` extension.
 
