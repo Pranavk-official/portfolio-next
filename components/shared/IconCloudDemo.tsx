@@ -58,7 +58,7 @@ export function IconCloudDemo() {
 
         return () => observer.disconnect()
     }, [])
-    
+
     const icons = [
         <SiTypescript key="typescript" size={size} color={iconColor} />,
         <SiJavascript key="javascript" size={size} color={iconColor} />,
