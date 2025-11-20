@@ -4,8 +4,8 @@ excerpt: "Explore the latest features in Next.js 15, including improved performa
 coverImage: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1300&h=630&fit=crop"
 date: "2024-11-15T05:35:07.322Z"
 author:
-  name: John Doe
-  picture: "https://ui-avatars.com/api/?name=John+Doe&size=200&background=0D8ABC&color=fff"
+  name: Pranav K
+  picture: "/profile_dark.png"
 ogImage:
   url: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1300&h=630&fit=crop"
 ---

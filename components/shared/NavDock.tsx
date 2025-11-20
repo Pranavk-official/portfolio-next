@@ -53,11 +53,12 @@ export function NavDock() {
   }, []);
 
   return (
-    <div 
+    <nav 
       className={cn(
-        "fixed bottom-10 left-1/2 -translate-x-1/2 transition-all duration-300",
+        "fixed bottom-10 left-1/2 -translate-x-1/2 transition-all duration-300 motion-reduce:transition-none",
         isHidden ? "opacity-0 pointer-events-none translate-y-20" : "opacity-100"
       )}
+      aria-label="Main navigation dock"
     >
       <TooltipProvider>
         <Dock direction="middle">
@@ -69,6 +70,8 @@ export function NavDock() {
                 key={item.id}
                 orientation="vertical"
                 className="h-full"
+                role="separator"
+                aria-hidden="true"
               />
             ) : (
               <DockIcon key={item.id}>
@@ -81,10 +84,10 @@ export function NavDock() {
                       aria-label={item.label}
                       className={cn(
                         buttonVariants({ variant: "ghost", size: "icon" }),
-                        "size-12 rounded-full"
+                        "size-12 rounded-full focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2"
                       )}
                     >
-                      <item.icon className="size-4" />
+                      <item.icon className="size-4" aria-hidden="true" />
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -96,6 +99,6 @@ export function NavDock() {
           )}
         </Dock>
       </TooltipProvider>
-    </div>
+    </nav>
   );
 }

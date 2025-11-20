@@ -4,8 +4,8 @@ excerpt: "Deep dive into advanced TypeScript patterns including generics, type i
 coverImage: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1300&h=630&fit=crop"
 date: "2024-11-10T10:20:30.000Z"
 author:
-  name: John Doe
-  picture: "https://ui-avatars.com/api/?name=John+Doe&size=200&background=0D8ABC&color=fff"
+  name: Pranav K
+  picture: "/profile_dark.png"
 ogImage:
   url: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1300&h=630&fit=crop"
 ---

@@ -4,8 +4,8 @@ excerpt: "Learn how to create beautiful, responsive user interfaces using Tailwi
 coverImage: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=1300&h=630&fit=crop"
 date: "2024-11-05T08:15:45.000Z"
 author:
-  name: John Doe
-  picture: "https://ui-avatars.com/api/?name=John+Doe&size=200&background=0D8ABC&color=fff"
+  name: Pranav K
+  picture: "/profile_dark.png"
 ogImage:
   url: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=1300&h=630&fit=crop"
 ---

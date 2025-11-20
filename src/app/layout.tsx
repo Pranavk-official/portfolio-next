@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Crimson_Pro, JetBrains_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { NavDock } from "@/components/shared/NavDock";
@@ -14,6 +14,28 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Blog Design System Fonts
+const crimsonPro = Crimson_Pro({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-crimson-pro",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-outfit",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -68,7 +90,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -87,7 +109,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${crimsonPro.variable} ${jetbrainsMono.variable} ${outfit.variable} antialiased`}
       >
         {/* Theme Toggler */}
         <div className="fixed top-6 right-6 z-50">

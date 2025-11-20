@@ -5,7 +5,7 @@ import {
   Lock,
   Server,
 } from "lucide-react";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { IconCloudDemo } from "@/components/shared/IconCloudDemo";
 
 export const serviceItems = [

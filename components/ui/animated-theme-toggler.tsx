@@ -79,10 +79,15 @@ export const AnimatedThemeToggler = ({
     <button
       ref={buttonRef}
       onClick={toggleTheme}
-      className={cn(className)}
+      className={cn(
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ash-50 dark:focus-visible:ring-offset-ash-950 rounded-md p-2 transition-colors motion-reduce:transition-none",
+        className
+      )}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-pressed={isDark}
       {...props}
     >
-      {isDark ? <Sun /> : <Moon />}
+      {isDark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
       <span className="sr-only">Toggle theme</span>
     </button>
   )

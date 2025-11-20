@@ -11,7 +11,7 @@ export default function BlogPage() {
     const morePosts = allPosts.slice(1);
 
     return (
-        <>
+        <main role="main" aria-label="Blog">
             <Intro />
             {heroPost && (
                 <HeroPost
@@ -24,7 +24,7 @@ export default function BlogPage() {
                 />
             )}
             {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-        </>
+        </main>
 
     );
 }

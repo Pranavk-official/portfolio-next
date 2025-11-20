@@ -13,7 +13,7 @@ function FooterSection() {
 
   return (
     <footer
-      className="footer-bg relative border 2xl:h-[550px] h-fit lg:pb-20 md:mb-8 w-[95%] mx-auto rounded-lg overflow-hidden radial-gradient-bg
+      className="footer-bg relative border 2xl:h-[550px] w-[95%] mx-auto rounded-lg overflow-hidden radial-gradient-bg
                    [--gradient-center:#f3f4f6] [--gradient-edge:#f3f4f6]
                    dark:[--gradient-center:#02081765] dark:[--gradient-edge:#020817]"
     >
@@ -40,7 +40,7 @@ function FooterSection() {
               href={social.href}
               target={social.external ? "_blank" : undefined}
               rel={social.external ? "noopener noreferrer" : undefined}
-              className="bg-background sm:w-auto w-full grid place-content-center h-20 2xl:p-10 p-5 rounded-lg hover:bg-muted transition-colors"
+              className="bg-background sm:w-auto w-full grid place-content-center h-20 2xl:p-10 p-3 rounded-lg hover:bg-muted transition-colors"
               aria-label={social.label}
             >
               <social.icon className="sm:w-16 sm:h-16 w-12 h-12 text-primary" />
