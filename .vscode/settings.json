@@ -1,2 +1,5 @@
 {
+    "eslint.enable": true,
+    "editor.formatOnSave": true,
+    "editor.autoClosingBrackets": "always"
 }
