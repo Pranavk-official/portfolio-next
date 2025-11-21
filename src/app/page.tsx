@@ -4,7 +4,7 @@ import {
   Hero,
   Services,
   Skill,
-  // Experience,
+  Experience,
   // Project,
   Footer
 } from "@sections/index";
@@ -16,7 +16,7 @@ export default function Home() {
       <Skill />
       <Services />
       {/* TODO: Review and Rewrite the contents of Experience Section */}
-      {/* <Experience /> */}
+      <Experience />
       {/* TODO: Rework Projects Section (UI improvements and fix content)*/}
       {/* <Project /> */}
       <Footer />
