@@ -15,7 +15,7 @@ export default function Home() {
       <Hero />
       <Skill />
       <Services />
-      {/* TODO: Review and Rewrite the contents of Experience Section */}
+      {/* CHORE: Review and Rewrite the contents of Experience Section */}
       <Experience />
       {/* TODO: Rework Projects Section (UI improvements and fix content)*/}
       {/* <Project /> */}

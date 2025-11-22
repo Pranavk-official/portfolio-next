@@ -54,7 +54,6 @@ import { HyperText } from "@components/ui/hyper-text";
 Reusable components in `components/shared/` and `components/[section]/` are section-specific:
 - `NavDock` - Global navigation dock
 - `ProfileCard`, `Quote` - Hero section components
-- `ProjectCard` - Projects section component
 
 ### Styling Conventions
 - Tailwind CSS 4 with `@tailwindcss/postcss`
