@@ -45,12 +45,12 @@ const SkillSection = () => {
 };
 
 
-export const ToolCard = ({ name, icon: Icon }: { name: string; icon: React.ElementType }) => {
+export const ToolCard = ({ name, icon: Icon }: { name: string; icon: React.ComponentType<{ className?: string }> }) => {
   return (
     <div
-    className={cn(
-      "relative mx-2 flex h-24 w-44 shrink-0 items-center justify-center overflow-hidden rounded-xl border bg-card/50 p-4 shadow-md backdrop-blur-sm transition-all hover:scale-105 hover:shadow-lg"
-    )}
+      className={cn(
+        "relative mx-2 flex h-24 w-44 shrink-0 items-center justify-center overflow-hidden rounded-xl border bg-card/50 p-4 shadow-md backdrop-blur-sm transition-all hover:scale-105 hover:shadow-lg"
+      )}
     >
       <div className="flex flex-col items-center gap-2.5">
         <Icon className="h-10 w-10 text-primary" />
