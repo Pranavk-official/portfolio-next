@@ -1,10 +1,13 @@
-"use client";
-
-import {  Ghost } from "lucide-react";
+import { Metadata } from "next";
+import { Ghost } from "lucide-react";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { Meteors } from "@/components/ui/meteors";
 import { AuroraText } from "@/components/ui/aurora-text";
+
+export const metadata: Metadata = {
+  title: "404 - Not Found",
+};
 
 export default function NotFound() {
   return (
@@ -38,7 +41,7 @@ export default function NotFound() {
           >
             Page Not Found
           </TextAnimate>
-          
+
           <TextAnimate
             animation="blurIn"
             by="word"

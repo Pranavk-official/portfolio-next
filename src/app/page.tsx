@@ -1,5 +1,4 @@
-"use client"
-
+import { Metadata } from "next";
 import {
   Hero,
   Services,
@@ -8,6 +7,10 @@ import {
   // Project,
   Footer
 } from "@sections/index";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 export default function Home() {
   return (

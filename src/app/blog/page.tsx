@@ -1,13 +1,17 @@
-"use client"
-
+import { Metadata } from "next"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { NeonGradientCard } from "@/components/ui/neon-gradient-card"
 import { AuroraText } from "@/components/ui/aurora-text"
 
+export const metadata: Metadata = {
+    title: "Blog",
+    description: "Insights, tutorials, and updates about web development, design, and technology.",
+}
+
 const BlogPage = () => {
     return (
         <div className="flex min-h-screen items-center justify-center bg-background px-4">
-            <NeonGradientCard 
+            <NeonGradientCard
                 className="max-w-xl w-full"
                 borderSize={3}
                 borderRadius={24}

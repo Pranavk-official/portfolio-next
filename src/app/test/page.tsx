@@ -1,5 +1,9 @@
-"use client"
+import { Metadata } from "next";
 import Lanyard from "@/components/Lanyard";
+
+export const metadata: Metadata = {
+    title: "Test Page",
+};
 
 export default function Page() {
     return (

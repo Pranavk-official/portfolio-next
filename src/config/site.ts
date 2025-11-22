@@ -1,4 +1,4 @@
-export type SiteConfig = typeof siteConfig
+export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "Pranav K",
@@ -17,6 +17,7 @@ export const siteConfig = {
     name: "Pranav K",
     url: "https://pranavk.dev",
   },
+  creator: "Pranav K",
   keywords: [
     "Full Stack Developer",
     "Web Developer",
@@ -30,4 +31,4 @@ export const siteConfig = {
     "Next.js",
     "Portfolio",
   ],
-}
+};

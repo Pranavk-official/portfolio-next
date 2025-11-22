@@ -39,8 +39,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: siteConfig.title,
+    default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -51,29 +52,27 @@ export const metadata: Metadata = {
       url: siteConfig.author.url,
     },
   ],
-  creator: siteConfig.author.name,
+  creator: siteConfig.creator,
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteConfig.url,
-    title: siteConfig.title,
+    title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
       {
         url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
         alt: siteConfig.name,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.title,
+    title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@pranavk", // Update with your actual Twitter handle
+    creator: "@Arch_Lad_",
   },
   icons: {
     icon: "/favicon.ico",
@@ -81,7 +80,6 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
-  metadataBase: new URL(siteConfig.url),
 };
 
 export default function RootLayout({
