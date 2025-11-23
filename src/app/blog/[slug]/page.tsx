@@ -1,10 +1,24 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getSinglePost, getAllSlugs } from "@/lib/notion";
 import { Metadata } from "next";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CalendarIcon, ChevronLeft } from "lucide-react";
+import { BackToTop } from "@/components/blog/back-to-top";
 
-// Enable ISR with 60-second revalidation
+// Enable ISR with 600-second revalidation
 export const revalidate = 60;
 
 /**
@@ -12,7 +26,7 @@ export const revalidate = 60;
  */
 export async function generateStaticParams() {
     const slugs = await getAllSlugs();
-    console.log('🎯 generateStaticParams - slugs:', slugs);
+    // console.log('🎯 generateStaticParams - slugs:', slugs);
     return slugs.map((slug) => ({
         slug,
     }));
@@ -27,7 +41,7 @@ export async function generateMetadata({
     params: Promise<{ slug: string }>; // ← Changed to Promise
 }): Promise<Metadata> {
     const { slug } = await params; // ← Await params
-    console.log('📝 generateMetadata - slug:', slug);
+    // console.log('📝 generateMetadata - slug:', slug);
 
     const post = await getSinglePost(slug);
 
@@ -60,7 +74,7 @@ export default async function PostPage({
     params: Promise<{ slug: string }>; // ← Changed to Promise
 }) {
     const { slug } = await params; // ← Await params
-    console.log('📄 PostPage - slug:', slug);
+    // console.log('📄 PostPage - slug:', slug);
 
     const post = await getSinglePost(slug);
 
@@ -72,53 +86,97 @@ export default async function PostPage({
     return (
         <div className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8">
             <article className="max-w-3xl mx-auto">
-                {/* Post Header */}
-                <header className="mb-12">
-                    {/* Title */}
-                    <h1 className="text-4xl md:text-5xl font-bold font-crimson text-foreground mb-6">
-                        {post.title}
-                    </h1>
+                {/* Breadcrumbs */}
+                <Breadcrumb className="mb-8">
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink asChild>
+                                <Link href="/">Home</Link>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbLink asChild>
+                                <Link href="/blog">Blog</Link>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage className="line-clamp-1">
+                                {post.title}
+                            </BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
 
-                    {/* Date and Tags */}
-                    <div className="flex flex-col gap-4 mb-6">
-                        {/* Date */}
-                        <time
-                            dateTime={post.date}
-                            className="text-sm text-[#78716c]"
-                        >
-                            {formatDate(post.date)}
-                        </time>
+                {/* Back to All Posts Button */}
+                <div className="mb-6">
+                    <Button variant="ghost" size="sm" asChild>
+                        <Link href="/blog" className="gap-2">
+                            <ChevronLeft className="h-4 w-4" />
+                            Back to All Posts
+                        </Link>
+                    </Button>
+                </div>
 
-                        {/* Tags */}
-                        {post.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
-                                {post.tags.map((tag) => (
-                                    <span
-                                        key={tag}
-                                        className="px-3 py-1 text-sm font-medium rounded-full bg-[#fef2f2] text-[#991b1b] border border-[#fecaca] dark:bg-[#7c2d12]/30 dark:text-[#fb923c] dark:border-[#7c2d12]"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
+                <Card className="p-8 mb-8">
+                    <header className="mb-8">
+                        {/* Title */}
+                        <h1 className="text-4xl md:text-5xl font-bold font-crimson text-foreground mb-6">
+                            {post.title}
+                        </h1>
+
+                        {/* Meta Info */}
+                        <div className="flex flex-col gap-4 mb-6">
+                            {/* Date */}
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <CalendarIcon className="h-4 w-4" />
+                                <time dateTime={post.date}>
+                                    {formatDate(post.date)}
+                                </time>
                             </div>
-                        )}
-                    </div>
 
-                    {/* Description */}
-                    {post.description && (
-                        <p className="text-lg text-muted-foreground leading-relaxed">
-                            {post.description}
-                        </p>
-                    )}
-                </header>
+                            {/* Tags */}
+                            {post.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-2">
+                                    {post.tags.map((tag) => (
+                                        <Badge key={tag} variant="secondary">
+                                            {tag}
+                                        </Badge>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Description */}
+                        {post.description && (
+                            <p className="text-lg text-muted-foreground leading-relaxed">
+                                {post.description}
+                            </p>
+                        )}
+                    </header>
+                </Card>
 
                 {/* Post Content */}
-                <div className="prose prose-ash prose-lg dark:prose-invert max-w-none">
+                <div className="prose prose-ash prose-lg dark:prose-invert max-w-none mb-12">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {post.content}
                     </ReactMarkdown>
                 </div>
+
+                {/* Bottom Navigation */}
+                <div className="flex justify-center pt-8 border-t">
+                    <Button variant="outline" asChild>
+                        <Link href="/blog" className="gap-2">
+                            <ChevronLeft className="h-4 w-4" />
+                            Back to All Posts
+                        </Link>
+                    </Button>
+                </div>
             </article>
+
+            {/* Back to Top Button */}
+            <BackToTop />
         </div>
     );
 }

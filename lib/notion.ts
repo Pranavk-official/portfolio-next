@@ -21,6 +21,7 @@ interface NotionPage {
 
 async function notionFetch(endpoint: string, options: { method?: string; body?: object } = {}) {
     const response = await fetch(`${NOTION_API}${endpoint}`, {
+        next: { revalidate: 3600 },
         method: options.method || 'POST',
         headers: {
             'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
@@ -245,4 +246,61 @@ export async function getSinglePost(slug: string): Promise<Post | null> {
 export async function getAllSlugs(): Promise<string[]> {
     const posts = await getAllPublished();
     return posts.map((post) => post.slug);
+}
+
+export interface FilteredPostsResult {
+    posts: PostMetadata[];
+    total: number;
+    totalPages: number;
+}
+
+export async function getFilteredPosts(
+    page: number = 1,
+    pageSize: number = 9,
+    search: string = '',
+    tag: string = ''
+): Promise<FilteredPostsResult> {
+    // Fetch all published posts
+    const allPosts = await getAllPublished();
+    let filtered = allPosts;
+
+    // Apply search filter (case-insensitive, matches title or description)
+    if (search && search.trim()) {
+        const searchLower = search.toLowerCase();
+        filtered = filtered.filter(post =>
+            post.title.toLowerCase().includes(searchLower) ||
+            post.description.toLowerCase().includes(searchLower)
+        );
+    }
+
+    // Apply tag filter (exact match)
+    if (tag && tag.trim()) {
+        filtered = filtered.filter(post =>
+            post.tags.includes(tag)
+        );
+    }
+
+    // Calculate pagination
+    const total = filtered.length;
+    const totalPages = Math.ceil(total / pageSize) || 1;
+
+    // Ensure page is within valid range
+    const validPage = Math.max(1, Math.min(page, totalPages));
+
+    const start = (validPage - 1) * pageSize;
+    const end = start + pageSize;
+    const posts = filtered.slice(start, end);
+
+    return { posts, total, totalPages };
+}
+
+export async function getAllTags(): Promise<string[]> {
+    const posts = await getAllPublished();
+    const tagSet = new Set<string>();
+
+    posts.forEach(post => {
+        post.tags.forEach(tag => tagSet.add(tag));
+    });
+
+    return Array.from(tagSet).sort();
 }
