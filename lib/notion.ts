@@ -1,306 +1,233 @@
-import { NotionToMarkdown } from 'notion-to-md';
+import { Client } from "@notionhq/client";
+import { NotionToMarkdown } from "notion-to-md";
+import {
+  PageObjectResponse,
+  PartialPageObjectResponse,
+} from "@notionhq/client/build/src/api-endpoints";
 
-const NOTION_API = 'https://api.notion.com/v1';
-const NOTION_VERSION = '2022-06-28';
+const notion = new Client({
+  auth: process.env.NOTION_TOKEN,
+});
 
-interface NotionResponse {
-    results: Array<{
-        id: string;
-        properties: Record<string, unknown>;
-        [key: string]: unknown;
-    }>;
-    [key: string]: unknown;
-}
-
-interface NotionPage {
-    id: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    properties: Record<string, any>;
-}
-
-
-async function notionFetch(endpoint: string, options: { method?: string; body?: object } = {}) {
-    const response = await fetch(`${NOTION_API}${endpoint}`, {
-        next: { revalidate: 3600 },
-        method: options.method || 'POST',
-        headers: {
-            'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
-            'Notion-Version': NOTION_VERSION,
-            'Content-Type': 'application/json',
-        },
-        body: options.body ? JSON.stringify(options.body) : undefined,
-    });
-
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`Notion API Error: ${error.message || 'Unknown error'}`);
-    }
-
-    return response.json() as Promise<NotionResponse>;
-}
-
-// Create a minimal notion client for notion-to-md
-const notionClient = {
-    blocks: {
-        children: {
-            list: async ({ block_id }: { block_id: string }) => {
-                return notionFetch(`/blocks/${block_id}/children`, { method: 'GET' });
-            }
-        }
-    }
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const n2m = new NotionToMarkdown({ notionClient: notionClient as any });
+const n2m = new NotionToMarkdown({ notionClient: notion });
 
 export interface PostMetadata {
-    id: string;
-    title: string;
-    slug: string;
-    date: string;
-    tags: string[];
-    description: string;
-    published: boolean;
+  id: string;
+  title: string;
+  slug: string;
+  date: string;
+  tags: string[];
+  description: string;
+  published: boolean;
 }
 
 export interface Post extends PostMetadata {
-    content: string;
-}
-
-
-function getPageMetaData(page: NotionPage): PostMetadata {
-    const properties = page.properties;
-
-    // Extract title
-    let title = 'Untitled';
-    const titleProp = properties.Title || properties.title;
-    if (titleProp && titleProp.type === 'title' && titleProp.title && titleProp.title.length > 0) {
-        title = titleProp.title[0].plain_text || 'Untitled';
-    }
-
-    // Extract slug
-    let slug = '';
-    const slugProp = properties.Slug || properties.slug;
-    if (slugProp && slugProp.type === 'rich_text' && slugProp.rich_text && slugProp.rich_text.length > 0) {
-        slug = slugProp.rich_text[0].plain_text || '';
-    }
-
-    // Extract date
-    let date = '';
-    const dateProp = properties.Date || properties.date;
-    if (dateProp && dateProp.type === 'date' && dateProp.date) {
-        date = dateProp.date.start || '';
-    }
-
-    // Extract tags
-    let tags: string[] = [];
-    const tagsProp = properties.Tags || properties.tags;
-    if (tagsProp && tagsProp.type === 'multi_select' && tagsProp.multi_select) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        tags = tagsProp.multi_select.map((tag: any) => tag.name);
-    }
-
-    // Extract description
-    let description = '';
-    const descProp = properties.Description || properties.description;
-    if (descProp && descProp.type === 'rich_text' && descProp.rich_text && descProp.rich_text.length > 0) {
-        description = descProp.rich_text[0].plain_text || '';
-    }
-
-    // Extract published status
-    let published = false;
-    const publishedProp = properties.Published || properties.published;
-    if (publishedProp && publishedProp.type === 'checkbox') {
-        published = publishedProp.checkbox;
-    }
-
-    return {
-        id: page.id,
-        title,
-        slug,
-        date,
-        tags,
-        description,
-        published,
-    };
-}
-
-
-export async function getAllPublished(): Promise<PostMetadata[]> {
-    const response = await notionFetch(`/databases/${process.env.NOTION_DATA_SOURCE_ID}/query`, {
-        method: 'POST',
-        body: {
-            filter: {
-                property: 'Published',
-                checkbox: {
-                    equals: true,
-                },
-            },
-            sorts: [
-                {
-                    property: 'Date',
-                    direction: 'descending',
-                },
-            ],
-        },
-    });
-
-    // console.log(response.results)
-
-    return response.results.map((page) => getPageMetaData(page as NotionPage));
-}
-
-// export async function getSinglePost(slug: string): Promise<Post | null> {
-//     console.log(slug)
-//     // Validate slug
-//     if (!slug || slug.trim() === '') {
-//         console.error('Invalid slug provided:', slug);
-//         return null;
-//     }
-
-//     try {
-//         const response = await notionFetch(`/databases/${process.env.NOTION_DATA_SOURCE_ID}/query`, {
-//             method: 'POST',
-//             body: {
-//                 filter: {
-//                     and: [
-//                         {
-//                             property: 'Slug',
-//                             rich_text: {
-//                                 equals: slug.trim(),
-//                             },
-//                         },
-//                         {
-//                             property: 'Published',
-//                             checkbox: {
-//                                 equals: true,
-//                             },
-//                         },
-//                     ],
-//                 },
-//             },
-//         });
-
-//         if (response.results.length === 0) {
-//             return null;
-//         }
-
-//         const page = response.results[0] as NotionPage;
-//         const metadata = getPageMetaData(page);
-
-//         const mdBlocks = await n2m.pageToMarkdown(page.id);
-//         const mdString = n2m.toMarkdownString(mdBlocks);
-
-//         return {
-//             ...metadata,
-//             content: mdString.parent,
-//         };
-//     } catch (error) {
-//         console.error('Error fetching post:', slug, error);
-//         return null;
-//     }
-// }
-
-export async function getSinglePost(slug: string): Promise<Post | null> {
-    // console.log('🔍 getSinglePost called with slug:', slug);
-
-    // Validate slug
-    if (!slug || slug.trim() === '') {
-        // console.error('❌ Invalid slug provided:', slug);
-        return null;
-    }
-
-    // First, get all published posts
-    // console.log('📚 Fetching all published posts...');
-    const allPosts = await getAllPublished();
-    // console.log('📊 Found posts:', allPosts.map(p => ({ title: p.title, slug: p.slug })));
-
-    // Find the post with matching slug (case-insensitive)
-    const matchingPost = allPosts.find(
-        post => {
-            const match = post.slug.toLowerCase() === slug.toLowerCase();
-            // console.log(`🔎 Comparing "${post.slug}" with "${slug}": ${match}`);
-            return match;
-        }
-    );
-
-    if (!matchingPost) {
-        // console.error('❌ No matching post found for slug:', slug);
-        // console.log('Available slugs:', allPosts.map(p => p.slug));
-        return null;
-    }
-
-    // console.log('✅ Found matching post:', matchingPost.title);
-
-    // Fetch the page content
-    const mdBlocks = await n2m.pageToMarkdown(matchingPost.id);
-    const mdString = n2m.toMarkdownString(mdBlocks);
-
-    return {
-        ...matchingPost,
-        content: mdString.parent,
-    };
-}
-
-
-export async function getAllSlugs(): Promise<string[]> {
-    const posts = await getAllPublished();
-    return posts.map((post) => post.slug);
+  content: string;
 }
 
 export interface FilteredPostsResult {
-    posts: PostMetadata[];
-    total: number;
-    totalPages: number;
+  posts: PostMetadata[];
+  total: number;
+  totalPages: number;
+}
+
+// Type guard
+function isPageObjectResponse(
+  page:
+    | PageObjectResponse
+    | PartialPageObjectResponse
+    | { object: "data_source" }
+    | { object: "database" }
+): page is PageObjectResponse {
+  return "properties" in page && page.object === "page";
+}
+
+function getPageMetaData(page: PageObjectResponse): PostMetadata {
+  const properties = page.properties;
+
+  // Extract title
+  let title = "Untitled";
+  const titleProp = properties.Title || properties.title;
+  if (titleProp?.type === "title" && titleProp.title.length > 0) {
+    title = titleProp.title[0].plain_text || "Untitled";
+  }
+
+  // Extract slug
+  let slug = "";
+  const slugProp = properties.Slug || properties.slug;
+  if (slugProp?.type === "rich_text" && slugProp.rich_text.length > 0) {
+    slug = slugProp.rich_text[0].plain_text || "";
+  }
+
+  // Extract date
+  let date = "";
+  const dateProp = properties.Date || properties.date;
+  if (dateProp?.type === "date" && dateProp.date) {
+    date = dateProp.date.start || "";
+  }
+
+  // Extract tags
+  let tags: string[] = [];
+  const tagsProp = properties.Tags || properties.tags;
+  if (tagsProp?.type === "multi_select" && tagsProp.multi_select) {
+    tags = tagsProp.multi_select.map((tag) => tag.name);
+  }
+
+  // Extract description
+  let description = "";
+  const descProp = properties.Description || properties.description;
+  if (descProp?.type === "rich_text" && descProp.rich_text.length > 0) {
+    description = descProp.rich_text[0].plain_text || "";
+  }
+
+  // Extract published status
+  let published = false;
+  const publishedProp = properties.Published || properties.published;
+  if (publishedProp?.type === "checkbox") {
+    published = publishedProp.checkbox;
+  }
+
+  return { id: page.id, title, slug, date, tags, description, published };
+}
+
+export async function getAllPublished(): Promise<PostMetadata[]> {
+  const response = await notion.dataSources.query({
+    data_source_id: process.env.NOTION_DATA_SOURCE_ID!,
+    filter: {
+      property: "Published",
+      checkbox: { equals: true },
+    },
+    sorts: [{ property: "Date", direction: "descending" }],
+  });
+
+  return response.results.filter(isPageObjectResponse).map(getPageMetaData);
+}
+
+export async function getAllPublisedSlugs(): Promise<string[]> {
+  const response = await notion.dataSources.query({
+    data_source_id: process.env.NOTION_DATA_SOURCE_ID!,
+  });
+
+  return response.results
+    .filter(isPageObjectResponse)
+    .map((page: PageObjectResponse) => {
+      const properties = page.properties;
+      const slugProp = properties.Slug || properties.slug;
+      let slugValue = "";
+
+      if (slugProp?.type === "rich_text" && slugProp.rich_text.length > 0) {
+        slugValue = slugProp.rich_text[0].plain_text || "";
+      }
+
+      // If no slug, generate from title
+      if (!slugValue) {
+        const titleProp = properties.Title || properties.title;
+        if (titleProp?.type === "title" && titleProp.title.length > 0) {
+          const title = titleProp.title[0].plain_text || "";
+          slugValue = title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
+        }
+      }
+
+      return slugValue;
+    })
+    .filter((slug: string): slug is string => slug !== "");
+}
+
+export async function getSinglePost(slug: string): Promise<Post | null> {
+  if (!slug || slug.trim() === "") {
+    return null;
+  }
+
+  try {
+    const response = await notion.dataSources.query({
+      data_source_id: process.env.NOTION_DATA_SOURCE_ID!,
+      filter: {
+        and: [
+          { property: "Published", checkbox: { equals: true } },
+          { property: "Slug", rich_text: { equals: slug } },
+        ],
+      },
+      page_size: 1,
+    });
+
+    // console.log("Notion response for slug", slug, ":", response);
+
+    const pageResult = response.results.find(isPageObjectResponse);
+
+    if (!pageResult) {
+      return null;
+    }
+
+    const metadata = getPageMetaData(pageResult);
+
+    // Fetch content blocks with STRICT LIMIT
+    const mdBlocks = await n2m.pageToMarkdown(metadata.id);
+
+    // CRITICAL: Only take first 30 blocks to prevent OOM
+    const limitedBlocks = mdBlocks.slice(0, 30);
+    const mdString = n2m.toMarkdownString(limitedBlocks);
+
+    return {
+      ...metadata,
+      content: mdString.parent || "",
+    };
+  } catch (error) {
+    console.error(`Error fetching post with slug "${slug}":`, error);
+    return null;
+  }
+}
+
+export async function getAllSlugs(): Promise<string[]> {
+  const posts = await getAllPublished();
+  return posts.map((post) => post.slug);
 }
 
 export async function getFilteredPosts(
-    page: number = 1,
-    pageSize: number = 9,
-    search: string = '',
-    tag: string = ''
+  page: number = 1,
+  pageSize: number = 9,
+  search: string = "",
+  tag: string = ""
 ): Promise<FilteredPostsResult> {
-    // Fetch all published posts
-    const allPosts = await getAllPublished();
-    let filtered = allPosts;
+  const allPosts = await getAllPublished();
+  let filtered = allPosts;
 
-    // Apply search filter (case-insensitive, matches title or description)
-    if (search && search.trim()) {
-        const searchLower = search.toLowerCase();
-        filtered = filtered.filter(post =>
-            post.title.toLowerCase().includes(searchLower) ||
-            post.description.toLowerCase().includes(searchLower)
-        );
-    }
+  // Apply search filter
+  if (search && search.trim()) {
+    const searchLower = search.toLowerCase();
+    filtered = filtered.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchLower) ||
+        post.description.toLowerCase().includes(searchLower)
+    );
+  }
 
-    // Apply tag filter (exact match)
-    if (tag && tag.trim()) {
-        filtered = filtered.filter(post =>
-            post.tags.includes(tag)
-        );
-    }
+  // Apply tag filter
+  if (tag && tag.trim()) {
+    filtered = filtered.filter((post) => post.tags.includes(tag));
+  }
 
-    // Calculate pagination
-    const total = filtered.length;
-    const totalPages = Math.ceil(total / pageSize) || 1;
+  // Calculate pagination
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const validPage = Math.max(1, Math.min(page, totalPages));
 
-    // Ensure page is within valid range
-    const validPage = Math.max(1, Math.min(page, totalPages));
+  const start = (validPage - 1) * pageSize;
+  const end = start + pageSize;
+  const posts = filtered.slice(start, end);
 
-    const start = (validPage - 1) * pageSize;
-    const end = start + pageSize;
-    const posts = filtered.slice(start, end);
-
-    return { posts, total, totalPages };
+  return { posts, total, totalPages };
 }
 
 export async function getAllTags(): Promise<string[]> {
-    const posts = await getAllPublished();
-    const tagSet = new Set<string>();
+  const posts = await getAllPublished();
+  const tagSet = new Set<string>();
 
-    posts.forEach(post => {
-        post.tags.forEach(tag => tagSet.add(tag));
-    });
+  posts.forEach((post) => {
+    post.tags.forEach((tag) => tagSet.add(tag));
+  });
 
-    return Array.from(tagSet).sort();
+  return Array.from(tagSet).sort();
 }
