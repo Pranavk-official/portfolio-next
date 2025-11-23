@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getSinglePost, getAllSlugs } from "@/lib/notion";
+import { getSinglePost } from "@/lib/notion";
 import { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -20,17 +20,18 @@ import { BackToTop } from "@/components/blog/back-to-top";
 
 // Enable ISR with 600-second revalidation
 export const revalidate = 60;
+export const dynamicParams = true; // Allow dynamic params
 
-/**
- * Generate static params for all published posts
- */
-export async function generateStaticParams() {
-    const slugs = await getAllSlugs();
-    // console.log('🎯 generateStaticParams - slugs:', slugs);
-    return slugs.map((slug) => ({
-        slug,
-    }));
-}
+// /**
+//  * Generate static params for all published posts
+//  */
+// export async function generateStaticParams() {
+//     const slugs = await getAllSlugs();
+//     // console.log('🎯 generateStaticParams - slugs:', slugs);
+//     return slugs.map((slug) => ({
+//         slug,
+//     }));
+// }
 
 /**
  * Generate metadata for SEO
