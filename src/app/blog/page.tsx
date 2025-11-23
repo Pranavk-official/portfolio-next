@@ -4,10 +4,15 @@ import { getFilteredPosts, getAllTags } from "@/lib/notion";
 import { Search } from "@/components/blog/search";
 import { TagFilter } from "@/components/blog/tag-filter";
 import { Pagination } from "@/components/blog/pagination";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { MagicCard } from "@/components/ui/magic-card";
+import { TextAnimate } from "@/components/ui/text-animate";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
     title: "Blog",
@@ -67,79 +72,102 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     ]);
 
     return (
-        <div className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
+        <div className="relative bg-background py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+            <DotPattern
+                className={cn(
+                    "mask-[radial-gradient(600px_circle_at_center,white,transparent)]",
+                    "opacity-50"
+                )}
+            />
+            <div className="relative max-w-7xl mx-auto z-10">
                 {/* Header */}
                 <div className="mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold font-crimson text-foreground mb-4">
-                        Blog
-                    </h1>
-                    <p className="text-lg text-muted-foreground">
-                        {total} {total === 1 ? 'post' : 'posts'}
-                        {search && ` matching "${search}"`}
-                        {tag && ` tagged with "${tag}"`}
-                    </p>
+                    <BlurFade delay={0.1} inView>
+                        <TextAnimate animation="blurInUp" by="character" className="text-4xl md:text-5xl font-bold font-crimson text-foreground mb-4">
+                            Blog
+                        </TextAnimate>
+                    </BlurFade>
+                    <BlurFade delay={0.2} inView>
+                        <p className="text-lg text-muted-foreground">
+                            {total} {total === 1 ? 'post' : 'posts'}
+                            {search && ` matching "${search}"`}
+                            {tag && ` tagged with "${tag}"`}
+                        </p>
+                    </BlurFade>
                 </div>
 
                 {/* Search and Filter Bar */}
                 <div className="mb-8 space-y-6">
-                    <Suspense fallback={<Skeleton className="h-10 w-full max-w-md" />}>
-                        <Search placeholder="Search posts by title or content..." />
-                    </Suspense>
+                    <BlurFade delay={0.3} inView>
+                        <Suspense fallback={<Skeleton className="h-10 w-full max-w-md" />}>
+                            <Search placeholder="Search posts by title or content..." />
+                        </Suspense>
+                    </BlurFade>
 
-                    <Suspense fallback={<Skeleton className="h-20 w-full" />}>
-                        <TagFilter tags={allTags} />
-                    </Suspense>
+                    <BlurFade delay={0.4} inView>
+                        <Suspense fallback={<Skeleton className="h-20 w-full" />}>
+                            <TagFilter tags={allTags} />
+                        </Suspense>
+                    </BlurFade>
                 </div>
 
                 {/* Posts Grid */}
                 <Suspense fallback={<PostsSkeleton />}>
                     {posts.length === 0 ? (
-                        <Card className="text-center py-16">
-                            <CardContent className="pt-6">
-                                <p className="text-xl text-muted-foreground">
-                                    No posts found
-                                    {(search || tag) && '. Try adjusting your filters.'}
-                                </p>
-                            </CardContent>
-                        </Card>
+                        <BlurFade delay={0.5} inView>
+                            <Card className="text-center py-16">
+                                <CardContent className="pt-6">
+                                    <p className="text-xl text-muted-foreground">
+                                        No posts found
+                                        {(search || tag) && '. Try adjusting your filters.'}
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </BlurFade>
                     ) : (
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
-                            {posts.map((post) => (
-                                <Link key={post.id} href={`/blog/${post.slug}`} className="group">
-                                    <Card className="flex flex-col h-full hover:shadow-lg transition-all cursor-pointer">
-                                        <CardHeader>
-                                            <CardTitle className="font-crimson group-hover:text-[#d84315] transition-colors">
-                                                {post.title}
-                                            </CardTitle>
-                                            <CardDescription className="line-clamp-3">
-                                                {post.description}
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent className="flex-1 flex flex-col justify-end">
-                                            <div className="flex items-center justify-between text-sm">
-                                                <time className="text-muted-foreground">
-                                                    {formatDate(post.date)}
-                                                </time>
+                            {posts.map((post, idx) => (
+                                <BlurFade key={post.id} delay={0.25 + idx * 0.05} inView>
+                                    <Link href={`/blog/${post.slug}`} className="group block h-full">
+                                        <MagicCard
+                                            className="flex flex-col h-full cursor-pointer transition-all duration-300 hover:scale-[1.02] rounded-md"
+                                            gradientColor="#D9D9D955"
+                                        >
+                                            <div className="flex flex-col h-full p-6">
+                                                <div className="flex flex-col space-y-1.5 mb-4">
+                                                    <h3 className="font-semibold leading-none tracking-tight font-crimson text-2xl group-hover:text-ember-500 transition-colors">
+                                                        {post.title}
+                                                    </h3>
+                                                    <p className="text-sm text-muted-foreground line-clamp-3 mt-2">
+                                                        {post.description}
+                                                    </p>
+                                                </div>
+                                                <div className="flex-1 flex flex-col justify-end">
+                                                    <div className="flex items-center justify-between text-sm">
+                                                        <time className="text-muted-foreground">
+                                                            {formatDate(post.date)}
+                                                        </time>
 
-                                                {post.tags.length > 0 && (
-                                                    <div className="flex gap-1 flex-wrap">
-                                                        {post.tags.slice(0, 2).map((tagName) => (
-                                                            <Badge key={tagName} variant="secondary">
-                                                                {tagName}
-                                                            </Badge>
-                                                        ))}
-                                                        {post.tags.length > 2 && (
-                                                            <Badge variant="outline">
-                                                                +{post.tags.length - 2}
-                                                            </Badge>
+                                                        {post.tags.length > 0 && (
+                                                            <div className="flex gap-1 flex-wrap">
+                                                                {post.tags.slice(0, 2).map((tagName) => (
+                                                                    <Badge key={tagName} variant="secondary">
+                                                                        {tagName}
+                                                                    </Badge>
+                                                                ))}
+                                                                {post.tags.length > 2 && (
+                                                                    <Badge variant="outline">
+                                                                        +{post.tags.length - 2}
+                                                                    </Badge>
+                                                                )}
+                                                            </div>
                                                         )}
                                                     </div>
-                                                )}
+                                                </div>
                                             </div>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
+                                        </MagicCard>
+                                    </Link>
+                                </BlurFade>
                             ))}
                         </div>
                     )}
@@ -147,9 +175,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                    <Suspense fallback={<Skeleton className="h-12 w-full" />}>
-                        <Pagination currentPage={page} totalPages={totalPages} />
-                    </Suspense>
+                    <BlurFade delay={0.6} inView>
+                        <Suspense fallback={<Skeleton className="h-12 w-full" />}>
+                            <Pagination currentPage={page} totalPages={totalPages} />
+                        </Suspense>
+                    </BlurFade>
                 )}
             </div>
         </div>

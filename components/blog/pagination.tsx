@@ -1,9 +1,15 @@
 'use client';
 
 import { usePathname, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import {
+    Pagination as PaginationRoot,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 
 interface PaginationProps {
     currentPage: number;
@@ -55,35 +61,23 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
     const pages = getPageNumbers();
 
     return (
-        <div className="flex items-center justify-center gap-2">
-            {/* Previous Button */}
-            <Button
-                variant="outline"
-                size="sm"
-                asChild={currentPage > 1}
-                disabled={currentPage <= 1}
-            >
-                {currentPage > 1 ? (
-                    <Link href={createPageURL(currentPage - 1)}>
-                        <ChevronLeft className="h-4 w-4 mr-1" />
-                        Previous
-                    </Link>
-                ) : (
-                    <span>
-                        <ChevronLeft className="h-4 w-4 mr-1" />
-                        Previous
-                    </span>
-                )}
-            </Button>
+        <PaginationRoot>
+            <PaginationContent>
+                <PaginationItem>
+                    <PaginationPrevious
+                        href={currentPage > 1 ? createPageURL(currentPage - 1) : "#"}
+                        className={currentPage <= 1 ? "pointer-events-none opacity-50" : undefined}
+                        aria-disabled={currentPage <= 1}
+                        tabIndex={currentPage <= 1 ? -1 : undefined}
+                    />
+                </PaginationItem>
 
-            {/* Page Numbers */}
-            <div className="hidden sm:flex gap-1">
                 {pages.map((page, index) => {
                     if (page === '...') {
                         return (
-                            <span key={`dots-${index}`} className="px-3 py-2 text-muted-foreground">
-                                ...
-                            </span>
+                            <PaginationItem key={`dots-${index}`} className="hidden sm:block">
+                                <PaginationEllipsis />
+                            </PaginationItem>
                         );
                     }
 
@@ -91,47 +85,32 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
                     const isActive = pageNum === currentPage;
 
                     return (
-                        <Button
-                            key={pageNum}
-                            variant={isActive ? 'default' : 'outline'}
-                            size="sm"
-                            asChild={!isActive}
-                            disabled={isActive}
-                        >
-                            {isActive ? (
-                                <span>{pageNum}</span>
-                            ) : (
-                                <Link href={createPageURL(pageNum)}>{pageNum}</Link>
-                            )}
-                        </Button>
+                        <PaginationItem key={pageNum} className="hidden sm:block">
+                            <PaginationLink
+                                href={createPageURL(pageNum)}
+                                isActive={isActive}
+                            >
+                                {pageNum}
+                            </PaginationLink>
+                        </PaginationItem>
                     );
                 })}
-            </div>
 
-            {/* Mobile Page Indicator */}
-            <div className="sm:hidden px-3 py-2 text-sm text-muted-foreground">
-                Page {currentPage} of {totalPages}
-            </div>
-
-            {/* Next Button */}
-            <Button
-                variant="outline"
-                size="sm"
-                asChild={currentPage < totalPages}
-                disabled={currentPage >= totalPages}
-            >
-                {currentPage < totalPages ? (
-                    <Link href={createPageURL(currentPage + 1)}>
-                        Next
-                        <ChevronRight className="h-4 w-4 ml-1" />
-                    </Link>
-                ) : (
-                    <span>
-                        Next
-                        <ChevronRight className="h-4 w-4 ml-1" />
+                <PaginationItem className="sm:hidden">
+                    <span className="text-sm text-muted-foreground px-2">
+                        {currentPage} / {totalPages}
                     </span>
-                )}
-            </Button>
-        </div>
+                </PaginationItem>
+
+                <PaginationItem>
+                    <PaginationNext
+                        href={currentPage < totalPages ? createPageURL(currentPage + 1) : "#"}
+                        className={currentPage >= totalPages ? "pointer-events-none opacity-50" : undefined}
+                        aria-disabled={currentPage >= totalPages}
+                        tabIndex={currentPage >= totalPages ? -1 : undefined}
+                    />
+                </PaginationItem>
+            </PaginationContent>
+        </PaginationRoot>
     );
 }
