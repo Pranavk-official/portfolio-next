@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 import { getSinglePost, getAllPublisedSlugs } from "@/lib/notion";
 import { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
@@ -162,7 +163,7 @@ export default async function PostPage({
 
                 {/* Post Content */}
                 <div className="prose prose-ash prose-lg dark:prose-invert max-w-none mb-12">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
                         {post.content}
                     </ReactMarkdown>
                 </div>
