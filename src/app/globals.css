@@ -447,6 +447,24 @@
   .dark select:focus-visible {
     @apply ring-ember-500 ring-offset-ash-950;
   }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-ash-300 dark:bg-ash-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-ember-400 dark:bg-ember-600;
+  }
 }
 
 ::view-transition-old(root),
