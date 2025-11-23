@@ -166,9 +166,9 @@ export async function getSinglePost(slug: string): Promise<Post | null> {
     // Fetch content blocks with STRICT LIMIT
     const mdBlocks = await n2m.pageToMarkdown(metadata.id);
 
-    // CRITICAL: Only take first 30 blocks to prevent OOM
-    const limitedBlocks = mdBlocks.slice(0, 30);
-    const mdString = n2m.toMarkdownString(limitedBlocks);
+    // // CRITICAL: Only take first 30 blocks to prevent OOM
+    // const limitedBlocks = mdBlocks.slice(0, 30);
+    const mdString = n2m.toMarkdownString(mdBlocks);
 
     return {
       ...metadata,
