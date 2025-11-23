@@ -1,55 +1,98 @@
-import { Metadata } from "next"
-import { TextAnimate } from "@/components/ui/text-animate"
-import { NeonGradientCard } from "@/components/ui/neon-gradient-card"
-import { AuroraText } from "@/components/ui/aurora-text"
+import { Metadata } from "next";
+import Link from "next/link";
+import { getAllPublished } from "@/lib/notion";
 
 export const metadata: Metadata = {
     title: "Blog",
     description: "Insights, tutorials, and updates about web development, design, and technology.",
+};
+
+// Enable ISR with 60-second revalidation
+export const revalidate = 60;
+
+/**
+ * Format date to readable string
+ */
+function formatDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 }
 
-const BlogPage = () => {
+export default async function BlogPage() {
+    const posts = await getAllPublished();
+
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background px-4">
-            <NeonGradientCard
-                className="max-w-xl w-full"
-                borderSize={3}
-                borderRadius={24}
-                neonColors={{
-                    firstColor: "#ff00aa",
-                    secondColor: "#00FFF1",
-                }}
-            >
-                <div className="p-12 text-center space-y-6">
-                    {/* Animated Title */}
-                    <AuroraText className="text-5xl md:text-6xl font-bold">
-                        Blog Coming Soon
-                    </AuroraText>
-
-                    {/* Description */}
-                    <TextAnimate
-                        animation="slideUp"
-                        by="word"
-                        delay={0.3}
-                        className="text-base text-muted-foreground leading-relaxed"
-                    >
-                        Stay tuned for insightful articles tutorials and updates about web development design and technology
-                    </TextAnimate>
-
-                    {/* Status Badge */}
-                    <div className="pt-4">
-                        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary/10 border border-primary/20">
-                            <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
-                            </span>
-                            <span className="text-sm font-medium text-primary">Work in Progress</span>
-                        </div>
-                    </div>
+        <div className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                {/* Header Section */}
+                <div className="mb-12 text-center">
+                    <h1 className="text-4xl md:text-5xl font-bold font-crimson text-foreground mb-4">
+                        Blog
+                    </h1>
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        Insights, tutorials, and updates about web development, design, and technology
+                    </p>
                 </div>
-            </NeonGradientCard>
+
+                {/* Posts Grid */}
+                {posts.length === 0 ? (
+                    <div className="text-center py-16">
+                        <p className="text-muted-foreground text-lg">
+                            No posts published yet. Check back soon!
+                        </p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                        {posts.map((post) => (
+                            <Link
+                                key={post.id}
+                                href={`/blog/${post.slug}`}
+                                className="group"
+                            >
+                                <article className="h-full bg-card border border-border rounded-lg p-6 shadow-sm transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-1">
+                                    {/* Title */}
+                                    <h2 className="text-2xl font-bold font-crimson text-foreground mb-3 group-hover:text-[#d84315] transition-colors">
+                                        {post.title}
+                                    </h2>
+
+                                    {/* Description */}
+                                    <p className="text-muted-foreground mb-4 line-clamp-3">
+                                        {post.description}
+                                    </p>
+
+                                    {/* Metadata Row */}
+                                    <div className="flex flex-col gap-3 mt-auto">
+                                        {/* Date */}
+                                        <time
+                                            dateTime={post.date}
+                                            className="text-sm text-[#78716c]"
+                                        >
+                                            {formatDate(post.date)}
+                                        </time>
+
+                                        {/* Tags */}
+                                        {post.tags.length > 0 && (
+                                            <div className="flex flex-wrap gap-2">
+                                                {post.tags.map((tag) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="px-3 py-1 text-sm font-medium rounded-full bg-[#fef2f2] text-[#991b1b] border border-[#fecaca] dark:bg-[#7c2d12]/30 dark:text-[#fb923c] dark:border-[#7c2d12]"
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </article>
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
-
-export default BlogPage;
