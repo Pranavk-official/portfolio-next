@@ -23,7 +23,7 @@ const ExperienceSection = () => {
     }, []);
 
     return (
-        <section className="py-10 min-h-screen relative" aria-labelledby="experience-heading">
+        <section className="py-10 min-h-screen relative overflow-hidden" aria-labelledby="experience-heading">
             <div className="container mx-auto px-4 md:px-8 max-w-6xl">
                 {/* Section heading */}
                 <div className="mb-16 text-center">
