@@ -29,11 +29,22 @@ export const revalidate = 600;
  * Generate static params for all published posts
  */
 export async function generateStaticParams() {
-    const slugs = await getAllPublisedSlugs();
-    // console.log('🎯 generateStaticParams - slugs:', slugs);
-    return slugs.map((slug) => ({
-        slug,
-    }));
+    // Skip if Notion credentials are not available (e.g., during build without env vars)
+    if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATA_SOURCE_ID) {
+        console.warn("Notion credentials not available, skipping static generation");
+        return [];
+    }
+    
+    try {
+        const slugs = await getAllPublisedSlugs();
+        // console.log('🎯 generateStaticParams - slugs:', slugs);
+        return slugs.map((slug) => ({
+            slug,
+        }));
+    } catch (error) {
+        console.warn("Failed to fetch slugs for static generation:", error);
+        return [];
+    }
 }
 
 /**
