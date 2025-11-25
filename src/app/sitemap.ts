@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Dynamic blog post routes from Notion
     // Only fetch if Notion credentials are available
     let blogRoutes: MetadataRoute.Sitemap = [];
-    
+
     if (process.env.NOTION_TOKEN && process.env.NOTION_DATA_SOURCE_ID) {
         try {
             const posts = await getAllPublished();

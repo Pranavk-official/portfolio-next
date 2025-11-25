@@ -34,7 +34,7 @@ export async function generateStaticParams() {
         console.warn("Notion credentials not available, skipping static generation");
         return [];
     }
-    
+
     try {
         const slugs = await getAllPublisedSlugs();
         // console.log('🎯 generateStaticParams - slugs:', slugs);
