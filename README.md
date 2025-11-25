@@ -2,6 +2,28 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```env
+# Site Configuration
+# Set this to your localhost URL during development or your custom domain in production
+# If not set, defaults to: https://pranavk-nu.vercel.app
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Notion API Configuration (required for blog functionality)
+NOTION_TOKEN=your_notion_token_here
+NOTION_DATA_SOURCE_ID=your_database_id_here
+```
+
+**For Vercel Deployment:**
+- The `NEXT_PUBLIC_SITE_URL` will automatically use your Vercel domain if set in environment variables
+- Add these environment variables in your Vercel project settings
+- Example: `NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app`
+
+### Running the Development Server
+
 First, run the development server:
 
 ```bash

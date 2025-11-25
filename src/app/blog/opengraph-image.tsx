@@ -12,19 +12,8 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
-    // Try to fetch the background image
-    let bgImageSrc: string | ArrayBuffer | null = siteConfig.ogImage;
-    try {
-        const res = await fetch(siteConfig.ogImage);
-        if (res.ok) {
-            bgImageSrc = await res.arrayBuffer();
-        } else {
-            bgImageSrc = null;
-        }
-    } catch (e) {
-        console.warn("Failed to fetch OG background image:", e);
-        bgImageSrc = null;
-    }
+    // Use the background image URL directly - works in both local and production
+    const bgImageUrl = '/og-image.png';
 
     return new ImageResponse(
         (
@@ -41,33 +30,19 @@ export default async function Image() {
                 }}
             >
                 {/* Background Image with Overlay Effect */}
-                {bgImageSrc ? (
-                    <img
-                        src={bgImageSrc as unknown as string}
-                        alt="Background"
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            opacity: 0.2,
-                        }}
-                    />
-                ) : (
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            background: 'linear-gradient(to bottom right, #18181b, #09090b)',
-                            opacity: 0.5,
-                        }}
-                    />
-                )}
+                <img
+                    src={bgImageUrl}
+                    alt="Background"
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: 0.2,
+                    }}
+                />
 
                 {/* Content */}
                 <div

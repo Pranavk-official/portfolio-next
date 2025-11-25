@@ -1,12 +1,25 @@
 export type SiteConfig = typeof siteConfig;
 
+// Get base URL from environment variable or use production URL as fallback
+const getBaseUrl = () => {
+  // In production (Vercel), use the environment variable or fallback to the production URL
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+
+  // Default production URL
+  return "https://pranavk-nu.vercel.app";
+};
+
+const baseUrl = getBaseUrl();
+
 export const siteConfig = {
   name: "Pranav K",
   title: "Pranav K - Full Stack Developer",
   description:
     "Full Stack Developer with proven expertise in designing, developing, and deploying scalable web applications. Proficient in MongoDB, Express.js, React.js, and Node.js, with strong command over front-end and back-end development, RESTful API integration, and database management.",
-  url: "https://pranavk-nu.vercel.app",
-  ogImage: "https://pranavk-nu.vercel.app/og-image.png", // Absolute URL for social media scrapers
+  url: baseUrl,
+  ogImage: `${baseUrl}/og-image.png`, // Use dynamic base URL
   links: {
     github: "https://github.com/Pranavk-official",
     linkedin: "https://linkedin.com/in/pranav-k-cse",
@@ -15,7 +28,7 @@ export const siteConfig = {
   },
   author: {
     name: "Pranav K",
-    url: "https://pranavk-nu.vercel.app",
+    url: baseUrl,
   },
   creator: "Pranav K",
   keywords: [

@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { getPostMetadataBySlug } from '@/lib/notion';
+import { getPostMetadataBySlug, type PostMetadata } from '@/lib/notion';
 import { siteConfig } from '@/config/site';
 
 export const runtime = 'edge';
@@ -14,20 +14,16 @@ export const contentType = 'image/png';
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const post = await getPostMetadataBySlug(slug);
 
-    // Try to fetch the background image
-    let bgImageSrc: string | ArrayBuffer | null = siteConfig.ogImage;
+    // Use the background image URL directly - works in both local and production
+    const bgImageUrl = '/og-image.png';
+
+    // Fetch post metadata with error handling
+    let post: PostMetadata | null = null;
     try {
-        const res = await fetch(siteConfig.ogImage);
-        if (res.ok) {
-            bgImageSrc = await res.arrayBuffer();
-        } else {
-            bgImageSrc = null;
-        }
-    } catch (e) {
-        console.warn("Failed to fetch OG background image:", e);
-        bgImageSrc = null;
+        post = await getPostMetadataBySlug(slug);
+    } catch (error) {
+        console.error('Error fetching post metadata for OG image:', error);
     }
 
     if (!post) {
@@ -68,33 +64,19 @@ export default async function Image({ params }: { params: Promise<{ slug: string
                 }}
             >
                 {/* Background Image with Overlay Effect */}
-                {bgImageSrc ? (
-                    <img
-                        src={bgImageSrc as unknown as string}
-                        alt="Background"
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            opacity: 0.2,
-                        }}
-                    />
-                ) : (
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            background: 'linear-gradient(to bottom right, #18181b, #09090b)',
-                            opacity: 0.5,
-                        }}
-                    />
-                )}
+                <img
+                    src={bgImageUrl}
+                    alt="Background"
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: 0.2,
+                    }}
+                />
 
                 {/* Content */}
                 <div
