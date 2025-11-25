@@ -15,14 +15,6 @@ export const metadata: Metadata = {
         type: "website",
         url: `${siteConfig.url}/blog`,
         siteName: siteConfig.name,
-        images: [
-            {
-                url: siteConfig.ogImage,
-                width: 1200,
-                height: 630,
-                alt: siteConfig.name,
-            },
-        ],
     },
 };
 
