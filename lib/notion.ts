@@ -156,6 +156,43 @@ export async function getAllPublisedSlugs(): Promise<string[]> {
   }
 }
 
+export async function getPostMetadataBySlug(
+  slug: string
+): Promise<PostMetadata | null> {
+  if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATA_SOURCE_ID) {
+    console.warn("Notion credentials not available");
+    return null;
+  }
+
+  if (!slug || slug.trim() === "") {
+    return null;
+  }
+
+  try {
+    const response = await notion.dataSources.query({
+      data_source_id: process.env.NOTION_DATA_SOURCE_ID!,
+      filter: {
+        and: [
+          { property: "Published", checkbox: { equals: true } },
+          { property: "Slug", rich_text: { equals: slug } },
+        ],
+      },
+      page_size: 1,
+    });
+
+    const pageResult = response.results.find(isPageObjectResponse);
+
+    if (!pageResult) {
+      return null;
+    }
+
+    return getPageMetaData(pageResult);
+  } catch (error) {
+    console.error(`Error fetching post metadata with slug "${slug}":`, error);
+    return null;
+  }
+}
+
 export async function getSinglePost(slug: string): Promise<Post | null> {
   if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATA_SOURCE_ID) {
     console.warn("Notion credentials not available");

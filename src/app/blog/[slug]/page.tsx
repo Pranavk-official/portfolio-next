@@ -68,7 +68,6 @@ export async function generateMetadata({
 
     const siteConfig = (await import("@config/site")).siteConfig;
     const postUrl = `${siteConfig.url}/blog/${slug}`;
-    const ogImage = siteConfig.ogImage;
 
     return {
         title: post.title,
@@ -79,14 +78,6 @@ export async function generateMetadata({
             type: "article",
             url: postUrl,
             siteName: siteConfig.name,
-            images: [
-                {
-                    url: ogImage,
-                    width: 1200,
-                    height: 630,
-                    alt: post.title,
-                },
-            ],
             publishedTime: post.date,
             authors: [siteConfig.author.name],
         },
@@ -94,7 +85,6 @@ export async function generateMetadata({
             card: "summary_large_image",
             title: post.title,
             description: post.description,
-            images: [ogImage],
             creator: "@Arch_Lad_",
         },
     };
