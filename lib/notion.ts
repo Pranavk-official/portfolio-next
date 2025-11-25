@@ -157,6 +157,11 @@ export async function getAllPublisedSlugs(): Promise<string[]> {
 }
 
 export async function getSinglePost(slug: string): Promise<Post | null> {
+  if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATA_SOURCE_ID) {
+    console.warn("Notion credentials not available");
+    return null;
+  }
+
   if (!slug || slug.trim() === "") {
     return null;
   }
