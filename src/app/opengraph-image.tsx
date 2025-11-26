@@ -6,7 +6,7 @@ import { siteConfig } from '@/config/site';
 // Remove edge runtime to allow Node.js APIs
 // export const runtime = 'edge';
 
-export const alt = 'Blog';
+export const alt = siteConfig.title;
 export const size = {
     width: 1200,
     height: 630,
@@ -55,7 +55,7 @@ export default async function Image() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '20px',
+                        gap: '30px',
                         padding: '60px',
                         textAlign: 'center',
                         zIndex: 1,
@@ -72,7 +72,7 @@ export default async function Image() {
                             fontWeight: 500,
                         }}
                     >
-                        Insights & Tutorials
+                        Portfolio
                     </div>
 
                     <div
@@ -86,12 +86,12 @@ export default async function Image() {
                             textShadow: '0 4px 12px rgba(0,0,0,0.5)',
                         }}
                     >
-                        Blog
+                        {siteConfig.name}
                     </div>
 
                     <div
                         style={{
-                            fontSize: 32,
+                            fontSize: 28,
                             color: '#e4e4e7',
                             lineHeight: 1.4,
                             maxWidth: '900px',
@@ -99,7 +99,7 @@ export default async function Image() {
                             opacity: 0.9,
                         }}
                     >
-                        Web development, design, and technology.
+                        {siteConfig.description}
                     </div>
                 </div>
 
@@ -122,7 +122,7 @@ export default async function Image() {
                         backgroundColor: 'rgba(0,0,0,0.4)',
                         borderRadius: '8px',
                     }}>
-                        {siteConfig.name}
+                        {siteConfig.url}
                     </div>
                 </div>
             </div>

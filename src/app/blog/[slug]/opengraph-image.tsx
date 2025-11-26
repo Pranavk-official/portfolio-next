@@ -1,8 +1,11 @@
 import { ImageResponse } from 'next/og';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { getPostMetadataBySlug, type PostMetadata } from '@/lib/notion';
 import { siteConfig } from '@/config/site';
 
-export const runtime = 'edge';
+// Remove edge runtime to allow Node.js APIs
+// export const runtime = 'edge';
 
 export const alt = 'Blog Post';
 export const size = {
@@ -15,8 +18,9 @@ export const contentType = 'image/png';
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
 
-    // Use the background image URL directly - works in both local and production
-    const bgImageUrl = '/og-image.png';
+    // Load background image from filesystem (Next.js project directory)
+    const logoData = await readFile(join(process.cwd(), 'public/og-image.png'));
+    const logoSrc = `data:image/png;base64,${logoData.toString('base64')}`;
 
     // Fetch post metadata with error handling
     let post: PostMetadata | null = null;
@@ -65,7 +69,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             >
                 {/* Background Image with Overlay Effect */}
                 <img
-                    src={bgImageUrl}
+                    src={logoSrc}
                     alt="Background"
                     style={{
                         position: 'absolute',
@@ -87,6 +91,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
                         justifyContent: 'center',
                         gap: '20px',
                         padding: '60px',
+                        zIndex: 1,
                         textAlign: 'center',
                     }}
                 >
@@ -149,6 +154,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
                         bottom: 50,
                         display: 'flex',
                         alignItems: 'center',
+                        zIndex: 1,
                         gap: '12px',
                     }}
                 >
