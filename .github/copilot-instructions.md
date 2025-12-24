@@ -1,158 +1,286 @@
 # Copilot Instructions for Portfolio Project
 
 ## Project Overview
-Next.js 15 + React 19 portfolio site featuring animated UI components, blog functionality, and section-based architecture. Uses TypeScript, Tailwind CSS 4, and custom animated components from Magic UI design system.
+
+Next.js 16 + React 19 portfolio site featuring animated UI components, Notion-powered blog, and section-based architecture. Uses TypeScript, Tailwind CSS 4, Motion (formerly Framer Motion), and animated components from Magic UI + shadcn/ui registries.
 
 ## Architecture
 
 ### Section-Based Structure
-All major page sections live in `src/sections/` with dedicated config folders:
-- Each section exports a default component (e.g., `HeroSection.tsx`)
-- Config data lives in `config/` subdirectories (e.g., `projects/config/projects.ts`)
-- Sections are composed in `src/sections/index.tsx` and imported to `src/app/page.tsx`
-- Use `"use client"` directive for sections with interactivity/animations
 
-Example section pattern:
+Sections compose the homepage (`src/app/page.tsx`) and are wrapped with `BlurFade` animations:
+
 ```tsx
-// src/sections/hero/HeroSection.tsx
-"use client";
-const HeroSection = () => { /* ... */ }
-export default HeroSection;
-
-// src/sections/index.tsx
+// src/sections/index.tsx - All sections wrapped with BlurFade for scroll animations
 import Hero from "@sections/hero/HeroSection";
-export { Hero, Services, Skill, Project, Footer };
+const Experience = () => (
+  <BlurFade delay={0.25 * 2} inView direction="up">
+    <ExperienceSection />
+  </BlurFade>
+);
+export { Hero, Services, Skill, Experience, Footer };
+
+// src/app/page.tsx - Sections commented out are pending rework
+import { Hero, Services, Skill, Experience, Footer } from "@sections/index";
 ```
+
+**Section Structure**:
+
+- Each section: `src/sections/[name]/[Name]Section.tsx` with `"use client"` directive
+- Config data: `src/sections/[name]/config/` (e.g., `workExperience.ts`, `serviceItems.tsx`)
+- Validation utils: Experience section has `utils/validation.ts` for data validation with dev warnings
 
 ### Path Aliases (tsconfig.json)
-- `@/` - Root directory
-- `@app/*` - `src/app/*`
-- `@components/*` - `components/*`
-- `@sections/*` - `src/sections/*`
-- `@lib/*` - `lib/*`
-- `@config/*` - `src/config/*`
-- `@public/*` - `public/*`
 
-Always use these aliases instead of relative imports.
-
-## UI Component Patterns
-
-### Magic UI Components
-Custom animated components in `components/ui/` integrate with shadcn/ui registry (`@magicui`). Key patterns:
-- **Animation components**: `BlurFade`, `HyperText`, `TextAnimate`, `AuroraText`
-- **Interactive components**: `NeonGradientCard`, `AnimatedThemeToggler`, `Dock`, `IconCloud`
-- All use Framer Motion (`motion/react`) for animations
-- Props include `delay`, `duration`, `className`, `startOnView`, `animateOnHover`
-
-Example usage:
-```tsx
-import { HyperText } from "@components/ui/hyper-text";
-<HyperText className="text-2xl">{quote.content}</HyperText>
+```
+@/            → Root directory
+@app/*        → src/app/*
+@components/* → components/*
+@sections/*   → src/sections/*
+@lib/*        → lib/*
+@config/*     → src/config/*
+@public/*     → public/*
 ```
 
-### Shared Components
-Reusable components in `components/shared/` and `components/[section]/` are section-specific:
-- `NavDock` - Global navigation dock
-- `ProfileCard`, `Quote` - Hero section components
+**Critical**: Always use path aliases. The build uses Turbopack and requires these for proper resolution.
 
-### Styling Conventions
-- Tailwind CSS 4 with `@tailwindcss/postcss`
-- Custom CSS variables in `src/app/globals.css` using `oklch()` color space
-- Dark mode: `:root.dark` class toggle via custom theme toggler
-- Use `cn()` utility from `@/lib/utils` to merge Tailwind classes
+## UI Component System
+
+### Registry Architecture
+
+`components.json` defines three external registries:
+
+- `@magicui` → https://magicui.design/r/{name}.json (animated components)
+- `@react-bits` → https://reactbits.dev/r/{name}.json
+- `@uilayouts` → https://www.ui-layouts.com/r/{name}.json
+
+Use `shadcn` CLI to add components: `bun run shadcn add @magicui/blur-fade`
+
+### Magic UI Animation Patterns
+
+All animations use `motion` from `motion/react` (NOT `framer-motion`):
+
+```tsx
+// Staggered scroll animations
+<BlurFade delay={0.25 * index} inView direction="up">
+  <TimelineItem experience={experience} />
+</BlurFade>
+```
+
+**Key Components**:
+
+- `BlurFade` - Scroll-triggered reveal (used extensively in sections)
+- `HyperText`, `TextAnimate`, `AuroraText` - Text animations
+- `MagicCard`, `NeonGradientCard` - Interactive cards
+- `DotPattern`, `GridPattern` - Background patterns
 
 ## Content Management
 
-### Blog System
-Markdown-based blog using gray-matter + remark:
-- Posts in `_posts/*.md` with YAML frontmatter
-- Frontmatter fields: `title`, `excerpt`, `coverImage`, `date`, `author`, `ogImage`
-- `lib/blog-api.ts` provides `getPostBySlug()`, `getAllPosts()`
-- Blog routes in `src/app/blog/` (currently showing "Coming Soon" page)
-- Blog test components in `src/app/blog-test/_components/`
+### Notion Blog Integration
 
-### Project Data
-Projects array in `src/sections/projects/config/projects.ts`:
+Blog powered by Notion API (`lib/notion.ts`), NOT markdown files:
+
 ```typescript
-export interface Project {
-  id: string;
-  title: string;
-  year: string;
-  shortDescription: string;
-  technologies: string[];
-  category: 'web-app' | 'mobile' | 'tool' | 'community';
-  // ...
+// lib/notion.ts exports
+getAllPublished() → PostMetadata[]  // All published posts
+getFilteredPosts(page, search, tag) → FilteredPostsResult  // Paginated/filtered
+getPost(slug) → Post  // Single post with markdown content
+getAllTags() → string[]  // Unique tags
+```
+
+**Environment Variables** (Required for blog):
+
+```env
+NOTION_TOKEN=secret_xxx
+NOTION_DATA_SOURCE_ID=database_id_here
+NEXT_PUBLIC_SITE_URL=http://localhost:3000  # or production URL
+```
+
+**Fallback Behavior**: When Notion credentials missing, `generateStaticParams` returns empty array and logs "Notion credentials not available, skipping static generation"
+
+### Blog Routes
+
+- `/blog` - List view with search, tag filtering, pagination (`src/app/blog/page.tsx`)
+- `/blog/[slug]` - Post detail with markdown rendering via `notion-to-md`
+- Blog uses ISR: `export const revalidate = 60` (60s cache)
+
+### Site Configuration
+
+Duplicate configs exist: `config/site.ts` AND `src/config/site.ts` (keep in sync!)
+
+- Personal info, social links, SEO metadata
+- Used in `layout.tsx` for Next.js metadata API
+
+## Styling System
+
+### Tailwind CSS 4 Setup
+
+```css
+/* src/app/globals.css */
+@import "tailwindcss";
+@import "tw-animate-css"; /* Animation utilities */
+@import "highlight.js/styles/github-dark.css"; /* Code syntax */
+
+@custom-variant dark (&:is(.dark *)); /* Dark mode variant */
+```
+
+**Color System**: `oklch()` color space for perceptual uniformity
+
+```css
+:root {
+  --background: oklch(1 0 0);
+}
+:root.dark {
+  --background: oklch(0.141 0.005 285.823);
 }
 ```
 
-### Site Configuration
-Global metadata in `config/site.ts` (and duplicated in `src/config/site.ts`):
-- Personal info, social links, SEO metadata
-- Referenced in `src/app/layout.tsx` for Next.js metadata API
+**Blog Design System**: Additional fonts in layout.tsx
+
+- `Crimson_Pro` - Blog headings (`--font-crimson-pro`)
+- `JetBrains_Mono` - Code blocks (`--font-jetbrains-mono`)
+- `Outfit` - UI elements (`--font-outfit`)
+
+### Theme Toggle Implementation
+
+Custom animated theme toggle uses View Transitions API:
+
+```tsx
+// components/ui/animated-theme-toggler.tsx
+- Manual localStorage theme persistence (no next-themes dependency confusion)
+- View Transitions API for smooth theme switch
+- Inline script in layout.tsx prevents FOUC: checks localStorage before hydration
+```
 
 ## Development Workflows
 
-### Commands
+### Build Commands
+
 ```bash
-npm run dev      # Start dev server (localhost:3000)
-npm run build    # Production build
-npm run start    # Start production server
-npm run lint     # Run ESLint
+bun run dev    # Dev server with Turbopack (port 3000)
+bun run build  # NODE_OPTIONS=--max-old-space-size=8192 (memory-intensive)
+bun run start  # Production server
+bun run lint   # ESLint
 ```
 
-### Theme System
-Custom animated theme toggle with View Transitions API:
-- Manual localStorage-based persistence
-- Inline script in layout.tsx prevents flash of unstyled content (FOUC)
-- Component: `components/ui/animated-theme-toggler.tsx`
-- Fixed top-right position in layout
+**Build Notes**:
 
-### Animation Strategy
-- Wrap sections with `BlurFade` for scroll-triggered animations (see `src/sections/index.tsx`)
-- Use `delay` prop (e.g., `delay={0.25 * 3}`) for staggered reveals
-- `inView` and `direction="up"` for scroll-based triggers
+- Turbopack compiles in ~10-15s
+- Static generation requires Notion credentials
+- Memory allocation increased due to Three.js dependencies (`@react-three/*`)
 
-## Key Conventions
+### Debugging Failed Imports
 
-1. **Client vs Server Components**: Mark interactive/animated components with `"use client"`, especially sections
-2. **Config Separation**: Keep data in `config/` folders separate from component logic
-3. **Type Safety**: Define interfaces in dedicated files (e.g., `src/interfaces/post.ts`)
-4. **Image Handling**: Remote images configured in `next.config.ts` for `images.unsplash.com` and `ui-avatars.com`
-5. **Responsive Design**: Mobile-first with `md:`, `lg:`, `2xl:` breakpoints
-6. **TODOs in Code**: Projects section disabled in `page.tsx` pending rework
+Terminal error shows dev server looking for missing `@/lib/blog-api` (doesn't exist - blog uses `@/lib/notion` instead). Check imports in layout.tsx if compilation fails.
 
-## Current Work Items
-- Blog system implementation (placeholder page exists)
-- Work experience timeline feature (TODO in `page.tsx`)
-- Projects section refinement (currently commented out)
+## Key Patterns & Conventions
+
+### 1. Client vs Server Components
+
+- **Client**: All sections, animated components, interactive elements (theme toggle, navigation)
+- **Server**: Blog list/detail pages (ISR), layout metadata generation
+- Rule: `"use client"` required for `motion` components and React hooks
+
+### 2. Data Validation Pattern
+
+Experience section validates config at runtime (see `src/sections/experience/utils/validation.ts`):
+
+```tsx
+const validExperiences = useMemo(() => {
+  const validated = validateWorkExperiences(workExperiences);
+  if (
+    process.env.NODE_ENV === "development" &&
+    validated.length !== workExperiences.length
+  ) {
+    console.warn(
+      `${workExperiences.length - validated.length} invalid entries filtered`
+    );
+  }
+  return validated;
+}, []);
+```
+
+### 3. Image Handling
+
+Remote images configured in `next.config.ts`:
+
+```typescript
+remotePatterns: [
+  { protocol: "https", hostname: "images.unsplash.com" },
+  { protocol: "https", hostname: "ui-avatars.com" },
+];
+```
+
+### 4. Seasonal Features
+
+Layout conditionally renders `<Snow />` component based on date helpers:
+
+```tsx
+import { isChristmasSeason } from "@/lib/utils/dateHelpers";
+{
+  isChristmasSeason() && <Snow />;
+}
+```
+
+### 5. Announcement Bar
+
+`AnnouncementBar` component fetches latest blog post count for dynamic messaging:
+
+```tsx
+const posts = await getAllPublished();
+// Displays different messages based on post count
+```
 
 ## Adding New Features
 
-### New Section
-1. Create `src/sections/[name]/[Name]Section.tsx` with `"use client"`
-2. Add config data to `src/sections/[name]/config/`
-3. Export from `src/sections/index.tsx`
-4. Import in `src/app/page.tsx`
-5. Wrap with `BlurFade` for animations
+### New Section with Animation
+
+1. Create `src/sections/[name]/[Name]Section.tsx`:
+
+```tsx
+"use client";
+export default function NewSection() {
+  return <div className="py-10 min-h-screen">...</div>;
+}
+```
+
+2. Add to `src/sections/index.tsx`:
+
+```tsx
+import NewSection from "@sections/new/NewSection";
+const New = () => (
+  <BlurFade delay={0.25 * 4} inView direction="up">
+    <NewSection />
+  </BlurFade>
+);
+export { Hero, Services, Skill, Experience, New, Footer };
+```
+
+3. Import in `src/app/page.tsx` and add to render
 
 ### New Animated Component
-1. Create in `components/ui/` following existing patterns
-2. Use `motion` from `motion/react` (not `framer-motion`)
-3. Include `className` prop with `cn()` utility
-4. Add TypeScript interface extending React component props
 
-### Blog Post
-Create `.md` file in `_posts/` with frontmatter:
-```yaml
----
-title: "Post Title"
-excerpt: "Brief description"
-coverImage: "https://..."
-date: "2024-11-15T05:35:07.322Z"
-author:
-  name: "Author Name"
-  picture: "https://..."
-ogImage:
-  url: "https://..."
----
+```tsx
+"use client";
+import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
+
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  delay?: number;
+}
+
+export const NewComponent = ({ className, delay = 0, ...props }: Props) => {
+  return <motion.div className={cn("...", className)} initial={{...}} animate={{...}} {...props} />;
+};
 ```
+
+### Notion Blog Post Properties
+
+Required Notion database properties (case-sensitive):
+
+- `Title` or `title` (title)
+- `Slug` (rich_text)
+- `Published` (checkbox)
+- `Date` (date)
+- `Tags` (multi_select)
+- `Description` (rich_text)
