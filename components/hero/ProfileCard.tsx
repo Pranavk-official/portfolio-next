@@ -1,6 +1,7 @@
 "use client";
 
 import { PixelImage } from "../ui/pixel-image";
+import { isChristmasHoliday } from "@/lib/utils";
 // import { useEffect, useState } from "react";
 
 
@@ -25,9 +26,7 @@ export function ProfileCard() {
 
   // const imgUrl = isDark ? "/profile_dark.png" : "/profile_img.png";
 
-  const today = new Date();
-  const isXmas = today.getMonth() === 11 && today.getDate() === 25;
-  const avatarSrc = isXmas ? "/xmas-avatar.png" : "/profile_dark.png";
+  const avatarSrc = isChristmasHoliday() ? "/xmas-avatar.png" : "/profile_dark.png";
 
   return (
     <div className="w-full max-w-[280px] md:max-w-[400px] mx-auto">

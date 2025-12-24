@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import DateFormatter from "./date-formatter";
 import { type Author } from "@/src/interfaces/author";
+import { isChristmasHoliday } from "@/lib/utils";
 
 type Props = {
   title: string;
@@ -14,9 +15,7 @@ type Props = {
 };
 
 export function PostHeader({ title, coverImage, date, author }: Props) {
-  const today = new Date();
-  const isXmas = today.getMonth() === 11 && today.getDate() === 25;
-  const avatarSrc = (isXmas && author.name === "Pranav K") ? "/xmas-avatar.png" : author.picture;
+  const avatarSrc = (isChristmasHoliday() && author.name === "Pranav K") ? "/xmas-avatar.png" : author.picture;
 
   return (
     <header className="max-w-3xl mx-auto py-12 px-4 md:px-8">

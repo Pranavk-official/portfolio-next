@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { BlurFade } from "@/components/ui/blur-fade";
 import DateFormatter from "./date-formatter";
+import { isChristmasHoliday } from "@/lib/utils";
 
 type Props = {
   title: string;
@@ -31,9 +32,7 @@ export function PostPreview({
     return 0.3 + (idx * 0.1);
   };
 
-  const today = new Date();
-  const isXmas = today.getMonth() === 11 && today.getDate() === 25;
-  const avatarSrc = (isXmas && author.name === "Pranav K") ? "/xmas-avatar.png" : author.picture;
+  const avatarSrc = (isChristmasHoliday() && author.name === "Pranav K") ? "/xmas-avatar.png" : author.picture;
 
   return (
     <BlurFade delay={getDelay(index)} inView>
