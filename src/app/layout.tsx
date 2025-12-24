@@ -3,7 +3,12 @@ import { Geist, Geist_Mono, Crimson_Pro, JetBrains_Mono, Outfit } from "next/fon
 import "./globals.css";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { NavDock } from "@/components/shared/NavDock";
+import { Snow } from "@/components/ui/snow";
+import { isChristmasSeason, isNewYearSeason } from "@/lib/utils/dateHelpers";
 import { siteConfig } from "@config/site";
+import { getAllPosts } from "@/lib/blog-api";
+import { AnnouncementBar } from "@/components/shared/AnnouncementBar";
+import { cn } from "@/lib/utils";
 // import { MagnifiedDock } from "@/components/hero/MagnifiedDock";
 
 const geistSans = Geist({
@@ -89,6 +94,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const posts = getAllPosts();
+  const latestPost = posts[0];
+  const showAnnouncement = isNewYearSeason();
+
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
@@ -111,10 +120,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${crimsonPro.variable} ${jetbrainsMono.variable} ${outfit.variable} antialiased`}
       >
+        {showAnnouncement && <AnnouncementBar latestPost={latestPost} />}
+
         {/* Theme Toggler */}
-        <div className="fixed top-6 right-6 z-50">
+        <div className={cn("fixed right-6 z-50 transition-all duration-300", showAnnouncement ? "top-16" : "top-6")}>
           <AnimatedThemeToggler />
         </div>
+
+        {/* Christmas Snow Animation - Only visible during Christmas season */}
+        {isChristmasSeason() && <Snow />}
 
         {children}
         {/* Dock */}

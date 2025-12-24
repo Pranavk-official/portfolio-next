@@ -15,7 +15,10 @@ export function getPostBySlug(slug: string) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  return { ...data, slug: realSlug, content } as Post;
+  // Ensure date is serialized to string
+  const date = data.date instanceof Date ? data.date.toISOString() : data.date;
+
+  return { ...data, date, slug: realSlug, content } as Post;
 }
 
 export function getAllPosts(): Post[] {

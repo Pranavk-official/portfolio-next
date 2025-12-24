@@ -391,6 +391,27 @@
   }
 }
 
+/* Christmas Snow Canvas - Apple Device Optimizations */
+.snow-canvas {
+  /* Enable hardware acceleration on Safari/iOS */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  
+  /* Prevent flickering on iOS */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  
+  /* Enable GPU compositing for smooth rendering */
+  will-change: transform;
+  
+  /* Prevent iOS scroll bounce interference */
+  -webkit-overflow-scrolling: touch;
+  
+  /* Smooth subpixel rendering on retina displays */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
 
