@@ -1,3 +1,5 @@
+"use client";
+
 import { type Author } from "@/src/interfaces/author";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,6 +30,10 @@ export function PostPreview({
   const getDelay = (idx: number) => {
     return 0.3 + (idx * 0.1);
   };
+
+  const today = new Date();
+  const isXmas = today.getMonth() === 11 && today.getDate() === 25;
+  const avatarSrc = (isXmas && author.name === "Pranav K") ? "/xmas-avatar.png" : author.picture;
 
   return (
     <BlurFade delay={getDelay(index)} inView>
@@ -72,7 +78,7 @@ export function PostPreview({
         <div className="flex justify-between items-center gap-2">
           <div className="flex items-center gap-2" role="complementary" aria-label="Author information">
             <Avatar className="h-7 w-7 md:h-8 md:w-8 transition-transform duration-350 ease-smooth hover:scale-110">
-              <AvatarImage src={author.picture} alt={`${author.name}'s avatar`} />
+              <AvatarImage src={avatarSrc} alt={`${author.name}'s avatar`} />
               <AvatarFallback className="text-xs font-outfit bg-ember-100 dark:bg-ember-900 text-ember-700 dark:text-ember-300">
                 {author.name.split(' ').map(part => part.charAt(0).toUpperCase()).join('')}
               </AvatarFallback>

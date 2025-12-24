@@ -25,12 +25,16 @@ export function ProfileCard() {
 
   // const imgUrl = isDark ? "/profile_dark.png" : "/profile_img.png";
 
+  const today = new Date();
+  const isXmas = today.getMonth() === 11 && today.getDate() === 25;
+  const avatarSrc = isXmas ? "/xmas-avatar.png" : "/profile_dark.png";
+
   return (
     <div className="w-full max-w-[280px] md:max-w-[400px] mx-auto">
       <div className="relative rounded-full aspect-square">
 
         <PixelImage
-          src="/profile_dark.png"
+          src={avatarSrc}
           grid="8x8"
         />
         
