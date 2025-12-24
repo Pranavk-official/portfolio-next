@@ -4,12 +4,14 @@ import "./globals.css";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { NavDock } from "@/components/shared/NavDock";
 import { Snow } from "@/components/ui/snow";
-import { isChristmasSeason, isNewYearSeason } from "@/lib/utils/dateHelpers";
+import { isChristmasSeason } from "@/lib/utils/dateHelpers";
 import { siteConfig } from "@config/site";
-import { getAllPosts } from "@/lib/blog-api";
+import { getAllPublished } from "@/lib/notion";
 import { AnnouncementBar } from "@/components/shared/AnnouncementBar";
 import { cn } from "@/lib/utils";
 // import { MagnifiedDock } from "@/components/hero/MagnifiedDock";
+
+export const revalidate = 60;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -89,14 +91,16 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const posts = getAllPosts();
+  const posts = await getAllPublished();
   const latestPost = posts[0];
-  const showAnnouncement = isNewYearSeason();
+  // AnnouncementBar now handles its own visibility logic internally via useHoliday hook
+  // We always render it, and it will return null if no holiday/post is active
+  const showAnnouncement = true; 
 
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">

@@ -2,132 +2,134 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
+import dynamic from "next/dynamic";
+import { AnimatePresence } from "motion/react";
 import { X, ArrowRight, Sparkles } from "lucide-react";
-import { getTimeUntilNewYear } from "@/lib/utils/dateHelpers";
-import { Fireworks } from "@/components/ui/fireworks";
-import { Post } from "@/src/interfaces/post";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { useHoliday } from "@/src/hooks/useHoliday";
+import { useCountdown } from "@/src/hooks/useCountdown";
+import { useViewCycle } from "@/src/hooks/useViewCycle";
+
+// Lazy load heavy effect components
+const Fireworks = dynamic(() => import("@/components/ui/fireworks").then(mod => mod.Fireworks), { ssr: false });
+const Snow = dynamic(() => import("@/components/ui/snow").then(mod => mod.Snow), { ssr: false });
 
 interface AnnouncementBarProps {
-  latestPost?: Post;
+  latestPost?: { title: string; slug: string };
 }
 
 export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
   const [isVisible, setIsVisible] = useState(true);
-  const [timeLeft, setTimeLeft] = useState<number>(0);
-  const [showFireworks, setShowFireworks] = useState(false);
-  const [activeView, setActiveView] = useState<"countdown" | "blog">("countdown");
   const [mounted, setMounted] = useState(false);
+  
+  const activeHoliday = useHoliday();
+  
+  // Only cycle if we have both a holiday AND a post
+  const shouldCycle = !!activeHoliday && !!latestPost;
+  const activeView = useViewCycle(8000, shouldCycle);
+  
+  // Setup countdown if the holiday has a target
+  const { timeLeft, formatTime } = useCountdown(activeHoliday?.countdownTarget);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(t);
   }, []);
 
-  useEffect(() => {
-    // Initial check
-    const updateTime = () => {
-      const t = getTimeUntilNewYear();
-      setTimeLeft(t);
-
-      if (t <= 0 && t > -1000) { // Just hit zero (within 1 second)
-        setShowFireworks(true);
-      }
-    };
-
-    // Run initial check in next frame to avoid synchronous state update warning
-    requestAnimationFrame(updateTime);
-    
-    // If it's already New Year (within the season window but past Jan 1st), show fireworks briefly
-    // Check if it is Jan 1st (time left is negative but close to 0)
-    // Actually, getTimeUntilNewYear returns negative if we are past Jan 1st of the target year.
-    // If today is Jan 1st 2025, target was Jan 1st 2025. Result is negative.
-    // If today is Jan 2nd 2025, target was Jan 1st 2025. Result is negative.
-    
-    // We want to show fireworks if it is Jan 1st.
-    const now = new Date();
-    if (now.getMonth() === 0 && now.getDate() === 1) {
-        setTimeout(() => setShowFireworks(true), 0);
-    }
-
-    const timer = setInterval(updateTime, 1000);
-
-    // Cycle views every 5 seconds
-    const cycleTimer = setInterval(() => {
-      setActiveView((prev) => (prev === "countdown" ? "blog" : "countdown"));
-    }, 5000);
-
-    return () => {
-      clearInterval(timer);
-      clearInterval(cycleTimer);
-    };
-  }, []);
-
   if (!isVisible || !mounted) return null;
 
-  const formatTime = (ms: number) => {
-    if (ms <= 0) return "Happy New Year! 🎆";
+  // Fallback: If no holiday, show blog post permanently. If no blog post, hide bar.
+  if (!activeHoliday) {
+    if (!latestPost) return null;
     
-    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
-
-    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  };
+    return (
+      <div className="relative z-50 w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white overflow-hidden" role="status" aria-live="polite">
+        <div className="container mx-auto flex h-10 items-center justify-center px-4 text-sm font-medium sm:h-12">
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline">Latest Blog:</span>
+            <Link 
+              href={`/blog/${latestPost.slug}`}
+              className="flex items-center gap-1 underline decoration-white/50 underline-offset-4 hover:decoration-white"
+            >
+              {latestPost.title}
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <DismissButton onClick={() => setIsVisible(false)} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
-      {showFireworks && <Fireworks duration={10000} />}
+      {activeHoliday.effect === "fireworks" && <Fireworks duration={10000} />}
+      {activeHoliday.effect === "snow" && <div className="fixed inset-0 pointer-events-none z-[60]"><Snow /></div>}
       
-      <div className="relative z-50 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white overflow-hidden">
+      <div 
+        className={`relative z-50 w-full bg-gradient-to-r ${activeHoliday.theme.gradient} text-white overflow-hidden`}
+        role="status" 
+        aria-live="polite"
+      >
         <div className="absolute inset-0 bg-black/10 opacity-10 mix-blend-soft-light"></div>
         
         <div className="container mx-auto flex h-10 items-center justify-center px-4 text-sm font-medium sm:h-12">
           <AnimatePresence mode="wait">
-            {activeView === "countdown" || !latestPost ? (
-              <motion.div
-                key="countdown"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+            {activeView === "holiday" ? (
+              <BlurFade
+                key="holiday"
+                delay={0.25}
+                offset={10}
+                direction="up"
+                blur="2px"
+                duration={0.75}
                 className="flex items-center gap-2"
               >
                 <Sparkles className="h-4 w-4 animate-pulse" />
-                <span>New Year Countdown:</span>
-                <span className="font-mono font-bold tabular-nums">
-                  {formatTime(timeLeft)}
-                </span>
-              </motion.div>
+                <span>{activeHoliday.message}</span>
+                {activeHoliday.countdownTarget && (
+                  <span className="font-mono font-bold tabular-nums ml-1">
+                    {formatTime(timeLeft)}
+                  </span>
+                )}
+              </BlurFade>
             ) : (
-              <motion.div
+              <BlurFade
                 key="blog"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                delay={0.25}
+                offset={10}
+                direction="up"
+                blur="2px"
+                duration={0.75}
                 className="flex items-center gap-2"
               >
                 <span className="hidden sm:inline">Latest Update:</span>
                 <Link 
-                  href={`/blog/${latestPost.slug}`}
+                  href={`/blog/${latestPost?.slug}`}
                   className="flex items-center gap-1 underline decoration-white/50 underline-offset-4 hover:decoration-white"
                 >
-                  {latestPost.title}
+                  {latestPost?.title}
                   <ArrowRight className="h-3 w-3" />
                 </Link>
-              </motion.div>
+              </BlurFade>
             )}
           </AnimatePresence>
 
-          <button
-            onClick={() => setIsVisible(false)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-white/20 transition-colors"
-            aria-label="Dismiss announcement"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <DismissButton onClick={() => setIsVisible(false)} />
         </div>
       </div>
     </>
+  );
+}
+
+function DismissButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-white/20 transition-colors"
+      aria-label="Dismiss announcement"
+    >
+      <X className="h-4 w-4" />
+    </button>
   );
 }
