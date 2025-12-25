@@ -14,7 +14,7 @@ export const CHRISTMAS_SEASON = {
   /** End month (1-12, December = 12) */
   END_MONTH: 12,
   /** End day of month */
-  END_DAY: 26,
+  END_DAY: 25,
 } as const;
 
 /**
