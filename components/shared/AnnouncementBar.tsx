@@ -21,6 +21,8 @@ interface AnnouncementBarProps {
 export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [fireworksShown, setFireworksShown] = useState(false);
+  const [showFireworks, setShowFireworks] = useState(false);
   
   const activeHoliday = useHoliday();
   
@@ -29,12 +31,27 @@ export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
   const activeView = useViewCycle(8000, shouldCycle);
   
   // Setup countdown if the holiday has a target
-  const { timeLeft, formatTime } = useCountdown(activeHoliday?.countdownTarget);
+  const { timeLeft, isExpired, formatTime } = useCountdown(activeHoliday?.countdownTarget);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(t);
   }, []);
+
+  // Trigger fireworks only once when countdown reaches zero
+  useEffect(() => {
+    if (activeHoliday?.effect === "fireworks" && isExpired && !fireworksShown) {
+      setShowFireworks(true);
+      setFireworksShown(true);
+      
+      // Hide fireworks after duration (10 seconds)
+      const timer = setTimeout(() => {
+        setShowFireworks(false);
+      }, 10000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isExpired, fireworksShown, activeHoliday?.effect]);
 
   if (!isVisible || !mounted) return null;
 
@@ -63,7 +80,7 @@ export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
 
   return (
     <>
-      {activeHoliday.effect === "fireworks" && <Fireworks duration={10000} />}
+      {showFireworks && <Fireworks duration={10000} />}
       {activeHoliday.effect === "snow" && <div className="fixed inset-0 pointer-events-none z-[60]"><Snow /></div>}
       
       <div 

@@ -33,27 +33,6 @@ export const NEW_YEAR_SEASON = {
 } as const;
 
 /**
- * Snow Animation Performance Settings
- * Optimized for different device capabilities
- */
-export const SNOW_PERFORMANCE = {
-  /** Maximum snowflakes on desktop devices */
-  MAX_SNOWFLAKES_DESKTOP: 80,
-  /** Maximum snowflakes on tablet devices */
-  MAX_SNOWFLAKES_TABLET: 50,
-  /** Maximum snowflakes on mobile devices */
-  MAX_SNOWFLAKES_MOBILE: 25,
-  /** Target FPS for desktop */
-  TARGET_FPS_DESKTOP: 60,
-  /** Target FPS for mobile/iOS devices (battery optimization) */
-  TARGET_FPS_MOBILE: 30,
-  /** Resize debounce delay in milliseconds */
-  RESIZE_DEBOUNCE_MS: 200,
-  /** Canvas context performance hint for iOS */
-  IOS_CANVAS_HINT: { willReadFrequently: true } as const,
-} as const;
-
-/**
  * Snow Visual Configuration
  */
 export const SNOW_VISUAL = {
@@ -75,17 +54,6 @@ export const SNOW_VISUAL = {
   MAX_WIND: 0.5,
   /** Wind change frequency */
   WIND_CHANGE_FREQUENCY: 0.01,
-} as const;
-
-/**
- * Device Memory Thresholds
- * Used for adaptive performance scaling
- */
-export const DEVICE_MEMORY_THRESHOLDS = {
-  /** Low memory devices (< 4GB) */
-  LOW: 4,
-  /** Medium memory devices (4-8GB) */
-  MEDIUM: 8,
 } as const;
 
 /**
