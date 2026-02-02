@@ -1,62 +1,76 @@
 "use client";
 
 import { Marquee } from "@/components/ui/marquee";
-import { tools } from "./config/tools";
-import { cn } from "@/lib/utils";
+import { skillCategories, tools } from "./config/tools";
+import { SkillCategory } from "./components/SkillCategory";
+import ScrollElement from "@components/ui/scroll-animation";
 
 const SkillSection = () => {
-  const firstRow = tools.slice(0, Math.ceil(tools.length / 2));
-  const secondRow = tools.slice(Math.ceil(tools.length / 2));
+  // Get unique icons for the marquee (first 18 tools)
+  const marqueeItems = tools.slice(0, 18);
+  const firstRow = marqueeItems.slice(0, 9);
+  const secondRow = marqueeItems.slice(9, 18);
 
   return (
-    <section className="relative w-full py-20 overflow-hidden">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Tools & Technologies
-          </h2>
-          <p className="mt-2 text-muted-foreground">
-            Technologies I work with to build modern applications
-          </p>
+    <section
+      className="relative w-full py-20 overflow-hidden"
+      aria-labelledby="skills-heading"
+    >
+      {/* Background Marquee */}
+      <div className="absolute inset-0 opacity-[0.07] pointer-events-none overflow-hidden">
+        <Marquee className="[--duration:40s]">
+          {firstRow.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <div key={tool.name} className="mx-8">
+                <Icon className="w-16 h-16" />
+              </div>
+            );
+          })}
+        </Marquee>
+        <Marquee reverse className="[--duration:35s] mt-8">
+          {secondRow.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <div key={tool.name} className="mx-8">
+                <Icon className="w-16 h-16" />
+              </div>
+            );
+          })}
+        </Marquee>
+      </div>
+
+      <div className="container mx-auto px-4 md:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="mb-16 text-center">
+          <ScrollElement
+            viewport={{ amount: 0.5, margin: "0px 0px -100px 0px" }}
+            className="mx-auto max-w-2xl"
+          >
+            <h2
+              id="skills-heading"
+              className="text-4xl font-bold tracking-tight md:text-5xl"
+            >
+              <span className="text-foreground">Technical </span>
+              <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Skills.
+              </span>
+            </h2>
+          </ScrollElement>
         </div>
 
-        <div className="relative">
-          {/* First Row - Left to Right */}
-          <Marquee pauseOnHover className="[--duration:30s]">
-            {firstRow.map((tool) => (
-              <ToolCard key={tool.name} {...tool} />
-            ))}
-          </Marquee>
-
-          {/* Second Row - Right to Left */}
-          <Marquee reverse pauseOnHover className="[--duration:30s]">
-            {secondRow.map((tool) => (
-              <ToolCard key={tool.name} {...tool} />
-            ))}
-          </Marquee>
-
-          {/* Gradient Overlays */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-background"></div>
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-linear-to-l from-background"></div>
+        {/* Skills Grid - 3 columns on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {skillCategories.map((category, index) => (
+            <SkillCategory
+              key={category.id}
+              category={category}
+              index={index}
+            />
+          ))}
         </div>
       </div>
     </section>
-  );
-};
-
-
-export const ToolCard = ({ name, icon: Icon }: { name: string; icon: React.ComponentType<{ className?: string }> }) => {
-  return (
-    <div
-      className={cn(
-        "relative mx-2 flex h-24 w-44 shrink-0 items-center justify-center overflow-hidden rounded-xl border bg-card/50 p-4 shadow-md backdrop-blur-sm transition-all hover:scale-105 hover:shadow-lg"
-      )}
-    >
-      <div className="flex flex-col items-center gap-2.5">
-        <Icon className="h-10 w-10 text-primary" />
-        <span className="text-sm font-semibold">{name}</span>
-      </div>
-    </div>
   );
 };
 

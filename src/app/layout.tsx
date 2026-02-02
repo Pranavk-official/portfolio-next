@@ -97,10 +97,21 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const posts = await getAllPublished();
+
+  // Only show latest post if it's from the last 7 days
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
   const latestPost = posts[0];
+  const isRecentPost = latestPost?.date
+    ? new Date(latestPost.date) >= oneWeekAgo
+    : false;
+
+  const postForBanner = isRecentPost ? latestPost : undefined;
+
   // AnnouncementBar now handles its own visibility logic internally via useHoliday hook
   // We always render it, and it will return null if no holiday/post is active
-  const showAnnouncement = true; 
+  const showAnnouncement = true;
 
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
@@ -124,7 +135,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${crimsonPro.variable} ${jetbrainsMono.variable} ${outfit.variable} antialiased`}
       >
-        {showAnnouncement && <AnnouncementBar latestPost={latestPost} />}
+        {showAnnouncement && <AnnouncementBar latestPost={postForBanner} />}
 
         {/* Theme Toggler */}
         <div className={cn("fixed right-6 z-50 transition-all duration-300", showAnnouncement ? "top-16" : "top-6")}>

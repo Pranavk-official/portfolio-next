@@ -23,13 +23,13 @@ export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
   const [mounted, setMounted] = useState(false);
   const [fireworksShown, setFireworksShown] = useState(false);
   const [showFireworks, setShowFireworks] = useState(false);
-  
+
   const activeHoliday = useHoliday();
-  
+
   // Only cycle if we have both a holiday AND a post
   const shouldCycle = !!activeHoliday && !!latestPost;
   const activeView = useViewCycle(8000, shouldCycle);
-  
+
   // Setup countdown if the holiday has a target
   const { timeLeft, isExpired, formatTime } = useCountdown(activeHoliday?.countdownTarget);
 
@@ -43,12 +43,12 @@ export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
     if (activeHoliday?.effect === "fireworks" && isExpired && !fireworksShown) {
       setShowFireworks(true);
       setFireworksShown(true);
-      
+
       // Hide fireworks after duration (10 seconds)
       const timer = setTimeout(() => {
         setShowFireworks(false);
       }, 10000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [isExpired, fireworksShown, activeHoliday?.effect]);
@@ -58,13 +58,13 @@ export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
   // Fallback: If no holiday, show blog post permanently. If no blog post, hide bar.
   if (!activeHoliday) {
     if (!latestPost) return null;
-    
+
     return (
-      <div className="relative z-50 w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white overflow-hidden" role="status" aria-live="polite">
+      <div className="relative z-50 w-full bg-linear-to-r from-blue-600 to-cyan-500 text-white overflow-hidden" role="status" aria-live="polite">
         <div className="container mx-auto flex h-10 items-center justify-center px-4 text-sm font-medium sm:h-12">
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline">Latest Blog:</span>
-            <Link 
+            <Link
               href={`/blog/${latestPost.slug}`}
               className="flex items-center gap-1 underline decoration-white/50 underline-offset-4 hover:decoration-white"
             >
@@ -81,15 +81,15 @@ export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
   return (
     <>
       {showFireworks && <Fireworks duration={10000} />}
-      {activeHoliday.effect === "snow" && <div className="fixed inset-0 pointer-events-none z-[60]"><Snow /></div>}
-      
-      <div 
-        className={`relative z-50 w-full bg-gradient-to-r ${activeHoliday.theme.gradient} text-white overflow-hidden`}
-        role="status" 
+      {activeHoliday.effect === "snow" && <div className="fixed inset-0 pointer-events-none z-60"><Snow /></div>}
+
+      <div
+        className={`relative z-50 w-full bg-linear-to-r ${activeHoliday.theme.gradient} text-white overflow-hidden`}
+        role="status"
         aria-live="polite"
       >
         <div className="absolute inset-0 bg-black/10 opacity-10 mix-blend-soft-light"></div>
-        
+
         <div className="container mx-auto flex h-10 items-center justify-center px-4 text-sm font-medium sm:h-12">
           <AnimatePresence mode="wait">
             {activeView === "holiday" ? (
@@ -121,7 +121,7 @@ export function AnnouncementBar({ latestPost }: AnnouncementBarProps) {
                 className="flex items-center gap-2"
               >
                 <span className="hidden sm:inline">Latest Update:</span>
-                <Link 
+                <Link
                   href={`/blog/${latestPost?.slug}`}
                   className="flex items-center gap-1 underline decoration-white/50 underline-offset-4 hover:decoration-white"
                 >
@@ -143,7 +143,7 @@ function DismissButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-white/20 transition-colors"
+      className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2.5 hover:bg-white/20 active:bg-white/30 transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center"
       aria-label="Dismiss announcement"
     >
       <X className="h-4 w-4" />

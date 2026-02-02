@@ -5,7 +5,9 @@ import {
   Services,
   Skill,
   Experience,
-  // Project,
+  Project,
+  Achievements,
+  Contact,
   Footer
 } from "@sections/index";
 
@@ -34,10 +36,10 @@ export default function Home() {
       <Hero />
       <Skill />
       <Services />
-      {/* CHORE: Review and Rewrite the contents of Experience Section */}
+      <Project />
       <Experience />
-      {/* TODO: Rework Projects Section (UI improvements and fix content)*/}
-      {/* <Project /> */}
+      <Achievements />
+      <Contact />
       <Footer />
     </>
   );
