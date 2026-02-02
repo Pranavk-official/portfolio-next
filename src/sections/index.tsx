@@ -30,7 +30,7 @@ export {
     Skill,
     Project,
     Experience,
-    // Achievements,
+    Achievements,
     Contact,
     Footer
 };

@@ -38,7 +38,7 @@ export default function Home() {
       <Services />
       <Project />
       <Experience />
-      <Achievements />
+      {/* <Achievements /> */}
       <Contact />
       <Footer />
     </>
