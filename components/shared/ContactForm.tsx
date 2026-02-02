@@ -86,7 +86,7 @@ export function ContactForm() {
             >
                 {/* Gradient border effect on focus-within */}
                 <div
-                    className="absolute inset-0 rounded-2xl opacity-0 
+                    className="absolute inset-0 rounded-2xl opacity-0 pointer-events-none
                      focus-within:opacity-100 transition-opacity duration-300
                      bg-linear-to-r from-primary/20 via-transparent to-primary/20"
                     style={{ padding: "1px", margin: "-1px" }}
