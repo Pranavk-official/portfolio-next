@@ -10,7 +10,11 @@ import Image from "next/image";
 function FooterSection() {
   // Filter out separator and non-social items
   const socialLinks = dockItems.filter(
-    (item) => item.id !== "separator" && item.id !== "blog" && item.id !== "resume" && item.id !== "home"
+    (item) =>
+      item.id !== "separator" &&
+      item.id !== "blog" &&
+      item.id !== "resume" &&
+      item.id !== "home",
   );
 
   const currentYear = new Date().getFullYear();
@@ -39,8 +43,8 @@ function FooterSection() {
             <h1 className="newFont text-2xl sm:text-3xl font-bold">Pranav K</h1>
             <p className="text-xs sm:text-sm leading-[120%]">
               Building digital experiences with modern web technologies.
-              Passionate about creating clean, responsive, and user-friendly interfaces
-              that make a difference.
+              Passionate about creating clean, responsive, and user-friendly
+              interfaces that make a difference.
             </p>
           </article>
         </div>
@@ -62,7 +66,10 @@ function FooterSection() {
       </div>
 
       <div className="lg:flex hidden">
-        <AnimatedText text="PRANAV K" className="2xl:text-[10rem] text-[12vw]" />
+        <AnimatedText
+          text="PRANAV K"
+          className="2xl:text-[10rem] text-[12vw]"
+        />
       </div>
 
       {/* Footer Credit */}

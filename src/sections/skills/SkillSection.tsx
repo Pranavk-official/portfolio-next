@@ -1,6 +1,9 @@
 "use client";
 
-import { ScrollVelocityContainer, ScrollVelocityRow } from "@/components/ui/scroll-based-velocity";
+import {
+  ScrollVelocityContainer,
+  ScrollVelocityRow,
+} from "@/components/ui/scroll-based-velocity";
 import { skillCategories, tools } from "./config/tools";
 import { SkillCategory } from "./components/SkillCategory";
 import ScrollElement from "@components/ui/scroll-animation";

@@ -24,7 +24,9 @@ export function Quote() {
         text={quote.content}
         className="text-xl md:text-2xl font-semibold leading-relaxed text-center text-zinc-900 dark:text-zinc-600 block"
       /> */}
-      <HyperText className="text-lg sm:text-xl md:text-2xl font-semibold leading-relaxed text-center text-zinc-900 dark:text-zinc-300 block">{quote.content}</HyperText>
+      <HyperText className="text-lg sm:text-xl md:text-2xl font-semibold leading-relaxed text-center text-zinc-900 dark:text-zinc-300 block">
+        {quote.content}
+      </HyperText>
 
       {/* Author */}
       <p className="text-sm sm:text-base md:text-lg text-zinc-500 dark:text-zinc-400 italic mt-4 text-center">

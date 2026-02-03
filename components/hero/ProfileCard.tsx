@@ -4,7 +4,6 @@ import { PixelImage } from "../ui/pixel-image";
 import { isChristmasHoliday } from "@/lib/utils";
 // import { useEffect, useState } from "react";
 
-
 export function ProfileCard() {
   // const [isDark, setIsDark] = useState(false);
 
@@ -26,16 +25,14 @@ export function ProfileCard() {
 
   // const imgUrl = isDark ? "/profile_dark.png" : "/profile_img.png";
 
-  const avatarSrc = isChristmasHoliday() ? "/xmas-avatar.png" : "/profile_dark.png";
+  const avatarSrc = isChristmasHoliday()
+    ? "/xmas-avatar.png"
+    : "/profile_dark.png";
 
   return (
     <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
       <div className="relative rounded-full aspect-square">
-
-        <PixelImage
-          src={avatarSrc}
-          grid="8x8"
-        />
+        <PixelImage src={avatarSrc} grid="8x8" />
 
         {/* Text - Always Visible */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
