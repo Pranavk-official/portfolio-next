@@ -27,13 +27,20 @@ const ExperienceSection = () => {
             <div className="container mx-auto px-4 md:px-8 max-w-6xl">
                 {/* Section heading */}
                 <div className="mb-16 text-center">
-                    <h2 id="experience-heading" className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">
-                        Work Experience
+                    <h2
+                        id="experience-heading"
+                        className="text-4xl font-bold tracking-tight md:text-5xl"
+                    >
+                        <span className="text-foreground">My </span>
+                        <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                            Experience
+                        </span>
                     </h2>
                     <p className="text-base text-muted-foreground max-w-2xl mx-auto">
                         Professional journey and key achievements
                     </p>
                 </div>
+
 
                 {/* Timeline container */}
                 <div className="relative pt-8">

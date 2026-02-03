@@ -5,7 +5,17 @@ const ServicesSection = () => {
   return (
     <section className="py-10 min-h-screen">
       <div className="container mx-auto px-4 md:px-8">
-        <h2 className="text-center text-3xl font-bold mb-12">My Services</h2>
+        <div className="mb-16 text-center">
+          <h2
+            id="skills-heading"
+            className="text-4xl font-bold tracking-tight md:text-5xl"
+          >
+            <span className="text-foreground">My </span>
+            <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              Services
+            </span>
+          </h2>
+        </div>
         <BentoGrid className="lg:grid-rows-4">
           {serviceItems.map((item, i) => (
             <BentoCard key={i} {...item} />

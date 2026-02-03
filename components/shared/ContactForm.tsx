@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion, AnimatePresence } from "motion/react";
 import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
 import { contactFormSchema, type ContactFormData } from "@/lib/schemas/contactSchema";
@@ -72,26 +71,13 @@ export function ContactForm() {
     };
 
     return (
-        <motion.div
-            className="relative w-full max-w-lg mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
+        <div className="relative w-full max-w-lg mx-auto">
             {/* Glassmorphism card */}
             <div
                 className="relative overflow-hidden rounded-2xl border border-border/50 
                    bg-card/50 backdrop-blur-md p-6 md:p-8
                    shadow-lg dark:bg-card/30"
             >
-                {/* Gradient border effect on focus-within */}
-                <div
-                    className="absolute inset-0 rounded-2xl opacity-0 pointer-events-none
-                     focus-within:opacity-100 transition-opacity duration-300
-                     bg-linear-to-r from-primary/20 via-transparent to-primary/20"
-                    style={{ padding: "1px", margin: "-1px" }}
-                />
-
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                     {/* Name field */}
                     <div className="space-y-2">
@@ -107,19 +93,12 @@ export function ContactForm() {
                             aria-invalid={!!errors.name}
                             {...register("name")}
                         />
-                        <AnimatePresence>
-                            {errors.name && (
-                                <motion.p
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: "auto" }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    className="text-sm text-destructive flex items-center gap-1"
-                                >
-                                    <AlertCircle className="w-3 h-3" />
-                                    {errors.name.message}
-                                </motion.p>
-                            )}
-                        </AnimatePresence>
+                        {errors.name && (
+                            <p className="text-sm text-destructive flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                {errors.name.message}
+                            </p>
+                        )}
                     </div>
 
                     {/* Email field */}
@@ -137,19 +116,12 @@ export function ContactForm() {
                             aria-invalid={!!errors.email}
                             {...register("email")}
                         />
-                        <AnimatePresence>
-                            {errors.email && (
-                                <motion.p
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: "auto" }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    className="text-sm text-destructive flex items-center gap-1"
-                                >
-                                    <AlertCircle className="w-3 h-3" />
-                                    {errors.email.message}
-                                </motion.p>
-                            )}
-                        </AnimatePresence>
+                        {errors.email && (
+                            <p className="text-sm text-destructive flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                {errors.email.message}
+                            </p>
+                        )}
                     </div>
 
                     {/* Subject field (optional) */}
@@ -183,19 +155,12 @@ export function ContactForm() {
                             aria-invalid={!!errors.message}
                             {...register("message")}
                         />
-                        <AnimatePresence>
-                            {errors.message && (
-                                <motion.p
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: "auto" }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    className="text-sm text-destructive flex items-center gap-1"
-                                >
-                                    <AlertCircle className="w-3 h-3" />
-                                    {errors.message.message}
-                                </motion.p>
-                            )}
-                        </AnimatePresence>
+                        {errors.message && (
+                            <p className="text-sm text-destructive flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                {errors.message.message}
+                            </p>
+                        )}
                     </div>
 
                     {/* Submit button */}
@@ -205,59 +170,33 @@ export function ContactForm() {
                         className="w-full group"
                         disabled={status === "submitting" || status === "success"}
                     >
-                        <AnimatePresence mode="wait">
-                            {status === "idle" && (
-                                <motion.span
-                                    key="idle"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="flex items-center gap-2"
-                                >
-                                    Send Message
-                                    <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                                </motion.span>
-                            )}
-                            {status === "submitting" && (
-                                <motion.span
-                                    key="submitting"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="flex items-center gap-2"
-                                >
-                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                    Sending...
-                                </motion.span>
-                            )}
-                            {status === "success" && (
-                                <motion.span
-                                    key="success"
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="flex items-center gap-2 text-green-600 dark:text-green-400"
-                                >
-                                    <CheckCircle className="w-4 h-4" />
-                                    Message Sent!
-                                </motion.span>
-                            )}
-                            {status === "error" && (
-                                <motion.span
-                                    key="error"
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="flex items-center gap-2 text-red-600 dark:text-red-400"
-                                >
-                                    <AlertCircle className="w-4 h-4" />
-                                    Failed to send. Try again.
-                                </motion.span>
-                            )}
-                        </AnimatePresence>
+                        {status === "idle" && (
+                            <span className="flex items-center gap-2">
+                                Send Message
+                                <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                            </span>
+                        )}
+                        {status === "submitting" && (
+                            <span className="flex items-center gap-2">
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                Sending...
+                            </span>
+                        )}
+                        {status === "success" && (
+                            <span className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                                <CheckCircle className="w-4 h-4" />
+                                Message Sent!
+                            </span>
+                        )}
+                        {status === "error" && (
+                            <span className="flex items-center gap-2 text-red-600 dark:text-red-400">
+                                <AlertCircle className="w-4 h-4" />
+                                Failed to send. Try again.
+                            </span>
+                        )}
                     </Button>
                 </form>
             </div>
-        </motion.div>
+        </div>
     );
 }

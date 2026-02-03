@@ -66,7 +66,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "SCSS", icon: SiSass },
       { name: "Tailwind", icon: SiTailwindcss },
       { name: "Bootstrap", icon: SiBootstrap },
-      { name: "JavaScript", icon: SiJavascript },
+      // { name: "JavaScript", icon: SiJavascript },
       { name: "TypeScript", icon: SiTypescript },
       { name: "React", icon: SiReact },
       { name: "Next.js", icon: SiNextdotjs },

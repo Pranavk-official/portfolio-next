@@ -18,7 +18,7 @@ export function Quote() {
       <div className="absolute -bottom-5 md:-bottom-3 -right-4 md:-right-6 text-6xl md:text-8xl  text-zinc-500 dark:text-zinc-400 font-serif leading-none rotate-180">
         &rdquo;
       </div>
-    
+
       {/* Quote Text */}
       {/* <RandomizedTextEffect
         text={quote.content}

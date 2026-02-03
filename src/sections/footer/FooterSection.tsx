@@ -4,6 +4,8 @@ import AnimatedText from "@components/ui/cursor-follow-text";
 import { Meteors } from "@components/ui/meteors";
 import { dockItems } from "@/src/sections/config/dockItems";
 import Link from "next/link";
+import { FaGithub } from "react-icons/fa";
+import Image from "next/image";
 
 function FooterSection() {
   // Filter out separator and non-social items
@@ -11,18 +13,28 @@ function FooterSection() {
     (item) => item.id !== "separator" && item.id !== "blog" && item.id !== "resume" && item.id !== "home"
   );
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer
       className="footer-bg relative border 2xl:h-[550px] w-[95%] mx-auto rounded-lg overflow-hidden radial-gradient-bg
-                   [--gradient-center:#f3f4f6] [--gradient-edge:#f3f4f6]
-                   dark:[--gradient-center:#02081765] dark:[--gradient-edge:#020817]"
+                    [--gradient-center:#f3f4f6] [--gradient-edge:#f3f4f6]
+                    dark:[--gradient-center:#02081765] dark:[--gradient-edge:#020817]"
     >
       {/* Meteors Background Effect */}
       <Meteors number={30} />
 
       <div className="gap-10 sm:flex justify-between p-5 2xl:py-10 py-5 bg-primary dark:bg-primary rounded-xs rounded-b-none text-primary-foreground">
         <div className="w-fit flex-col flex justify-center">
-          <div className="2xl:w-24 2xl:h-24 w-20 h-20 ml-3 bg-background rounded-xs before:absolute relative before:w-full before:h-full before:bg-background/50 before:rounded-md before:-top-3 before:-left-3"></div>
+          <div className="2xl:w-24 2xl:h-24 w-20 h-20 ml-3 bg-background rounded-xs before:absolute relative before:w-full before:h-full before:bg-background/50 before:rounded-md before:-top-3 before:-left-3 p-2">
+            <Image
+              src="/avatar_.png"
+              alt="Pranav K Avatar"
+              width={96}
+              height={96}
+              className="w-full h-full object-cover rounded-sm relative z-10"
+            />
+          </div>
           <article className="py-2 2xl:w-80 w-64 space-y-1">
             <h1 className="newFont text-3xl font-bold">Pranav K</h1>
             <p className="text-sm leading-[120%]">
@@ -51,6 +63,20 @@ function FooterSection() {
 
       <div className="lg:flex hidden">
         <AnimatedText text="PRANAV K" className="2xl:text-[10rem] text-[12vw]" />
+      </div>
+
+      {/* Footer Credit */}
+      <div className="absolute bottom-0 left-0 right-0 py-4 px-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm text-muted-foreground bg-gradient-to-t from-background/80 to-transparent">
+        <p>© {currentYear} Pranav K. All rights reserved.</p>
+        <Link
+          href="https://github.com/Pranavk-Official"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 hover:bg-muted transition-colors text-foreground font-medium"
+        >
+          <FaGithub className="w-4 h-4" />
+          <span>Follow on GitHub</span>
+        </Link>
       </div>
     </footer>
   );

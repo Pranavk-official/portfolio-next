@@ -5,6 +5,7 @@ export interface Achievement {
     slug: string;
     number: string;
     title: string;
+    organization: string;
     shortDescription: string;
     fullDescription: string;
     icon: React.ComponentType<{ className?: string }>;
@@ -14,6 +15,7 @@ export interface Achievement {
     date: string;
     location?: string;
     highlights: string[];
+    image?: string;
 }
 
 export const achievements: Achievement[] = [
@@ -22,6 +24,7 @@ export const achievements: Achievement[] = [
         slug: "young-innovators-programme",
         number: "01",
         title: "Young Innovators Programme",
+        organization: "KSUM Initiative",
         shortDescription: "Got shortlisted for the second phase of the prestigious Young Innovators Programme.",
         fullDescription: "The Young Innovators Programme is a competitive initiative designed to identify and nurture young talent in technology and innovation. Being shortlisted for the second phase was a significant milestone, recognizing the potential and innovative thinking demonstrated through the initial submission. This programme provided exposure to industry mentors and fellow innovators from across the region.",
         icon: Trophy,
@@ -41,6 +44,7 @@ export const achievements: Achievement[] = [
         slug: "technical-events-participation",
         number: "02",
         title: "Technical Events",
+        organization: "Multi-College Events",
         shortDescription: "Participated in several technical events from different colleges across the region.",
         fullDescription: "Active participation in various technical events organized by different colleges has been instrumental in expanding technical knowledge and networking with peers. These events ranged from coding competitions to technical symposiums, each providing unique learning opportunities and exposure to diverse problem-solving approaches.",
         icon: Code,
@@ -61,6 +65,7 @@ export const achievements: Achievement[] = [
         slug: "icefoss-hackathon-fisat",
         number: "03",
         title: "ICEFOSS Hackathon @ FISAT",
+        organization: "FISAT Kerala",
         shortDescription: "Attended a 36-hour intensive hackathon conducted by ICEFOSS at FISAT.",
         fullDescription: "ICEFOSS (International Conference on Free and Open Source Software) organized an intensive 36-hour hackathon at FISAT (Federal Institute of Science and Technology). This marathon coding event pushed the limits of endurance and creativity, requiring participants to develop innovative solutions under time pressure while collaborating effectively with team members.",
         icon: Zap,
@@ -81,6 +86,7 @@ export const achievements: Achievement[] = [
         slug: "scet-hackathon",
         number: "04",
         title: "SCET Hackathon",
+        organization: "SCET Kerala",
         shortDescription: "Attended a 24-hour coding marathon hackathon conducted at SCET.",
         fullDescription: "The SCET Hackathon was an intensive 24-hour coding marathon that brought together talented developers to solve real-world problems. This event provided an excellent platform to test rapid development skills, work under pressure, and deliver functional prototypes within strict deadlines.",
         icon: Rocket,

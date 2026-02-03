@@ -36,7 +36,7 @@ export function ProfileCard() {
           src={avatarSrc}
           grid="8x8"
         />
-        
+
         {/* Text - Always Visible */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
           <h1 className="text-2xl md:text-3xl font-bold text-white text-center whitespace-nowrap">
