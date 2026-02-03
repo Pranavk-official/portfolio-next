@@ -16,7 +16,7 @@ const ServicesSection = () => {
             </span>
           </h2>
         </div>
-        <BentoGrid className="lg:grid-rows-4">
+        <BentoGrid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[16rem] md:auto-rows-[20rem] lg:auto-rows-[22rem] lg:grid-rows-4">
           {serviceItems.map((item, i) => (
             <BentoCard key={i} {...item} />
           ))}

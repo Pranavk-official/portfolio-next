@@ -26,7 +26,7 @@ const SkillSection = () => {
               const Icon = tool.icon;
               return (
                 <div key={tool.name} className="mx-10">
-                  <Icon className="w-24 h-24" />
+                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
                 </div>
               );
             })}
@@ -36,7 +36,7 @@ const SkillSection = () => {
               const Icon = tool.icon;
               return (
                 <div key={tool.name} className="mx-10">
-                  <Icon className="w-24 h-24" />
+                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
                 </div>
               );
             })}
@@ -46,7 +46,7 @@ const SkillSection = () => {
               const Icon = tool.icon;
               return (
                 <div key={tool.name} className="mx-10">
-                  <Icon className="w-24 h-24" />
+                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
                 </div>
               );
             })}
@@ -56,15 +56,15 @@ const SkillSection = () => {
               const Icon = tool.icon;
               return (
                 <div key={tool.name} className="mx-10">
-                  <Icon className="w-24 h-24" />
+                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
                 </div>
               );
             })}
           </ScrollVelocityRow>
         </ScrollVelocityContainer>
         {/* Gradient overlays for fade effect */}
-        <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r" />
-        <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l" />
+        <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />
+        <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l" />
       </div>
 
       <div className="container mx-auto px-4 md:px-8 relative z-10">

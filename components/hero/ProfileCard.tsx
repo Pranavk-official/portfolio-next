@@ -29,7 +29,7 @@ export function ProfileCard() {
   const avatarSrc = isChristmasHoliday() ? "/xmas-avatar.png" : "/profile_dark.png";
 
   return (
-    <div className="w-full max-w-[280px] md:max-w-[400px] mx-auto">
+    <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
       <div className="relative rounded-full aspect-square">
 
         <PixelImage

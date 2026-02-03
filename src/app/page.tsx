@@ -6,9 +6,9 @@ import {
   Skill,
   Experience,
   Project,
-  Achievements,
+  // Achievements,
   Contact,
-  Footer
+  Footer,
 } from "@sections/index";
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ export default function Home() {
       <Services />
       <Project />
       <Experience />
-      <Achievements />
+      {/* <Achievements /> */}
       <Contact />
       <Footer />
     </>

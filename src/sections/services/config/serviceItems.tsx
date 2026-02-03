@@ -18,7 +18,7 @@ export const serviceItems = [
     href: "/",
     cta: "Learn more",
     background: (<div />) as ReactNode,
-    className: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
+    className: "col-span-1 sm:col-span-1 lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
 
   },
   {
@@ -29,7 +29,7 @@ export const serviceItems = [
     href: "/",
     cta: "Learn more",
     background: (<div />) as ReactNode,
-    className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
+    className: "col-span-1 sm:col-span-1 lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
   },
   {
     Icon: Server,
@@ -39,7 +39,7 @@ export const serviceItems = [
     href: "/",
     cta: "Learn more",
     background: (<IconCloudDemo />) as ReactNode,
-    className: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
+    className: "col-span-1 sm:col-span-2 lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
 
 
   },
@@ -51,7 +51,7 @@ export const serviceItems = [
     href: "/",
     cta: "Learn more",
     background: (<div />) as ReactNode,
-    className: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
+    className: "col-span-1 sm:col-span-1 lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
 
   },
   {
@@ -62,6 +62,6 @@ export const serviceItems = [
     href: "/",
     cta: "Learn more",
     background: (<div />) as ReactNode,
-    className: "lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-4",
+    className: "col-span-1 sm:col-span-1 lg:col-start-3 lg:col-end-3 lg:row-start-2 lg:row-end-4",
   },
 ];
