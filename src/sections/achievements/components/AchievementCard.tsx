@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy } from "lucide-react";
+import { Trophy, ArrowRight } from "lucide-react";
 import type { Achievement } from "../config/achievements";
 
 interface AchievementCardProps {
@@ -16,10 +16,10 @@ export function AchievementCard({
   index,
   rotation = "",
 }: AchievementCardProps) {
-  const Icon = achievement.icon;
+  // const Icon = achievement.icon;
 
   return (
-    <article className={`group relative ${rotation}`}>
+    <article className={`group relative ${rotation}`} key={index}>
       <Link href={`/achievements/${achievement.slug}`} className="block">
         <div
           className="relative overflow-hidden rounded-2xl border border-border/50 
@@ -27,7 +27,7 @@ export function AchievementCard({
                      shadow-sm hover:shadow-xl hover:border-border
                      transition-all duration-300 ease-out
                      dark:bg-card/40 dark:hover:bg-card/60
-                     w-[30rem] h-72"
+                     w-full max-w-[30rem] h-72"
         >
           {/* Image Area */}
           <div className="relative h-32 w-full overflow-hidden">
@@ -79,6 +79,14 @@ export function AchievementCard({
             <p className="text-sm text-muted-foreground/80 leading-relaxed line-clamp-3">
               {achievement.shortDescription}
             </p>
+          </div>
+
+          {/* Hover Overlay - View Details */}
+          <div className="absolute inset-0 z-20 bg-background/55 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 grid place-content-center rounded-2xl">
+            <div className="flex items-center gap-2 text-primary font-semibold text-lg">
+              <span>View Details</span>
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </div>
           </div>
         </div>
       </Link>

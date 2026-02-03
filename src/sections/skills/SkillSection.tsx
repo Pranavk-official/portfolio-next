@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/scroll-based-velocity";
 import { skillCategories, tools } from "./config/tools";
 import { SkillCategory } from "./components/SkillCategory";
-import ScrollElement from "@components/ui/scroll-animation";
+// import ScrollElement from "@components/ui/scroll-animation";
 
 const SkillSection = () => {
   // Get unique icons for the scroll velocity (first 36 tools for 4 rows)

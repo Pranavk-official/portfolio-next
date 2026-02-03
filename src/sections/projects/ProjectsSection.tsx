@@ -4,11 +4,14 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { projects } from "./config/projects";
 import { ProjectCard } from "@components/shared/ProjectCard";
-import { ProjectFilter, type ProjectCategory } from "@components/shared/ProjectFilter";
+import {
+  ProjectFilter,
+  type ProjectCategory,
+} from "@components/shared/ProjectFilter";
 import { usePaginatedItems } from "../../hooks/usePaginatedItems";
 import { BlurFade } from "@components/ui/blur-fade";
 import { Button } from "@components/ui/button";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import ScrollElement from "@components/ui/scroll-animation";
 
 const ITEMS_PER_PAGE = 6;
@@ -23,7 +26,7 @@ const ProjectsSection = () => {
   }, [activeCategory]);
 
   // Paginate filtered projects
-  const { visibleItems, hasMore, loadMore, reset } = usePaginatedItems({
+  const { visibleItems, reset } = usePaginatedItems({
     items: filteredProjects,
     itemsPerPage: ITEMS_PER_PAGE,
   });
@@ -35,10 +38,7 @@ const ProjectsSection = () => {
   };
 
   return (
-    <section
-      className="relative py-20"
-      aria-labelledby="projects-heading"
-    >
+    <section className="relative py-20" aria-labelledby="projects-heading">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="mb-12 text-center">
@@ -96,7 +96,7 @@ const ProjectsSection = () => {
         )}
 
         {/* Show More Button */}
-        {hasMore && (
+        {/* {hasMore && (
           <div className="mt-10 flex justify-center">
             <Button
               variant="outline"
@@ -108,7 +108,7 @@ const ProjectsSection = () => {
               <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
             </Button>
           </div>
-        )}
+        )} */}
 
         {/* View All Projects Link */}
         <div className="mt-12 flex justify-center">

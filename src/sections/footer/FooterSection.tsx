@@ -6,22 +6,27 @@ import { dockItems } from "@/src/sections/config/dockItems";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import Image from "next/image";
+import { siteConfig } from "@/src/config/site";
 
 function FooterSection() {
   // Filter out separator and non-social items
-  const socialLinks = dockItems.filter(
-    (item) =>
-      item.id !== "separator" &&
-      item.id !== "blog" &&
-      item.id !== "resume" &&
-      item.id !== "home",
+  // const socialLinks = dockItems.filter(
+  //   (item) =>
+  //     item.id !== "separator" &&
+  //     item.id !== "blog" &&
+  //     item.id !== "resume" &&
+  //     item.id !== "home",
+  // );
+
+  const socialLinks = dockItems.filter((item) =>
+    ["github", "linkedin", "twitter", "email"].includes(item.id),
   );
 
   const currentYear = new Date().getFullYear();
 
   return (
     <footer
-      className="footer-bg relative border 2xl:h-[550px] w-full sm:w-[95%] mx-auto rounded-lg overflow-hidden radial-gradient-bg
+      className="footer-bg relative border 2xl:h-[550px] w-full sm:w-[95%] mx-auto rounded-lg overflow-hidden radial-gradient-bg pb-20 sm:pb-16
                     [--gradient-center:#f3f4f6] [--gradient-edge:#f3f4f6]
                     dark:[--gradient-center:#02081765] dark:[--gradient-edge:#020817]"
     >
@@ -74,7 +79,9 @@ function FooterSection() {
 
       {/* Footer Credit */}
       <div className="absolute bottom-0 left-0 right-0 py-4 px-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm text-muted-foreground bg-gradient-to-t from-background/80 to-transparent">
-        <p>© {currentYear} Pranav K. All rights reserved.</p>
+        <p>
+          © {currentYear} {siteConfig.name}. All rights reserved.
+        </p>
         <Link
           href="https://github.com/Pranavk-Official"
           target="_blank"

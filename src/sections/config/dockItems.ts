@@ -1,5 +1,13 @@
 import { IconType } from "react-icons";
-import { FaGithub, FaEnvelope, FaLinkedin, FaPenNib, FaFileAlt, FaHome } from "react-icons/fa";
+import {
+  FaGithub,
+  FaEnvelope,
+  FaLinkedin,
+  FaPenNib,
+  FaFileAlt,
+  FaHome,
+  FaLaptopCode,
+} from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 
 export interface DockItem {
@@ -24,6 +32,12 @@ export const dockItems: DockItem[] = [
     icon: FaPenNib,
     label: "Blog",
     href: "/blog",
+  },
+  {
+    id: "projects",
+    icon: FaLaptopCode,
+    label: "My Works",
+    href: "/projects",
   },
   {
     id: "resume",

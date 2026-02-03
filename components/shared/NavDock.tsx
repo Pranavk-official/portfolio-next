@@ -29,10 +29,10 @@ export function NavDock() {
       // Get the footer's position
       const footerRect = footer.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
+
       // Calculate the dock's approximate position (bottom-10 = 2.5rem = 40px from bottom)
       const dockBottomPosition = windowHeight - 40;
-      
+
       // Hide dock if footer's top is above the dock's position
       // Adding a buffer of 100px to start hiding earlier for smoother transition
       setIsHidden(footerRect.top < dockBottomPosition + 100);
@@ -53,10 +53,12 @@ export function NavDock() {
   }, []);
 
   return (
-    <nav 
+    <nav
       className={cn(
-        "fixed bottom-10 left-1/2 -translate-x-1/2 transition-all duration-300 motion-reduce:transition-none",
-        isHidden ? "opacity-0 pointer-events-none translate-y-20" : "opacity-100"
+        "fixed bottom-10 left-1/2 -translate-x-1/2 transition-all duration-300 motion-reduce:transition-none z-50",
+        isHidden
+          ? "opacity-0 pointer-events-none translate-y-20"
+          : "opacity-100",
       )}
       aria-label="Main navigation dock"
     >
@@ -65,38 +67,38 @@ export function NavDock() {
           {dockItems
             .filter((item) => !item.showOnlyWhenNotHome || !isHome)
             .map((item) =>
-            item.id === "separator" ? (
-              <Separator
-                key={item.id}
-                orientation="vertical"
-                className="h-full"
-                role="separator"
-                aria-hidden="true"
-              />
-            ) : (
-              <DockIcon key={item.id}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href={item.href}
-                      target={item.external ? "_blank" : undefined}
-                      rel={item.external ? "noopener noreferrer" : undefined}
-                      aria-label={item.label}
-                      className={cn(
-                        buttonVariants({ variant: "ghost", size: "icon" }),
-                        "size-12 rounded-full focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2"
-                      )}
-                    >
-                      <item.icon className="size-4" aria-hidden="true" />
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{item.label}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </DockIcon>
-            )
-          )}
+              item.id === "separator" ? (
+                <Separator
+                  key={item.id}
+                  orientation="vertical"
+                  className="h-full"
+                  role="separator"
+                  aria-hidden="true"
+                />
+              ) : (
+                <DockIcon key={item.id}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        href={item.href}
+                        target={item.external ? "_blank" : undefined}
+                        rel={item.external ? "noopener noreferrer" : undefined}
+                        aria-label={item.label}
+                        className={cn(
+                          buttonVariants({ variant: "ghost", size: "icon" }),
+                          "size-12 rounded-full focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2",
+                        )}
+                      >
+                        <item.icon className="size-4" aria-hidden="true" />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{item.label}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </DockIcon>
+              ),
+            )}
         </Dock>
       </TooltipProvider>
     </nav>
