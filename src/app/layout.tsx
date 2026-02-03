@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Crimson_Pro, JetBrains_Mono, Outfit } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Crimson_Pro,
+  JetBrains_Mono,
+  Outfit,
+} from "next/font/google";
 import "./globals.css";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { NavDock } from "@/components/shared/NavDock";
@@ -138,7 +144,12 @@ export default async function RootLayout({
         {showAnnouncement && <AnnouncementBar latestPost={postForBanner} />}
 
         {/* Theme Toggler */}
-        <div className={cn("fixed right-6 z-50 transition-all duration-300", showAnnouncement ? "top-16" : "top-6")}>
+        <div
+          className={cn(
+            "fixed right-6 z-50 transition-all duration-300",
+            showAnnouncement ? "top-10" : "top-6",
+          )}
+        >
           <AnimatedThemeToggler />
         </div>
 

@@ -14,8 +14,6 @@ import {
 export const metadata: Metadata = {
   title: siteConfig.title,
   description: siteConfig.description,
-  authors: siteConfig.author,
-  creator: siteConfig.author.name,
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,
