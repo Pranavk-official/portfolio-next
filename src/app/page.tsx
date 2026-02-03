@@ -12,7 +12,10 @@ import {
 } from "@sections/index";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: siteConfig.title,
+  description: siteConfig.description,
+  authors: siteConfig.author,
+  creator: siteConfig.author.name,
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,
