@@ -6,6 +6,7 @@ import { TimelineItem } from "./components/TimelineItem";
 import { TimelineConnector } from "./components/TimelineConnector";
 import { validateWorkExperiences } from "./utils/validation";
 import { useMemo } from "react";
+import ScrollElement from "@/components/ui/scroll-animation";
 
 const ExperienceSection = () => {
     // Validate work experiences and filter out invalid entries
@@ -26,19 +27,24 @@ const ExperienceSection = () => {
         <section className="py-10 min-h-screen relative overflow-hidden" aria-labelledby="experience-heading">
             <div className="container mx-auto px-4 md:px-8 max-w-6xl">
                 {/* Section heading */}
-                <div className="mb-16 text-center">
-                    <h2
-                        id="experience-heading"
-                        className="text-4xl font-bold tracking-tight md:text-5xl"
+                <div className="mb-12 text-center">
+                    <ScrollElement
+                        viewport={{ amount: 0.5, margin: "0px 0px -100px 0px" }}
+                        className="mx-auto max-w-3xl"
                     >
-                        <span className="text-foreground">My </span>
-                        <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                            Experience
-                        </span>
-                    </h2>
-                    <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-                        Professional journey and key achievements
-                    </p>
+                        <h2
+                            id="experience-heading"
+                            className="text-4xl font-bold tracking-tight md:text-5xl"
+                        >
+                            <span className="text-foreground">My </span>
+                            <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                                Experience
+                            </span>
+                        </h2>
+                        <p className="mt-4 text-lg text-muted-foreground">
+                            Professional journey and key achievements
+                        </p>
+                    </ScrollElement>
                 </div>
 
 

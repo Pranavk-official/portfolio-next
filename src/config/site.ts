@@ -44,4 +44,12 @@ export const siteConfig = {
     "Next.js",
     "Portfolio",
   ],
+  about: {
+    subheading: "Who I Am",
+    intro: "I am <strong>Pranav K</strong>, a passionate <strong>Full Stack Developer</strong> with deep expertise in <strong>MERN Stack</strong> and modern web technologies. My journey in tech is defined by a relentless curiosity and a drive to build scalable, high-performance web applications.",
+    paragraphs: [
+      "As a self-taught developer, I believe in the power of continuous learning. I don't just write code; I share knowledge through <strong>mentoring aspiring developers</strong>, and contributing to the community.",
+      "When I'm not architecting software solutions, you can find me exploring new technologies, optimizing developer workflows, or sharing insights on the latest trends in web development."
+    ]
+  }
 };

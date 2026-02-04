@@ -1,9 +1,11 @@
 import Hero from "@sections/hero/HeroSection";
+import AboutMe from "@sections/about/AboutMeSection";
 import Services from "@sections/services/ServicesSection";
 import Skill from "@sections/skills/SkillSection";
 import ProjectsSection from "@sections/projects/ProjectsSection";
 import ExperienceSection from "@sections/experience/ExperienceSection";
 import AchievementsSection from "@sections/achievements/AchievementsSection";
+import LatestArticles from "@sections/articles/LatestArticlesSection";
 import ContactSection from "@sections/contact/ContactSection";
 import Footer from "@sections/footer/FooterSection";
 import { BlurFade } from "@components/ui/blur-fade";
@@ -26,11 +28,13 @@ const Contact = () => {
 
 export {
     Hero,
+    AboutMe,
     Services,
     Skill,
     Project,
     Experience,
     Achievements,
+    LatestArticles,
     Contact,
     Footer
 };

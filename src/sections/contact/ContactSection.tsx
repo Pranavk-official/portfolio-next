@@ -22,7 +22,7 @@ const ContactSection = () => {
                 <div className="mb-16 text-center">
                     <ScrollElement
                         viewport={{ amount: 0.5, margin: "0px 0px -100px 0px" }}
-                        className="mx-auto max-w-2xl"
+                        className="mx-auto max-w-3xl"
                     >
                         <h2
                             id="contact-heading"

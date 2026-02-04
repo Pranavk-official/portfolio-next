@@ -2,10 +2,12 @@ import { Metadata } from "next";
 import { siteConfig } from "@config/site";
 import {
   Hero,
+  // AboutMe,
   Services,
   Skill,
   Experience,
   Project,
+  LatestArticles,
   // Achievements,
   Contact,
   Footer,
@@ -35,10 +37,12 @@ export default function Home() {
   return (
     <>
       <Hero />
+      {/* <AboutMe /> */}
       <Skill />
       <Services />
       <Project />
       <Experience />
+      <LatestArticles />
       {/* <Achievements /> */}
       <Contact />
       <Footer />

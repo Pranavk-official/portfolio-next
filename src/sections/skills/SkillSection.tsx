@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/scroll-based-velocity";
 import { skillCategories, tools } from "./config/tools";
 import { SkillCategory } from "./components/SkillCategory";
+import ScrollElement from "@/components/ui/scroll-animation";
 // import ScrollElement from "@components/ui/scroll-animation";
 
 const SkillSection = () => {
@@ -72,16 +73,22 @@ const SkillSection = () => {
 
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         {/* Section Header */}
-        <div className="mb-16 text-center">
-          <h2
-            id="skills-heading"
-            className="text-4xl font-bold tracking-tight md:text-5xl"
+        <div className="mb-12 text-center">
+          <ScrollElement
+            viewport={{ amount: 0.5, margin: "0px 0px -100px 0px" }}
+            className="mx-auto max-w-3xl"
           >
-            <span className="text-foreground">Technical </span>
-            <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Skills.
-            </span>
-          </h2>
+            <h2
+              id="skills-heading"
+              className="text-4xl font-bold tracking-tight md:text-5xl"
+            >
+              <span className="text-foreground">Technical </span>
+              <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Skills.
+              </span>
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">Here are some of the skills I have:</p>
+          </ScrollElement>
         </div>
 
         {/* Skills Grid - 3 columns on desktop */}
