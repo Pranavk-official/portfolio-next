@@ -27,7 +27,7 @@ export function AchievementCard({
                      shadow-sm hover:shadow-xl hover:border-border
                      transition-all duration-300 ease-out
                      dark:bg-card/40 dark:hover:bg-card/60
-                     w-full max-w-[30rem] h-72"
+                     w-full max-w-120 h-72"
         >
           {/* Image Area */}
           <div className="relative h-32 w-full overflow-hidden">
