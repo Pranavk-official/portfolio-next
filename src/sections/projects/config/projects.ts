@@ -75,7 +75,7 @@ export const projects: Project[] = [
   {
     id: "decidr-backend",
     title: "Decidr — Backend for Mobile App",
-    year: "Jun 2025 – Present",
+    year: "Jun 2025 – Sep 2025",
     shortDescription:
       "TypeScript + Hono backend API powering real-time decision evaluation and adaptive personalization.",
     fullDescription:
