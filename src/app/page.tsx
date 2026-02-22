@@ -8,7 +8,7 @@ import {
   Experience,
   Project,
   LatestArticles,
-  // Achievements,
+  Achievements,
   Contact,
   Footer,
 } from "@sections/index";
@@ -43,7 +43,7 @@ export default function Home() {
       <Project />
       <Experience />
       <LatestArticles />
-      {/* <Achievements /> */}
+      <Achievements />
       <Contact />
       <Footer />
     </>

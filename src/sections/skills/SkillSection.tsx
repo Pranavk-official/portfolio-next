@@ -10,12 +10,14 @@ import ScrollElement from "@/components/ui/scroll-animation";
 // import ScrollElement from "@components/ui/scroll-animation";
 
 const SkillSection = () => {
-  // Get unique icons for the scroll velocity (first 36 tools for 4 rows)
-  const scrollItems = tools.slice(0, 36);
+  // Get unique icons for the scroll velocity (54 tools for 6 rows on sm/md, 4 on lg+)
+  const scrollItems = tools.slice(0, 54);
   const firstRow = scrollItems.slice(0, 9);
   const secondRow = scrollItems.slice(9, 18);
   const thirdRow = scrollItems.slice(18, 27);
   const fourthRow = scrollItems.slice(27, 36);
+  const fifthRow = scrollItems.slice(36, 45);
+  const sixthRow = scrollItems.slice(45, 54);
 
   return (
     <section
@@ -65,6 +67,35 @@ const SkillSection = () => {
               );
             })}
           </ScrollVelocityRow>
+          {/* Fifth and sixth rows - visible only on sm/md screens */}
+          <ScrollVelocityRow
+            baseVelocity={12}
+            direction={1}
+            className="mt-8 lg:hidden"
+          >
+            {fifthRow.map((tool) => {
+              const Icon = tool.icon;
+              return (
+                <div key={tool.name} className="mx-10">
+                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
+                </div>
+              );
+            })}
+          </ScrollVelocityRow>
+          <ScrollVelocityRow
+            baseVelocity={8}
+            direction={-1}
+            className="mt-8 lg:hidden"
+          >
+            {sixthRow.map((tool) => {
+              const Icon = tool.icon;
+              return (
+                <div key={tool.name} className="mx-10">
+                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
+                </div>
+              );
+            })}
+          </ScrollVelocityRow>
         </ScrollVelocityContainer>
         {/* Gradient overlays for fade effect */}
         <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />
@@ -87,7 +118,9 @@ const SkillSection = () => {
                 Skills.
               </span>
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">Here are some of the skills I have:</p>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Here are some of the skills I have:
+            </p>
           </ScrollElement>
         </div>
 

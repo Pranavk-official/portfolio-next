@@ -1,16 +1,16 @@
 "use client";
 
-import { ReactLenis } from "lenis/react";
+import { ReactLenis, useLenis } from "lenis/react";
 import { achievements } from "./config/achievements";
 import { AchievementCard } from "./components/AchievementCard";
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 
 const AchievementsSection = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
-    const checkMobile = () => {
+    const checkMobile = (): void => {
       setIsMobile(window.innerWidth < 768);
     };
 
@@ -32,11 +32,34 @@ const AchievementsSection = () => {
   //   const headerScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.8]);
   const headerBlur = useTransform(scrollYProgress, [0, 0.3], [0, 10]);
 
+  // First card blur reveal effect
+  const firstCardBlur = useMotionValue<number>(10);
+  const firstCardOpacity = useMotionValue<number>(0);
+
+  // Handle scroll with Lenis hook
+  useLenis(() => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    // Calculate progress for first card reveal (after header)
+    // Start revealing when section is in view, complete by ~30% scroll
+    const progress = Math.max(
+      0,
+      Math.min(1, (-rect.top + windowHeight * 0.5) / (windowHeight * 1.5)),
+    );
+
+    firstCardBlur.set(10 * (1 - progress));
+    firstCardOpacity.set(Math.min(1, progress * 2));
+  });
+
   // Mobile fallback - smooth scroll stacking effect
   if (isMobile) {
     return (
       <ReactLenis root>
         <section
+          ref={containerRef}
           className="relative bg-background"
           aria-labelledby="achievements-heading"
         >
@@ -66,18 +89,36 @@ const AchievementsSection = () => {
           </motion.section>
 
           {/* Stacking Cards */}
-          {achievements.map((achievement, index) => (
-            <section
-              key={achievement.id}
-              className="h-screen w-full grid place-content-center sticky top-0 rounded-t-2xl overflow-hidden bg-background px-4"
-            >
-              <AchievementCard
-                achievement={achievement}
-                index={index}
-                rotation=""
-              />
-            </section>
-          ))}
+          {achievements.map((achievement, index) => {
+            // Simple rotation pattern: 0 = rotate-6, 1 = none, 2 = -rotate-6, 3 = none
+            const getRotation = (idx: number) => {
+              const pattern = idx % 4;
+              if (pattern === 0) return "rotate-6";
+              if (pattern === 2) return "-rotate-6";
+              return "";
+            };
+
+            return (
+              <motion.section
+                key={achievement.id}
+                className="h-screen w-full grid place-content-center sticky top-0 px-4"
+                style={
+                  index === 0
+                    ? {
+                        filter: firstCardBlur,
+                        opacity: firstCardOpacity,
+                      }
+                    : {}
+                }
+              >
+                <AchievementCard
+                  achievement={achievement}
+                  index={index}
+                  rotation={getRotation(index)}
+                />
+              </motion.section>
+            );
+          })}
         </section>
       </ReactLenis>
     );
@@ -130,16 +171,24 @@ const AchievementsSection = () => {
                 };
 
                 return (
-                  <figure
+                  <motion.figure
                     key={achievement.id}
                     className="sticky top-0 h-screen grid place-content-center"
+                    style={
+                      index === 0
+                        ? {
+                            filter: firstCardBlur,
+                            opacity: firstCardOpacity,
+                          }
+                        : {}
+                    }
                   >
                     <AchievementCard
                       achievement={achievement}
                       index={index}
                       rotation={getRotation(index)}
                     />
-                  </figure>
+                  </motion.figure>
                 );
               })}
             </div>
