@@ -15,7 +15,7 @@ export function Quote() {
       <div className="absolute -top-5 md:-top-8 -left-4 md:-left-6 text-6xl md:text-8xl  text-zinc-500 dark:text-zinc-400 font-serif leading-none">
         &ldquo;
       </div>
-      <div className="absolute -bottom-5 md:-bottom-3 -right-4 md:-right-6 text-6xl md:text-8xl  text-zinc-500 dark:text-zinc-400 font-serif leading-none rotate-180">
+      <div className="absolute -bottom-5 md:-bottom-3 -right-4 md:-right-6 text-6xl md:text-8xl  text-zinc-500 dark:text-zinc-400 font-serif leading-none">
         &rdquo;
       </div>
 

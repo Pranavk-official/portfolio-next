@@ -24,84 +24,6 @@ const SkillSection = () => {
       className="relative w-full py-20 overflow-hidden"
       aria-labelledby="skills-heading"
     >
-      {/* Background Scroll Velocity */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden flex flex-col justify-center">
-        <ScrollVelocityContainer className="opacity-[0.07]">
-          <ScrollVelocityRow baseVelocity={5} direction={1}>
-            {firstRow.map((tool) => {
-              const Icon = tool.icon;
-              return (
-                <div key={tool.name} className="mx-10">
-                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
-                </div>
-              );
-            })}
-          </ScrollVelocityRow>
-          <ScrollVelocityRow baseVelocity={15} direction={-1} className="mt-8">
-            {secondRow.map((tool) => {
-              const Icon = tool.icon;
-              return (
-                <div key={tool.name} className="mx-10">
-                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
-                </div>
-              );
-            })}
-          </ScrollVelocityRow>
-          <ScrollVelocityRow baseVelocity={10} direction={1} className="mt-8">
-            {thirdRow.map((tool) => {
-              const Icon = tool.icon;
-              return (
-                <div key={tool.name} className="mx-10">
-                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
-                </div>
-              );
-            })}
-          </ScrollVelocityRow>
-          <ScrollVelocityRow baseVelocity={5} direction={-1} className="mt-8">
-            {fourthRow.map((tool) => {
-              const Icon = tool.icon;
-              return (
-                <div key={tool.name} className="mx-10">
-                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
-                </div>
-              );
-            })}
-          </ScrollVelocityRow>
-          {/* Fifth and sixth rows - visible only on sm/md screens */}
-          <ScrollVelocityRow
-            baseVelocity={12}
-            direction={1}
-            className="mt-8 lg:hidden"
-          >
-            {fifthRow.map((tool) => {
-              const Icon = tool.icon;
-              return (
-                <div key={tool.name} className="mx-10">
-                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
-                </div>
-              );
-            })}
-          </ScrollVelocityRow>
-          <ScrollVelocityRow
-            baseVelocity={8}
-            direction={-1}
-            className="mt-8 lg:hidden"
-          >
-            {sixthRow.map((tool) => {
-              const Icon = tool.icon;
-              return (
-                <div key={tool.name} className="mx-10">
-                  <Icon className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24" />
-                </div>
-              );
-            })}
-          </ScrollVelocityRow>
-        </ScrollVelocityContainer>
-        {/* Gradient overlays for fade effect */}
-        <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />
-        <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l" />
-      </div>
-
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         {/* Section Header */}
         <div className="mb-12 text-center">
@@ -124,15 +46,94 @@ const SkillSection = () => {
           </ScrollElement>
         </div>
 
-        {/* Skills Grid - 3 columns on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {skillCategories.map((category, index) => (
-            <SkillCategory
-              key={category.id}
-              category={category}
-              index={index}
-            />
-          ))}
+        {/* Skills Grid - background marquee scoped to this wrapper */}
+        <div className="relative max-w-6xl mx-auto">
+          {/* Background Scroll Velocity - centered to the cards grid */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden flex flex-col justify-center">
+            <ScrollVelocityContainer className="opacity-[0.07]">
+              <ScrollVelocityRow baseVelocity={5} direction={1}>
+                {firstRow.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <div key={tool.name} className="mx-6">
+                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
+                    </div>
+                  );
+                })}
+              </ScrollVelocityRow>
+              <ScrollVelocityRow baseVelocity={6} direction={-1} className="mt-6">
+                {secondRow.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <div key={tool.name} className="mx-6">
+                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
+                    </div>
+                  );
+                })}
+              </ScrollVelocityRow>
+              <ScrollVelocityRow baseVelocity={10} direction={1} className="mt-6">
+                {thirdRow.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <div key={tool.name} className="mx-6">
+                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
+                    </div>
+                  );
+                })}
+              </ScrollVelocityRow>
+              <ScrollVelocityRow baseVelocity={5} direction={-1} className="mt-6">
+                {fourthRow.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <div key={tool.name} className="mx-6">
+                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
+                    </div>
+                  );
+                })}
+              </ScrollVelocityRow>
+              <ScrollVelocityRow
+                baseVelocity={12}
+                direction={1}
+                className="mt-6"
+              >
+                {fifthRow.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <div key={tool.name} className="mx-6">
+                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
+                    </div>
+                  );
+                })}
+              </ScrollVelocityRow>
+              <ScrollVelocityRow
+                baseVelocity={8}
+                direction={-1}
+                className="mt-6"
+              >
+                {sixthRow.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <div key={tool.name} className="mx-6">
+                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
+                    </div>
+                  );
+                })}
+              </ScrollVelocityRow>
+            </ScrollVelocityContainer>
+            {/* Gradient overlays for fade effect */}
+            <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />
+            <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l" />
+          </div>
+
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {skillCategories.map((category, index) => (
+              <SkillCategory
+                key={category.id}
+                category={category}
+                index={index}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

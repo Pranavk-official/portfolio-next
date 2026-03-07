@@ -3,7 +3,7 @@ import { siteConfig } from "@config/site";
 import {
   Hero,
   // AboutMe,
-  Services,
+  // Services,
   Skill,
   Experience,
   Project,
@@ -39,7 +39,7 @@ export default function Home() {
       <Hero />
       {/* <AboutMe /> */}
       <Skill />
-      <Services />
+      {/* <Services /> */}
       <Project />
       <Experience />
       <LatestArticles />
