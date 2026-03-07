@@ -37,7 +37,7 @@ export const dockItems: DockItem[] = [
     id: "projects",
     icon: FaLaptopCode,
     label: "My Works",
-    href: "/projects",
+    href: "/#projects",
   },
   {
     id: "resume",

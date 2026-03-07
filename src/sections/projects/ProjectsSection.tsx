@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
 import { projects } from "./config/projects";
 import { ProjectCard } from "@components/shared/ProjectCard";
 import {
@@ -11,7 +10,7 @@ import {
 import { usePaginatedItems } from "../../hooks/usePaginatedItems";
 import { BlurFade } from "@components/ui/blur-fade";
 import { Button } from "@components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import ScrollElement from "@components/ui/scroll-animation";
 
 const ITEMS_PER_PAGE = 3;
@@ -26,7 +25,7 @@ const ProjectsSection = () => {
   }, [activeCategory]);
 
   // Paginate filtered projects
-  const { visibleItems, reset } = usePaginatedItems({
+  const { visibleItems, hasMore, loadMore, reset } = usePaginatedItems({
     items: filteredProjects,
     itemsPerPage: ITEMS_PER_PAGE,
   });
@@ -38,7 +37,7 @@ const ProjectsSection = () => {
   };
 
   return (
-    <section className="relative py-20" aria-labelledby="projects-heading">
+    <section id="projects" className="relative py-20" aria-labelledby="projects-heading">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="mb-12 text-center">
@@ -110,14 +109,19 @@ const ProjectsSection = () => {
           </div>
         )} */}
 
-        {/* View All Projects Link */}
-        <div className="mt-12 flex justify-center">
-          <Link href="/projects">
-            <Button variant="ghost" className="group gap-2 text-primary">
-              View All Projects
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        {/* Show More / View All */}
+        <div className="mt-12 flex flex-col items-center gap-4">
+          {hasMore && (
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={loadMore}
+              className="group gap-2"
+            >
+              Show More
+              <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
             </Button>
-          </Link>
+          )}
         </div>
       </div>
     </section>
