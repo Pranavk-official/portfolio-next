@@ -12,13 +12,8 @@ export function TechBadge({ label }: TechBadgeProps) {
                 "text-xs font-medium rounded-md",
                 "bg-secondary/60 text-secondary-foreground",
                 "border border-border/50",
-                "transition-all duration-200 ease-in-out",
-                "hover:bg-accent hover:text-accent-foreground hover:border-border",
-                "hover:shadow-sm hover:-translate-y-0.5",
                 // Dark mode enhancements
-                "dark:bg-secondary/40 dark:hover:bg-accent/80",
-                // Reduced motion support
-                "motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                "dark:bg-secondary/40"
             )}
         >
             {label}

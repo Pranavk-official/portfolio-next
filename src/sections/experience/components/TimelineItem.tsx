@@ -18,7 +18,7 @@ export function TimelineItem({ experience, isAlternating }: TimelineItemProps) {
     <article
       role="listitem"
       className={cn(
-        "group relative mb-12 lg:mb-20",
+        "relative mb-12 lg:mb-20",
         "lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-12",
       )}
     >
@@ -34,10 +34,8 @@ export function TimelineItem({ experience, isAlternating }: TimelineItemProps) {
             isCurrentWorkplace
               ? "dark:shadow-teal-500/30"
               : "dark:shadow-ember-500/20",
-            "transition-transform duration-300 ease-in-out",
-            "group-hover:scale-125",
             isCurrentWorkplace && "animate-pulse",
-            "motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:animate-none",
+            "motion-reduce:animate-none",
           )}
         />
       </div>
@@ -48,20 +46,16 @@ export function TimelineItem({ experience, isAlternating }: TimelineItemProps) {
           "ml-8 lg:ml-0 relative",
           isAlternating ? "lg:col-start-1" : "lg:col-start-3",
           "rounded-xl border bg-card/50 backdrop-blur-sm p-6 md:p-7",
-          "transition-all duration-300 ease-in-out",
-          "hover:shadow-xl hover:scale-[1.01] lg:hover:scale-[1.02]",
           isCurrentWorkplace
-            ? "hover:border-teal-500/50 shadow-md shadow-teal-500/5"
-            : "hover:border-ember-500/50",
+            ? "shadow-md shadow-teal-500/5"
+            : "",
           // Dark mode enhancements
           "dark:bg-card/80",
           isCurrentWorkplace
-            ? "dark:hover:shadow-teal-500/10 dark:shadow-teal-500/5"
-            : "dark:hover:shadow-ember-500/10",
+            ? "dark:shadow-teal-500/5"
+            : "",
           // Ensure proper spacing on mobile
           "min-w-0", // Prevent overflow on small screens
-          // Reduced motion: disable scale transform
-          "motion-reduce:hover:scale-100 motion-reduce:transition-none",
         )}
       >
         {/* Add BorderBeam effect for current workplace */}

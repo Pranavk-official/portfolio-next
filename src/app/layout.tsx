@@ -120,7 +120,7 @@ export default async function RootLayout({
   const showAnnouncement = true;
 
   return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

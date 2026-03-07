@@ -1,6 +1,5 @@
 "use client";
 
-import { ReactLenis, useLenis } from "lenis/react";
 import { achievements } from "./config/achievements";
 import { AchievementCard } from "./components/AchievementCard";
 import { useRef, useState, useEffect } from "react";
@@ -36,105 +35,40 @@ const AchievementsSection = () => {
   const firstCardBlur = useMotionValue<number>(10);
   const firstCardOpacity = useMotionValue<number>(0);
 
-  // Handle scroll with Lenis hook
-  useLenis(() => {
-    if (!containerRef.current) return;
+  // Handle scroll to drive first card reveal effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
+      const rect = containerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
 
-    // Calculate progress for first card reveal (after header)
-    // Start revealing when section is in view, complete by ~30% scroll
-    const progress = Math.max(
-      0,
-      Math.min(1, (-rect.top + windowHeight * 0.5) / (windowHeight * 1.5)),
-    );
+      // Calculate progress for first card reveal (after header)
+      // Start revealing when section is in view, complete by ~30% scroll
+      const progress = Math.max(
+        0,
+        Math.min(1, (-rect.top + windowHeight * 0.5) / (windowHeight * 1.5)),
+      );
 
-    firstCardBlur.set(10 * (1 - progress));
-    firstCardOpacity.set(Math.min(1, progress * 2));
-  });
+      firstCardBlur.set(10 * (1 - progress));
+      firstCardOpacity.set(Math.min(1, progress * 2));
+    };
 
-  // Mobile fallback - smooth scroll stacking effect
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [firstCardBlur, firstCardOpacity]);
+
+  // Mobile fallback - scroll stacking effect
   if (isMobile) {
     return (
-      <ReactLenis root>
-        <section
-          ref={containerRef}
-          className="relative bg-background"
-          aria-labelledby="achievements-heading"
-        >
-          {/* Header Section */}
-          <motion.section
-            className="h-screen w-full grid place-content-center sticky top-0"
-            style={{
-              opacity: headerOpacity,
-              scale: scale,
-              rotate: rotate,
-              filter: `blur(${headerBlur}px)`,
-            }}
-          >
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[54px_54px] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-
-            <div className="relative z-10 text-center px-4">
-              <h2
-                id="achievements-heading"
-                className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-4xl sm:text-5xl font-bold tracking-tight text-transparent leading-[120%]"
-              >
-                Achievements
-              </h2>
-              <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">
-                Milestones and recognitions along my journey 👇
-              </p>
-            </div>
-          </motion.section>
-
-          {/* Stacking Cards */}
-          {achievements.map((achievement, index) => {
-            // Simple rotation pattern: 0 = rotate-6, 1 = none, 2 = -rotate-6, 3 = none
-            const getRotation = (idx: number) => {
-              const pattern = idx % 4;
-              if (pattern === 0) return "rotate-6";
-              if (pattern === 2) return "-rotate-6";
-              return "";
-            };
-
-            return (
-              <motion.section
-                key={achievement.id}
-                className="h-screen w-full grid place-content-center sticky top-0 px-4"
-                style={
-                  index === 0
-                    ? {
-                        filter: firstCardBlur,
-                        opacity: firstCardOpacity,
-                      }
-                    : {}
-                }
-              >
-                <AchievementCard
-                  achievement={achievement}
-                  index={index}
-                  rotation={getRotation(index)}
-                />
-              </motion.section>
-            );
-          })}
-        </section>
-      </ReactLenis>
-    );
-  }
-
-  // Desktop - Smooth scroll stacking effect
-  return (
-    <ReactLenis root>
       <section
         ref={containerRef}
         className="relative bg-background"
         aria-labelledby="achievements-heading"
       >
-        {/* Section Header - Sticky with fade out and blur */}
+        {/* Header Section */}
         <motion.section
-          className="sticky top-0 h-screen w-full grid place-content-center z-0"
+          className="h-screen w-full grid place-content-center sticky top-0"
           style={{
             opacity: headerOpacity,
             scale: scale,
@@ -144,63 +78,129 @@ const AchievementsSection = () => {
         >
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[54px_54px] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
 
-          <div className="relative z-10 text-center">
+          <div className="relative z-10 text-center px-4">
             <h2
               id="achievements-heading"
-              className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-transparent px-4 sm:px-8 leading-[120%]"
+              className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-4xl sm:text-5xl font-bold tracking-tight text-transparent leading-[120%]"
             >
               Achievements
             </h2>
-            <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-muted-foreground px-4">
+            <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">
               Milestones and recognitions along my journey 👇
             </p>
           </div>
         </motion.section>
 
-        {/* Stacking Cards Section */}
-        <section className="relative z-10 w-full bg-background">
-          <div className="flex justify-around px-4 md:px-16">
-            <div className="grid gap-2">
-              {achievements.map((achievement, index) => {
-                // Simple rotation pattern: 0 = rotate-6, 1 = none, 2 = -rotate-6, 3 = none
-                const getRotation = (idx: number) => {
-                  const pattern = idx % 4;
-                  if (pattern === 0) return "rotate-6";
-                  if (pattern === 2) return "-rotate-6";
-                  return "";
-                };
+        {/* Stacking Cards */}
+        {achievements.map((achievement, index) => {
+          // Simple rotation pattern: 0 = rotate-6, 1 = none, 2 = -rotate-6, 3 = none
+          const getRotation = (idx: number) => {
+            const pattern = idx % 4;
+            if (pattern === 0) return "rotate-6";
+            if (pattern === 2) return "-rotate-6";
+            return "";
+          };
 
-                return (
-                  <motion.figure
-                    key={achievement.id}
-                    className="sticky top-0 h-screen grid place-content-center"
-                    style={
-                      index === 0
-                        ? {
-                            filter: firstCardBlur,
-                            opacity: firstCardOpacity,
-                          }
-                        : {}
-                    }
-                  >
-                    <AchievementCard
-                      achievement={achievement}
-                      index={index}
-                      rotation={getRotation(index)}
-                    />
-                  </motion.figure>
-                );
-              })}
-            </div>
-            <div className="sticky top-0 h-screen place-content-center hidden lg:grid">
-              <h3 className="text-3xl lg:text-4xl px-6 lg:px-8 font-medium text-center tracking-tight leading-[120%]">
-                What I&apos;ve <br /> Achieved 🏆
-              </h3>
-            </div>
-          </div>
-        </section>
+          return (
+            <motion.section
+              key={achievement.id}
+              className="h-screen w-full grid place-content-center sticky top-0 px-4"
+              style={
+                index === 0
+                  ? {
+                    filter: firstCardBlur,
+                    opacity: firstCardOpacity,
+                  }
+                  : {}
+              }
+            >
+              <AchievementCard
+                achievement={achievement}
+                index={index}
+                rotation={getRotation(index)}
+              />
+            </motion.section>
+          );
+        })}
       </section>
-    </ReactLenis>
+    );
+  }
+
+  // Desktop - scroll stacking effect
+  return (
+    <section
+      ref={containerRef}
+      className="relative bg-background"
+      aria-labelledby="achievements-heading"
+    >
+      {/* Section Header - Sticky with fade out and blur */}
+      <motion.section
+        className="sticky top-0 h-screen w-full grid place-content-center z-0"
+        style={{
+          opacity: headerOpacity,
+          scale: scale,
+          rotate: rotate,
+          filter: `blur(${headerBlur}px)`,
+        }}
+      >
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[54px_54px] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+
+        <div className="relative z-10 text-center">
+          <h2
+            id="achievements-heading"
+            className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-transparent px-4 sm:px-8 leading-[120%]"
+          >
+            Achievements
+          </h2>
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-muted-foreground px-4">
+            Milestones and recognitions along my journey 👇
+          </p>
+        </div>
+      </motion.section>
+
+      {/* Stacking Cards Section */}
+      <section className="relative z-10 w-full bg-background">
+        <div className="flex justify-around px-4 md:px-16">
+          <div className="grid gap-2">
+            {achievements.map((achievement, index) => {
+              // Simple rotation pattern: 0 = rotate-6, 1 = none, 2 = -rotate-6, 3 = none
+              const getRotation = (idx: number) => {
+                const pattern = idx % 4;
+                if (pattern === 0) return "rotate-6";
+                if (pattern === 2) return "-rotate-6";
+                return "";
+              };
+
+              return (
+                <motion.figure
+                  key={achievement.id}
+                  className="sticky top-0 h-screen grid place-content-center"
+                  style={
+                    index === 0
+                      ? {
+                        filter: firstCardBlur,
+                        opacity: firstCardOpacity,
+                      }
+                      : {}
+                  }
+                >
+                  <AchievementCard
+                    achievement={achievement}
+                    index={index}
+                    rotation={getRotation(index)}
+                  />
+                </motion.figure>
+              );
+            })}
+          </div>
+          <div className="sticky top-0 h-screen place-content-center hidden lg:grid">
+            <h3 className="text-3xl lg:text-4xl px-6 lg:px-8 font-medium text-center tracking-tight leading-[120%]">
+              What I&apos;ve <br /> Achieved 🏆
+            </h3>
+          </div>
+        </div>
+      </section>
+    </section>
   );
 };
 
