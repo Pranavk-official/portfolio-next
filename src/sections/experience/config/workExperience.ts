@@ -4,7 +4,7 @@ export interface WorkExperience {
   location: string;
   position: string;
   employmentType: "Full-time" | "Part-time" | "Internship" | "Contract";
-  startDate: string; // Format: "YYYY-MM"
+  startDate: string; // Format: "YYYY-MM" or "YYYY-MM-DD" (full date hides entry until that date is reached)
   endDate: string | "Present"; // Format: "YYYY-MM" or "Present"
   achievements: string[];
   technologies: string[];
@@ -14,13 +14,37 @@ export interface WorkExperience {
 
 export const workExperiences: WorkExperience[] = [
   {
+    id: "parinaamaa-ai",
+    company: "Parinaamaa.ai Pvt Ltd",
+    location: "Kadavanthra, Kochi, Kerala",
+    position: "Developer — Platform Engineering Team",
+    employmentType: "Full-time",
+    startDate: "2026-03-10",
+    endDate: "Present",
+    achievements: [
+      "Developing and deploying scalable AI platform components for Naamaa.in — a digital commerce solution empowering SMEs to go online within hours",
+      "Taking end-to-end ownership of modules from planning to production, ensuring secure, maintainable, and high-performance coding standards",
+      "Evaluating and implementing modern AI/ML algorithms, models, and tools to drive the product roadmap with innovative technical insights",
+      "Collaborating with cross-functional teams including product managers, data scientists, and designers through code reviews, design discussions, and daily stand-ups",
+      "Providing mentorship and support to interns while maintaining a research-driven approach to solving complex technical problems",
+    ],
+    technologies: [
+      "AI/ML",
+      "Next.js",
+      "Node.js",
+      "React",
+      "TypeScript",
+    ],
+    companyUrl: "https://parinaamaa.ai",
+  },
+  {
     id: "kerala-it-mission",
     company: "Kerala State IT Mission",
     location: "Thiruvananthapuram, Kerala",
     position: "Graduate Software Developer Intern",
     employmentType: "Internship",
-    startDate: "2025-09",
-    endDate: "Present",
+    startDate: "2025-09-10",
+    endDate: "2026-03-09",
     achievements: [
       "Created and developed an in-house document signing solution utilizing Aadhar eSign, as provided by CDAC",
       "Designed data models for an in-house project aimed at assigning government email IDs to government officials",
@@ -34,6 +58,7 @@ export const workExperiences: WorkExperience[] = [
       "Python",
       "React",
     ],
+    companyUrl: "https://itmission.kerala.gov.in",
   },
   {
     id: "cofount-labs",
@@ -60,6 +85,7 @@ export const workExperiences: WorkExperience[] = [
       "React.js",
       "TypeScript",
     ],
+    companyUrl: "https://cofount.com",
   },
   {
     id: "brototype",
@@ -84,5 +110,6 @@ export const workExperiences: WorkExperience[] = [
       "Node.js",
       "React.js",
     ],
+    companyUrl: "https://www.brototype.com",
   },
 ];

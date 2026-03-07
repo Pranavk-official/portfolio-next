@@ -9,18 +9,26 @@ import { useMemo } from "react";
 import ScrollElement from "@/components/ui/scroll-animation";
 
 const ExperienceSection = () => {
-    // Validate work experiences and filter out invalid entries
-    const validExperiences = useMemo(() => {
+    // Validate work experiences and filter out invalid/future entries
+    const { validExperiences, hasFutureHidden } = useMemo(() => {
         const validated = validateWorkExperiences(workExperiences);
+
+        // Detect if any entries were hidden due to a future YYYY-MM-DD startDate
+        const fullDateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const futureHidden = workExperiences.some(
+            (exp) => fullDateRegex.test(exp.startDate) && new Date(exp.startDate) > today
+        );
 
         // Log warning in development mode if any entries were filtered out
         if (process.env.NODE_ENV === 'development' && validated.length !== workExperiences.length) {
             console.warn(
-                `ExperienceSection: ${workExperiences.length - validated.length} invalid work experience entries were filtered out`
+                `ExperienceSection: ${workExperiences.length - validated.length} work experience entries were filtered out`
             );
         }
 
-        return validated;
+        return { validExperiences: validated, hasFutureHidden: futureHidden };
     }, []);
 
     return (
@@ -65,6 +73,7 @@ const ExperienceSection = () => {
                                 <TimelineItem
                                     experience={experience}
                                     isAlternating={index % 2 === 1}
+                                    isEffectivelyPresent={index === 0 && hasFutureHidden}
                                 />
                             </BlurFade>
                         ))}

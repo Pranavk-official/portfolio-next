@@ -4,7 +4,8 @@
  * @returns Formatted date string like "Sept 2025"
  */
 function formatDate(dateStr: string): string {
-    const [year, month] = dateStr.split('-');
+    const parts = dateStr.split('-');
+    const [year, month] = parts;
     const date = new Date(parseInt(year), parseInt(month) - 1);
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 }
@@ -49,7 +50,7 @@ export function formatDateRange(start: string, end: string | 'Present'): string 
  */
 export function calculateDuration(start: string, end: string | 'Present'): string {
     try {
-        const [startYear, startMonth] = start.split('-').map(Number);
+        const [startYear, startMonth] = start.split('-').map(Number); // handles both YYYY-MM and YYYY-MM-DD
 
         let endYear: number;
         let endMonth: number;

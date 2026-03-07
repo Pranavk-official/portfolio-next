@@ -9,16 +9,22 @@ import { BorderBeam } from "@/components/ui/border-beam";
 interface TimelineItemProps {
   experience: WorkExperience;
   isAlternating: boolean;
+  isEffectivelyPresent?: boolean;
 }
 
-export function TimelineItem({ experience, isAlternating }: TimelineItemProps) {
-  const isCurrentWorkplace = experience.endDate === "Present";
+export function TimelineItem({ experience, isAlternating, isEffectivelyPresent = false }: TimelineItemProps) {
+  const isCurrentWorkplace = experience.endDate === "Present" || isEffectivelyPresent;
+  const handleCardClick = () => {
+    if (experience.companyUrl) {
+      window.open(experience.companyUrl, "_blank", "noopener,noreferrer");
+    }
+  };
 
   return (
     <article
       role="listitem"
       className={cn(
-        "relative mb-12 lg:mb-20",
+        "group relative mb-12 lg:mb-20",
         "lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-12",
       )}
     >
@@ -34,8 +40,10 @@ export function TimelineItem({ experience, isAlternating }: TimelineItemProps) {
             isCurrentWorkplace
               ? "dark:shadow-teal-500/30"
               : "dark:shadow-ember-500/20",
+            "transition-transform duration-300 ease-in-out",
+            "group-hover:scale-125",
             isCurrentWorkplace && "animate-pulse",
-            "motion-reduce:animate-none",
+            "motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:animate-none",
           )}
         />
       </div>
@@ -46,19 +54,27 @@ export function TimelineItem({ experience, isAlternating }: TimelineItemProps) {
           "ml-8 lg:ml-0 relative",
           isAlternating ? "lg:col-start-1" : "lg:col-start-3",
           "rounded-xl border bg-card/50 backdrop-blur-sm p-6 md:p-7",
+          "transition-all duration-300 ease-in-out",
+          "hover:shadow-xl hover:scale-[1.01] lg:hover:scale-[1.02]",
           isCurrentWorkplace
-            ? "shadow-md shadow-teal-500/5"
-            : "",
+            ? "hover:border-teal-500/50 shadow-md shadow-teal-500/5"
+            : "hover:border-ember-500/50",
           // Dark mode enhancements
           "dark:bg-card/80",
           isCurrentWorkplace
-            ? "dark:shadow-teal-500/5"
-            : "",
+            ? "dark:hover:shadow-teal-500/10 dark:shadow-teal-500/5"
+            : "dark:hover:shadow-ember-500/10",
           // Ensure proper spacing on mobile
-          "min-w-0", // Prevent overflow on small screens
+          "min-w-0",
+          // Reduced motion: disable scale transform
+          "motion-reduce:hover:scale-100 motion-reduce:transition-none",
+          // Cursor pointer when card is clickable
+          experience.companyUrl && "cursor-pointer",
         )}
+        onClick={experience.companyUrl ? handleCardClick : undefined}
+        role={experience.companyUrl ? "link" : undefined}
+        aria-label={experience.companyUrl ? `Visit ${experience.company} website` : undefined}
       >
-        {/* Add BorderBeam effect for current workplace */}
         {isCurrentWorkplace && (
           <BorderBeam
             size={200}
@@ -88,7 +104,7 @@ export function TimelineItem({ experience, isAlternating }: TimelineItemProps) {
           </p>
           <time
             className="text-sm text-muted-foreground inline-flex items-center gap-1"
-            dateTime={`${toISODate(experience.startDate)}/${toISODate(experience.endDate)}`}
+            dateTime={`${toISODate(experience.startDate)}/${toISODate(isEffectivelyPresent ? "Present" : experience.endDate)}`}
           >
             <svg
               className="w-3.5 h-3.5"
@@ -103,7 +119,7 @@ export function TimelineItem({ experience, isAlternating }: TimelineItemProps) {
                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            {formatDateRange(experience.startDate, experience.endDate)}
+            {formatDateRange(experience.startDate, isEffectivelyPresent ? "Present" : experience.endDate)}
           </time>
         </div>
 

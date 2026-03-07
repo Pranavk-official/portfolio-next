@@ -34,23 +34,38 @@ export function validateWorkExperience(exp: WorkExperience): boolean {
             return false;
         }
 
-        // Check array fields are not empty
-        if (Array.isArray(value) && value.length === 0) {
+        // Check array fields are not empty (achievements are allowed to be empty)
+        if (Array.isArray(value) && value.length === 0 && field !== 'achievements') {
             console.error(`Validation failed for ${exp.id}: Field "${field}" array is empty`);
             return false;
         }
     }
 
-    // Validate date format (YYYY-MM)
+    // Validate date format (YYYY-MM or YYYY-MM-DD)
     const dateRegex = /^\d{4}-(0[1-9]|1[0-2])$/;
+    const fullDateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
-    if (!dateRegex.test(exp.startDate)) {
-        console.error(`Validation failed for ${exp.id}: Invalid startDate format "${exp.startDate}". Expected format: YYYY-MM`);
+    const startIsFullDate = fullDateRegex.test(exp.startDate);
+    const startIsMonthDate = dateRegex.test(exp.startDate);
+
+    if (!startIsMonthDate && !startIsFullDate) {
+        console.error(`Validation failed for ${exp.id}: Invalid startDate format "${exp.startDate}". Expected format: YYYY-MM or YYYY-MM-DD`);
         return false;
     }
 
-    if (exp.endDate !== 'Present' && !dateRegex.test(exp.endDate)) {
-        console.error(`Validation failed for ${exp.id}: Invalid endDate format "${exp.endDate}". Expected format: YYYY-MM or "Present"`);
+    // If startDate is a full date (YYYY-MM-DD) and it's in the future, hide the entry
+    if (startIsFullDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const startDate = new Date(exp.startDate);
+        if (startDate > today) {
+            return false;
+        }
+    }
+
+    const endIsFullDate = fullDateRegex.test(exp.endDate);
+    if (exp.endDate !== 'Present' && !dateRegex.test(exp.endDate) && !endIsFullDate) {
+        console.error(`Validation failed for ${exp.id}: Invalid endDate format "${exp.endDate}". Expected format: YYYY-MM, YYYY-MM-DD, or "Present"`);
         return false;
     }
 
@@ -69,7 +84,7 @@ export function validateWorkExperience(exp: WorkExperience): boolean {
 
     // Validate start date is before end date (if not Present)
     if (exp.endDate !== 'Present') {
-        const [startYear, startMonth] = exp.startDate.split('-').map(Number);
+        const [startYear, startMonth] = exp.startDate.split('-').map(Number); // works for both YYYY-MM and YYYY-MM-DD
         const [endYear, endMonth] = exp.endDate.split('-').map(Number);
 
         const startTimestamp = startYear * 12 + startMonth;
