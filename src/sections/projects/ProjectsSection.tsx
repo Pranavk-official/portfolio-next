@@ -14,7 +14,7 @@ import { Button } from "@components/ui/button";
 import { ArrowRight } from "lucide-react";
 import ScrollElement from "@components/ui/scroll-animation";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 3;
 
 const ProjectsSection = () => {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("all");
