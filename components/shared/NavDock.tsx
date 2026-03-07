@@ -13,12 +13,29 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export function NavDock() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [isHidden, setIsHidden] = useState(false);
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      // Handle same-page anchor links (e.g. /#projects)
+      const anchorMatch = href.match(/^\/?#(.+)$|^\/#(.+)$/);
+      if (anchorMatch) {
+        const id = anchorMatch[1] || anchorMatch[2];
+        if (isHome) {
+          e.preventDefault();
+          document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        }
+        // If not on home, let Next.js navigate normally — it will land with the hash
+        return;
+      }
+    },
+    [isHome],
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,6 +101,7 @@ export function NavDock() {
                         target={item.external ? "_blank" : undefined}
                         rel={item.external ? "noopener noreferrer" : undefined}
                         aria-label={item.label}
+                        onClick={(e) => handleClick(e, item.href)}
                         className={cn(
                           buttonVariants({ variant: "ghost", size: "icon" }),
                           "size-12 rounded-full focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2",
