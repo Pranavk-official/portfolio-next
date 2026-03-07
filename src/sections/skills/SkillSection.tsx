@@ -7,21 +7,18 @@ import {
 import { skillCategories, tools } from "./config/tools";
 import { SkillCategory } from "./components/SkillCategory";
 import ScrollElement from "@/components/ui/scroll-animation";
-// import ScrollElement from "@components/ui/scroll-animation";
+
+const VELOCITIES = [3, 4, 2, 3, 4, 2, 3, 4, 2, 3] as const;
+const DIRECTIONS = [1, -1, 1, -1, 1, -1, 1, -1, 1, -1] as const;
 
 const SkillSection = () => {
-  // Get unique icons for the scroll velocity (54 tools for 6 rows on sm/md, 4 on lg+)
-  const scrollItems = tools.slice(0, 54);
-  const firstRow = scrollItems.slice(0, 9);
-  const secondRow = scrollItems.slice(9, 18);
-  const thirdRow = scrollItems.slice(18, 27);
-  const fourthRow = scrollItems.slice(27, 36);
-  const fifthRow = scrollItems.slice(36, 45);
-  const sixthRow = scrollItems.slice(45, 54);
+  const rows = Array.from({ length: 5 }, (_, i) =>
+    Array.from({ length: 10 }, (__, j) => tools[(i * 5 + j) % tools.length]),
+  );
 
   return (
     <section
-      className="relative w-full py-20 overflow-hidden"
+      className="relative w-full pt-20 overflow-hidden"
       aria-labelledby="skills-heading"
     >
       <div className="container mx-auto px-4 md:px-8 relative z-10">
@@ -46,81 +43,29 @@ const SkillSection = () => {
           </ScrollElement>
         </div>
 
-        {/* Skills Grid - background marquee scoped to this wrapper */}
-        <div className="relative max-w-6xl mx-auto">
-          {/* Background Scroll Velocity - centered to the cards grid */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden flex flex-col justify-center">
-            <ScrollVelocityContainer className="opacity-[0.07]">
-              <ScrollVelocityRow baseVelocity={5} direction={1}>
-                {firstRow.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <div key={tool.name} className="mx-6">
-                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
-                    </div>
-                  );
-                })}
-              </ScrollVelocityRow>
-              <ScrollVelocityRow baseVelocity={6} direction={-1} className="mt-6">
-                {secondRow.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <div key={tool.name} className="mx-6">
-                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
-                    </div>
-                  );
-                })}
-              </ScrollVelocityRow>
-              <ScrollVelocityRow baseVelocity={10} direction={1} className="mt-6">
-                {thirdRow.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <div key={tool.name} className="mx-6">
-                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
-                    </div>
-                  );
-                })}
-              </ScrollVelocityRow>
-              <ScrollVelocityRow baseVelocity={5} direction={-1} className="mt-6">
-                {fourthRow.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <div key={tool.name} className="mx-6">
-                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
-                    </div>
-                  );
-                })}
-              </ScrollVelocityRow>
-              <ScrollVelocityRow
-                baseVelocity={12}
-                direction={1}
-                className="mt-6"
-              >
-                {fifthRow.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <div key={tool.name} className="mx-6">
-                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
-                    </div>
-                  );
-                })}
-              </ScrollVelocityRow>
-              <ScrollVelocityRow
-                baseVelocity={8}
-                direction={-1}
-                className="mt-6"
-              >
-                {sixthRow.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <div key={tool.name} className="mx-6">
-                      <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
-                    </div>
-                  );
-                })}
-              </ScrollVelocityRow>
+        {/* Cards area — marquee fills this block */}
+        <div className="relative max-w-6xl mx-auto pb-20">
+          {/* Background Scroll Velocity */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <ScrollVelocityContainer className="opacity-[0.07] h-full flex flex-col justify-between">
+              {rows.map((row, i) => (
+                <ScrollVelocityRow
+                  key={i}
+                  baseVelocity={VELOCITIES[i]}
+                  direction={DIRECTIONS[i]}
+                >
+                  {row.map((tool, j) => {
+                    const Icon = tool.icon;
+                    return (
+                      <div key={`${tool.name}-${j}`} className="mx-6">
+                        <Icon className="w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14" />
+                      </div>
+                    );
+                  })}
+                </ScrollVelocityRow>
+              ))}
             </ScrollVelocityContainer>
-            {/* Gradient overlays for fade effect */}
+            {/* Gradient overlays */}
             <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />
             <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l" />
           </div>
