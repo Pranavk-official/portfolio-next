@@ -22,11 +22,11 @@ export const workExperiences: WorkExperience[] = [
     startDate: "2026-03-10",
     endDate: "Present",
     achievements: [
-      "Developing and deploying scalable AI platform components for Naamaa.in — a digital commerce solution empowering SMEs to go online within hours",
-      "Taking end-to-end ownership of modules from planning to production, ensuring secure, maintainable, and high-performance coding standards",
-      "Evaluating and implementing modern AI/ML algorithms, models, and tools to drive the product roadmap with innovative technical insights",
-      "Collaborating with cross-functional teams including product managers, data scientists, and designers through code reviews, design discussions, and daily stand-ups",
-      "Providing mentorship and support to interns while maintaining a research-driven approach to solving complex technical problems",
+      // "Developing and deploying scalable AI platform components for Naamaa.in — a digital commerce solution empowering SMEs to go online within hours",
+      // "Taking end-to-end ownership of modules from planning to production, ensuring secure, maintainable, and high-performance coding standards",
+      // "Evaluating and implementing modern AI/ML algorithms, models, and tools to drive the product roadmap with innovative technical insights",
+      // "Collaborating with cross-functional teams including product managers, data scientists, and designers through code reviews, design discussions, and daily stand-ups",
+      // "Providing mentorship and support to interns while maintaining a research-driven approach to solving complex technical problems",
     ],
     technologies: [
       "AI/ML",
