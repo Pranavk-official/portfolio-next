@@ -109,7 +109,7 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
                 <div className="container relative mx-auto px-4 pb-12 pt-24">
                     {/* Navigation */}
                     <BlurFade delay={0.1} inView direction="up">
-                        <Link href="/projects">
+                        <Link href="/#projects">
                             <Button variant="ghost" size="sm" className="mb-8 gap-2">
                                 <ArrowLeft className="h-4 w-4" />
                                 Back to Projects
