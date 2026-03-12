@@ -1,16 +1,14 @@
 import { Metadata } from "next";
-import Link from "next/link";
 import { getFilteredPosts, getAllTags } from "@/lib/notion";
 import { Search } from "@/components/blog/search";
 import { TagFilter } from "@/components/blog/tag-filter";
 import { Pagination } from "@/components/blog/pagination";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { DotPattern } from "@/components/ui/dot-pattern";
-import { MagicCard } from "@/components/ui/magic-card";
+import { BlogPostsGrid } from "@/components/blog/BlogPostsGrid";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { cn } from "@/lib/utils";
 
@@ -28,17 +26,6 @@ interface BlogPageProps {
         search?: string;
         tag?: string;
     }>;
-}
-
-/**
- * Format date to readable string
- */
-function formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-    });
 }
 
 function PostsSkeleton() {
@@ -137,51 +124,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                             </Card>
                         </BlurFade>
                     ) : (
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
-                            {posts.map((post, idx) => (
-                                <BlurFade key={post.id} delay={0.25 + idx * 0.05} inView>
-                                    <Link href={`/blog/${post.slug}`} className="group block h-full">
-                                        <MagicCard
-                                            className="flex flex-col h-full cursor-pointer transition-all duration-300 hover:scale-[1.02] rounded-md"
-                                            gradientColor="#D9D9D955"
-                                        >
-                                            <div className="flex flex-col h-full p-6">
-                                                <div className="flex flex-col space-y-1.5 mb-4">
-                                                    <h3 className="font-semibold leading-none tracking-tight font-crimson text-2xl group-hover:text-ember-500 transition-colors">
-                                                        {post.title}
-                                                    </h3>
-                                                    <p className="text-sm text-muted-foreground line-clamp-3 mt-2">
-                                                        {post.description}
-                                                    </p>
-                                                </div>
-                                                <div className="flex-1 flex flex-col justify-end">
-                                                    <div className="flex items-center justify-between text-sm">
-                                                        <time className="text-muted-foreground">
-                                                            {formatDate(post.date)}
-                                                        </time>
-
-                                                        {post.tags.length > 0 && (
-                                                            <div className="flex gap-1 flex-wrap">
-                                                                {post.tags.slice(0, 2).map((tagName) => (
-                                                                    <Badge key={tagName} variant="secondary">
-                                                                        {tagName}
-                                                                    </Badge>
-                                                                ))}
-                                                                {post.tags.length > 2 && (
-                                                                    <Badge variant="outline">
-                                                                        +{post.tags.length - 2}
-                                                                    </Badge>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </MagicCard>
-                                    </Link>
-                                </BlurFade>
-                            ))}
-                        </div>
+                        <BlogPostsGrid posts={posts} />
                     )}
                 </Suspense>
 

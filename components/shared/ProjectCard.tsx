@@ -41,7 +41,7 @@ export function ProjectCard({ project, className, index = 0 }: ProjectCardProps)
     const slug = project.id;
 
     return (
-        <Link href={`/projects/${slug}`} className="group block h-full">
+        <Link href={`/projects/${slug}`} className="group/card block h-full">
             <div
                 className={cn(
                     "relative z-10 h-full overflow-hidden rounded-lg bg-card",
@@ -55,7 +55,7 @@ export function ProjectCard({ project, className, index = 0 }: ProjectCardProps)
                             src={project.imageUrl}
                             alt={project.title}
                             fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="object-cover transition-transform duration-500 group-hover/card:scale-105"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             priority={index < 3}
                         />
@@ -76,7 +76,7 @@ export function ProjectCard({ project, className, index = 0 }: ProjectCardProps)
                     {/* Content */}
                     <div className="flex flex-1 flex-col p-5">
                         {/* Title */}
-                        <h3 className="mb-2 text-lg font-semibold leading-tight text-foreground group-hover:text-primary transition-colors">
+                        <h3 className="mb-2 text-lg font-semibold leading-tight text-foreground group-hover/card:text-primary transition-colors">
                             {project.title}
                         </h3>
 
@@ -112,7 +112,7 @@ export function ProjectCard({ project, className, index = 0 }: ProjectCardProps)
                             </div>
 
                             {/* View More */}
-                            <span className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                            <span className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover/card:opacity-100">
                                 View Case Study
                                 <ArrowRight className="h-3.5 w-3.5" />
                             </span>

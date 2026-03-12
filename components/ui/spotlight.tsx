@@ -99,20 +99,15 @@ export function SpotLightItem({ children, className }: SpotlightItemProps) {
       ref={boxWrapper}
       className={cn(
         className,
-        ' relative  rounded-lg p-[2px] bg-[#ffffff15] overflow-hidden'
+        ' relative  rounded-lg p-[2px] overflow-hidden'
       )}
+      style={{ backgroundColor: 'var(--spotlight-border-bg)' }}
     >
       {isHovered && (
         <div
-          className="pointer-events-none absolute opacity-0 z-50 rounded-xl w-full h-full group-hover:opacity-100  transition duration-300 "
+          className="pointer-events-none absolute opacity-100 z-50 rounded-xl w-full h-full transition duration-300"
           style={{
-            background: `
-            radial-gradient(
-              250px circle at ${overlayColor.x}px ${overlayColor.y}px,
-              rgba(255, 255, 255, 0.137),
-              transparent 80%
-            )
-          `,
+            background: `radial-gradient(250px circle at ${overlayColor.x}px ${overlayColor.y}px, var(--spotlight-glow-color), transparent 80%)`,
           }}
         />
       )}
@@ -120,15 +115,15 @@ export function SpotLightItem({ children, className }: SpotlightItemProps) {
         <div
           className="absolute opacity-0 group-hover:opacity-100 z-10 inset-0 bg-fixed rounded-lg"
           style={{
-            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, #ffffff76 0%,transparent 20%,transparent) fixed `,
+            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, var(--spotlight-glow-strong) 0%, transparent 20%, transparent) fixed`,
           }}
         ></div>
       )}
       {ProximitySpotlight && (
         <div
-          className="absolute inset-0 z-0  bg-fixed rounded-lg"
+          className="absolute inset-0 z-0 bg-fixed rounded-lg"
           style={{
-            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, #ffffff6e 0%,transparent 20%,transparent) fixed`,
+            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, var(--spotlight-glow-strong) 0%, transparent 20%, transparent) fixed`,
           }}
         ></div>
       )}

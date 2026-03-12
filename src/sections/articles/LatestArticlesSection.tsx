@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getAllPublished } from "@/lib/notion";
-import { ArticleCard } from "./components/ArticleCard";
-import { BlurFade } from "@components/ui/blur-fade";
+import { ArticlesGrid } from "./components/ArticlesGrid";
 import { Button } from "@components/ui/button";
 import { ArrowRight } from "lucide-react";
 import ScrollElement from "@components/ui/scroll-animation";
@@ -47,13 +46,7 @@ const LatestArticlesSection = async () => {
                 </div>
 
                 {/* Articles Grid */}
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
-                    {latestPosts.map((post, idx) => (
-                        <BlurFade key={post.id} delay={0.25 + idx * 0.05} inView>
-                            <ArticleCard article={post} index={idx} />
-                        </BlurFade>
-                    ))}
-                </div>
+                <ArticlesGrid posts={latestPosts} />
 
                 {/* View All Articles Link */}
                 <div className="flex justify-center">

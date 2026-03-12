@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { MagicCard } from "@/components/ui/magic-card";
 import { PostMetadata } from "@/lib/notion";
 
 interface ArticleCardProps {
@@ -21,14 +20,11 @@ function formatDate(dateString: string): string {
 
 export function ArticleCard({ article, index }: ArticleCardProps) {
     return (
-        <Link href={`/blog/${article.slug}`} className="group block h-full">
-            <MagicCard
-                className="flex flex-col h-full cursor-pointer transition-all duration-300 hover:scale-[1.02] rounded-md"
-                gradientColor="#D9D9D955"
-            >
+        <Link href={`/blog/${article.slug}`} className="group/card block h-full">
+            <div className="relative z-10 h-full overflow-hidden rounded-lg bg-card">
                 <div className="flex flex-col h-full p-6">
                     <div className="flex flex-col space-y-1.5 mb-4">
-                        <h3 className="font-semibold leading-none tracking-tight font-crimson text-2xl group-hover:text-primary transition-colors">
+                        <h3 className="font-semibold leading-none tracking-tight font-crimson text-2xl group-hover/card:text-primary transition-colors">
                             {article.title}
                         </h3>
                         <p className="text-sm text-muted-foreground line-clamp-3 mt-2">
@@ -56,7 +52,7 @@ export function ArticleCard({ article, index }: ArticleCardProps) {
                         </div>
                     </div>
                 </div>
-            </MagicCard>
+            </div>
         </Link>
     );
 }
