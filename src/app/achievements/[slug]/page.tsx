@@ -157,25 +157,26 @@ export default async function AchievementDetailPage({ params }: PageProps) {
       {/* Content Sections */}
       <section className="container mx-auto px-4 py-12">
         <div className="mx-auto max-w-4xl">
-          {/* LinkedIn Embed */}
-          {achievement.linkedinEmbed && (
-            <BlurFade delay={0.15} inView direction="up">
-              <div className="mb-12">
+          {/* Embed */}
+          {achievement.embedUrl && (
+            <div className="mb-12">
+              <BlurFade delay={0.15} inView direction="up">
                 <h2 className="mb-4 text-2xl font-semibold">LinkedIn Post</h2>
-                <div className="flex justify-center">
-                  <iframe
-                    src={achievement.linkedinEmbed}
-                    height={534}
-                    width={504}
-                    frameBorder={0}
-                    allowFullScreen
-                    title={`LinkedIn post about ${achievement.title}`}
-                    className="max-w-full rounded-lg border border-border"
-                  />
-                </div>
+              </BlurFade>
+              <div className="flex justify-center">
+                <iframe
+                  src={achievement.embedUrl}
+                  height={903}
+                  width={504}
+                  frameBorder={0}
+                  allowFullScreen
+                  title="Embedded LinkedIn post"
+                  loading="lazy"
+                  className="max-w-full rounded-lg border border-border"
+                />
               </div>
               <Separator className="my-10" />
-            </BlurFade>
+            </div>
           )}
 
           {/* About Section */}

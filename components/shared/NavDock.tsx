@@ -38,6 +38,12 @@ export function NavDock() {
   );
 
   useEffect(() => {
+    // Footer-proximity hiding only applies on the home page (bottom dock)
+    if (!isHome) {
+      setIsHidden(false);
+      return;
+    }
+
     const handleScroll = () => {
       // Find the footer element
       const footer = document.querySelector("footer");
@@ -67,14 +73,18 @@ export function NavDock() {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, []);
+  }, [isHome]);
 
   return (
     <nav
       className={cn(
-        "fixed bottom-10 left-1/2 -translate-x-1/2 transition-all duration-300 motion-reduce:transition-none z-50",
+        "fixed left-1/2 -translate-x-1/2 transition-all duration-300 motion-reduce:transition-none z-50",
+        isHome ? "bottom-10" : "top-6",
         isHidden
-          ? "opacity-0 pointer-events-none translate-y-20"
+          ? cn(
+            "opacity-0 pointer-events-none",
+            isHome ? "translate-y-20" : "-translate-y-20",
+          )
           : "opacity-100",
       )}
       aria-label="Main navigation dock"

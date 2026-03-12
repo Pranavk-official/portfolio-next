@@ -25,10 +25,13 @@ export interface Post extends PostMetadata {
   content: string;
 }
 
+export type NotionError = "credentials_missing" | "fetch_failed";
+
 export interface FilteredPostsResult {
   posts: PostMetadata[];
   total: number;
   totalPages: number;
+  error?: NotionError;
 }
 
 // Type guard
@@ -253,7 +256,17 @@ export async function getFilteredPosts(
   search: string = "",
   tag: string = ""
 ): Promise<FilteredPostsResult> {
-  const allPosts = await getAllPublished();
+  if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATA_SOURCE_ID) {
+    return { posts: [], total: 0, totalPages: 1, error: "credentials_missing" };
+  }
+
+  let allPosts: PostMetadata[];
+  try {
+    allPosts = await getAllPublished();
+  } catch {
+    return { posts: [], total: 0, totalPages: 1, error: "fetch_failed" };
+  }
+
   let filtered = allPosts;
 
   // Apply search filter

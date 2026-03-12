@@ -12,6 +12,7 @@ import { BlurFade } from "@components/ui/blur-fade";
 import { Button } from "@components/ui/button";
 import { ChevronDown } from "lucide-react";
 import ScrollElement from "@components/ui/scroll-animation";
+import { Spotlight, SpotLightItem } from "@components/ui/spotlight";
 
 const ITEMS_PER_PAGE = 3;
 
@@ -67,11 +68,10 @@ const ProjectsSection = () => {
         </div>
 
         {/* Projects Grid */}
-        <div
-          id="projects-grid"
+        <Spotlight
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          role="tabpanel"
-          aria-label={`${activeCategory === "all" ? "All" : activeCategory} projects`}
+          ProximitySpotlight
+          CursorFlowGradient
         >
           {visibleItems.map((project, index) => (
             <BlurFade
@@ -80,10 +80,12 @@ const ProjectsSection = () => {
               inView
               direction="up"
             >
-              <ProjectCard project={project} index={index} />
+              <SpotLightItem className="h-full">
+                <ProjectCard project={project} index={index} />
+              </SpotLightItem>
             </BlurFade>
           ))}
-        </div>
+        </Spotlight>
 
         {/* Empty State */}
         {visibleItems.length === 0 && (

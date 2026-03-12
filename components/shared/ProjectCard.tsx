@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MagicCard } from "@components/ui/magic-card";
 import { Badge } from "@components/ui/badge";
 import { Calendar, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -43,14 +42,11 @@ export function ProjectCard({ project, className, index = 0 }: ProjectCardProps)
 
     return (
         <Link href={`/projects/${slug}`} className="group block h-full">
-            <MagicCard
+            <div
                 className={cn(
-                    "h-full overflow-hidden rounded-xl border border-border/50",
-                    "transition-all duration-300 hover:border-primary/30 hover:shadow-xl",
+                    "relative z-10 h-full overflow-hidden rounded-lg bg-card",
                     className
                 )}
-                gradientSize={250}
-                gradientOpacity={0.15}
             >
                 <article className="flex h-full flex-col">
                     {/* Image */}
@@ -123,7 +119,7 @@ export function ProjectCard({ project, className, index = 0 }: ProjectCardProps)
                         </div>
                     </div>
                 </article>
-            </MagicCard>
+            </div>
         </Link>
     );
 }

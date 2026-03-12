@@ -16,7 +16,7 @@ export interface Achievement {
   location?: string;
   highlights: string[];
   image?: string;
-  linkedinEmbed?: string;
+  embedUrl?: string;
 }
 
 export const achievements: Achievement[] = [
@@ -43,7 +43,7 @@ export const achievements: Achievement[] = [
       "Represented Jyothi Engineering College, Thrissur",
       "Interacted with Kerala's innovation ecosystem",
     ],
-    linkedinEmbed:
+    embedUrl:
       "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7427974120681832448",
   },
   {

@@ -5,6 +5,8 @@ import { WorkExperience } from "../config/workExperience";
 import { formatDateRange, toISODate } from "../utils/dateFormatter";
 import { TechBadge } from "./TechBadge";
 import { BorderBeam } from "@/components/ui/border-beam";
+import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect } from "react";
 
 interface TimelineItemProps {
   experience: WorkExperience;
@@ -14,6 +16,18 @@ interface TimelineItemProps {
 
 export function TimelineItem({ experience, isAlternating, isEffectivelyPresent = false }: TimelineItemProps) {
   const isCurrentWorkplace = experience.endDate === "Present" || isEffectivelyPresent;
+  const hasAchievements = experience.achievements.length > 0;
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   const handleCardClick = () => {
     if (experience.companyUrl) {
       window.open(experience.companyUrl, "_blank", "noopener,noreferrer");
@@ -72,6 +86,8 @@ export function TimelineItem({ experience, isAlternating, isEffectivelyPresent =
           experience.companyUrl && "cursor-pointer",
         )}
         onClick={experience.companyUrl ? handleCardClick : undefined}
+        onMouseEnter={() => hasAchievements && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         role={experience.companyUrl ? "link" : undefined}
         aria-label={experience.companyUrl ? `Visit ${experience.company} website` : undefined}
       >
@@ -124,20 +140,72 @@ export function TimelineItem({ experience, isAlternating, isEffectivelyPresent =
         </div>
 
         {/* Achievements */}
-        {experience.achievements.length > 0 && (
-          <ul className="space-y-2.5 mb-5" aria-label="Key achievements">
-            {experience.achievements.map((achievement, i) => (
-              <li key={i} className="text-sm leading-relaxed flex gap-2.5">
-                <span
-                  className={cn(
-                    "shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full",
-                    isCurrentWorkplace ? "bg-teal-500" : "bg-ember-500",
-                  )}
-                />
-                <span className="text-foreground/80">{achievement}</span>
-              </li>
-            ))}
-          </ul>
+        {hasAchievements && (
+          isMobile ? (
+            // Mobile: always visible, no animation
+            <ul className="space-y-2.5 mb-5" aria-label="Key achievements">
+              {experience.achievements.map((achievement, i) => (
+                <li key={i} className="text-sm leading-relaxed flex gap-2.5">
+                  <span
+                    className={cn(
+                      "shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full",
+                      isCurrentWorkplace ? "bg-teal-500" : "bg-ember-500",
+                    )}
+                  />
+                  <span className="text-foreground/80">{achievement}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            // Desktop: hidden by default, smooth height + stagger animate on hover
+            <AnimatePresence initial={false}>
+              {isHovered && (
+                <motion.div
+                  key="achievements-wrapper"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{
+                    height: { duration: 0.45, ease: [0.4, 0, 0.2, 1] },
+                    opacity: { duration: 0.3, ease: "easeInOut" },
+                  }}
+                  className="overflow-hidden"
+                >
+                  <motion.ul
+                    className="space-y-2.5 mb-5"
+                    aria-label="Key achievements"
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={{
+                      visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+                      hidden: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
+                    }}
+                  >
+                    {experience.achievements.map((achievement, i) => (
+                      <motion.li
+                        key={i}
+                        className="text-sm leading-relaxed flex gap-2.5"
+                        variants={{
+                          hidden: { opacity: 0, x: -8 },
+                          visible: { opacity: 1, x: 0 },
+                        }}
+                        transition={{ duration: 0.28, ease: "easeOut" }}
+                      >
+                        <span
+                          className={cn(
+                            "shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full",
+                            isCurrentWorkplace ? "bg-teal-500" : "bg-ember-500",
+                          )}
+                        />
+                        <span className="text-foreground/80">{achievement}</span>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )
         )}
 
         {/* Technologies */}

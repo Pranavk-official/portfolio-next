@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '@uidotdev/usehooks';
 import { Search as SearchIcon, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -14,9 +14,11 @@ export function Search({ placeholder = 'Search posts...' }: { placeholder?: stri
 
     const [inputValue, setInputValue] = useState(() => searchParams.get('search') || '');
     const debouncedSearchTerm = useDebounce(inputValue, 300);
+    const searchParamsRef = useRef(searchParams);
+    useEffect(() => { searchParamsRef.current = searchParams; }, [searchParams]);
 
     useEffect(() => {
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams(searchParamsRef.current);
         params.set('page', '1');
 
         if (debouncedSearchTerm && debouncedSearchTerm.trim()) {
@@ -26,7 +28,7 @@ export function Search({ placeholder = 'Search posts...' }: { placeholder?: stri
         }
 
         replace(`${pathname}?${params.toString()}`, { scroll: false });
-    }, [debouncedSearchTerm, pathname, searchParams, replace]);
+    }, [debouncedSearchTerm, pathname, replace]);
 
     const handleClear = () => {
         setInputValue('');

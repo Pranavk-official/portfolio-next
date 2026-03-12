@@ -66,7 +66,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     const search = params.search || '';
     const tag = params.tag || '';
 
-    const [{ posts, total, totalPages }, allTags] = await Promise.all([
+    const [{ posts, total, totalPages, error }, allTags] = await Promise.all([
         getFilteredPosts(page, 9, search, tag),
         getAllTags(),
     ]);
@@ -89,9 +89,10 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     </BlurFade>
                     <BlurFade delay={0.2} inView>
                         <p className="text-lg text-muted-foreground">
-                            {total} {total === 1 ? 'post' : 'posts'}
-                            {search && ` matching "${search}"`}
-                            {tag && ` tagged with "${tag}"`}
+                            {error
+                                ? "Posts unavailable"
+                                : `${total} ${total === 1 ? "post" : "posts"}${search ? ` matching "${search}"` : ""}${tag ? ` tagged with "${tag}"` : ""}`
+                            }
                         </p>
                     </BlurFade>
                 </div>
@@ -113,7 +114,18 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
                 {/* Posts Grid */}
                 <Suspense fallback={<PostsSkeleton />}>
-                    {posts.length === 0 ? (
+                    {error ? (
+                        <BlurFade delay={0.5} inView>
+                            <Card className="text-center py-16 border-destructive/30 bg-destructive/5">
+                                <CardContent className="pt-6 space-y-3">
+                                    <p className="text-xl font-semibold text-destructive">Posts unavailable</p>
+                                    <p className="text-muted-foreground">
+                                        Something went wrong while loading posts. Please check back later.
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </BlurFade>
+                    ) : posts.length === 0 ? (
                         <BlurFade delay={0.5} inView>
                             <Card className="text-center py-16">
                                 <CardContent className="pt-6">
