@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { achievements } from "@sections/achievements/config/achievements";
-import { Badge } from "@components/ui/badge";
 import { Button } from "@components/ui/button";
 import { Separator } from "@components/ui/separator";
 import { BlurFade } from "@components/ui/blur-fade";
@@ -13,6 +12,7 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
+import { LinkedInEmbed } from "@components/shared/LinkedInEmbed";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -164,16 +164,7 @@ export default async function AchievementDetailPage({ params }: PageProps) {
                 <h2 className="mb-4 text-2xl font-semibold">LinkedIn Post</h2>
               </BlurFade>
               <div className="flex justify-center">
-                <iframe
-                  src={achievement.embedUrl}
-                  height={903}
-                  width={504}
-                  frameBorder={0}
-                  allowFullScreen
-                  title="Embedded LinkedIn post"
-                  loading="lazy"
-                  className="max-w-full rounded-lg border border-border"
-                />
+                <LinkedInEmbed embedUrl={achievement.embedUrl} />
               </div>
               <Separator className="my-10" />
             </div>
