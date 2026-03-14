@@ -1,19 +1,19 @@
 import { Metadata } from "next";
-import { siteConfig } from "@config/site";
+import { siteConfig } from "@/src/config/site";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { SimpleFooter } from "@/components/shared/SimpleFooter";
 
 export const metadata: Metadata = {
     title: {
-        default: "Blog",
+        default: "Projects",
         template: `%s | ${siteConfig.name}`,
     },
-    description: "Thoughts, tutorials, and insights about software development.",
+    description: "Explore my portfolio of projects including web applications, mobile backends, developer tools, and community platforms.",
     openGraph: {
-        title: "Blog",
-        description: "Thoughts, tutorials, and insights about software development.",
+        title: "Projects",
+        description: "Explore my portfolio of projects including web applications, mobile backends, developer tools, and community platforms.",
         type: "website",
-        url: `${siteConfig.url}/blog`,
+        url: `${siteConfig.url}/projects`,
         siteName: siteConfig.name,
     },
 };

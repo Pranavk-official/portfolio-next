@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ProjectsListingClient } from "./projects-client";
-import { Footer } from "@/src/sections";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -14,10 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  return (
-    <>
-      <ProjectsListingClient />;
-      <Footer />
-    </>
-  );
+  return <ProjectsListingClient />;
 }

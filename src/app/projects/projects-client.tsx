@@ -34,7 +34,7 @@ export function ProjectsListingClient() {
     };
 
     return (
-        <main className="min-h-screen py-20">
+        <div className="min-h-screen py-20">
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="mb-12">
@@ -113,6 +113,6 @@ export function ProjectsListingClient() {
                     Showing {visibleItems.length} of {filteredProjects.length} projects
                 </div>
             </div>
-        </main>
+        </div>
     );
 }
