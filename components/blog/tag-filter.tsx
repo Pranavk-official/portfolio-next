@@ -13,24 +13,38 @@ export function TagFilter({ tags }: TagFilterProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
-    const currentTag = searchParams.get('tag');
+
+    // Parse comma-separated tags param into a Set for O(1) lookup
+    const selectedTags = new Set(
+        (searchParams.get('tags') ?? '')
+            .split(',')
+            .map((t) => t.trim())
+            .filter(Boolean)
+    );
 
     const handleTagClick = (tag: string) => {
+        const next = new Set(selectedTags);
+        if (next.has(tag)) {
+            next.delete(tag);
+        } else {
+            next.add(tag);
+        }
+
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
 
-        if (currentTag === tag) {
-            params.delete('tag');
+        if (next.size === 0) {
+            params.delete('tags');
         } else {
-            params.set('tag', tag);
+            params.set('tags', Array.from(next).join(','));
         }
 
         replace(`${pathname}?${params.toString()}`, { scroll: false });
     };
 
-    const handleClearTag = () => {
+    const handleClear = () => {
         const params = new URLSearchParams(searchParams);
-        params.delete('tag');
+        params.delete('tags');
         params.set('page', '1');
         replace(`${pathname}?${params.toString()}`, { scroll: false });
     };
@@ -40,16 +54,23 @@ export function TagFilter({ tags }: TagFilterProps) {
     return (
         <div className="space-y-3">
             <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium">Filter by Tag</h3>
-                {currentTag && (
+                <h3 className="text-sm font-medium">
+                    Filter by Tag
+                    {selectedTags.size > 0 && (
+                        <span className="ml-2 text-xs text-muted-foreground font-normal">
+                            ({selectedTags.size} selected)
+                        </span>
+                    )}
+                </h3>
+                {selectedTags.size > 0 && (
                     <Button
                         variant="ghost"
                         size="sm"
-                        onClick={handleClearTag}
+                        onClick={handleClear}
                         className="h-auto py-1 px-2 text-xs"
                     >
                         <X className="h-3 w-3 mr-1" />
-                        Clear filter
+                        Clear all
                     </Button>
                 )}
             </div>
@@ -57,7 +78,7 @@ export function TagFilter({ tags }: TagFilterProps) {
                 {tags.map((tag) => (
                     <Badge
                         key={tag}
-                        variant={currentTag === tag ? 'default' : 'outline'}
+                        variant={selectedTags.has(tag) ? 'default' : 'outline'}
                         className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
                         onClick={() => handleTagClick(tag)}
                     >

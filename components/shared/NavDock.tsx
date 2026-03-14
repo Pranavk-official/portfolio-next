@@ -19,6 +19,16 @@ export function NavDock() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [isHidden, setIsHidden] = useState(false);
+  // Track whether the viewport is mobile-sized (< 768px / Tailwind's md breakpoint)
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -38,52 +48,54 @@ export function NavDock() {
   );
 
   useEffect(() => {
-    // Footer-proximity hiding only applies on the home page (bottom dock)
-    if (!isHome) {
+    // Footer-proximity hiding applies whenever the dock is at the bottom
+    // (home page always, or any page on mobile)
+    const dockIsBottom = isHome || isMobile;
+
+    if (!dockIsBottom) {
       setIsHidden(false);
       return;
     }
 
     const handleScroll = () => {
-      // Find the footer element
       const footer = document.querySelector("footer");
       if (!footer) return;
 
-      // Get the footer's position
       const footerRect = footer.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Calculate the dock's approximate position (bottom-10 = 2.5rem = 40px from bottom)
+      // Dock sits ~40px from the bottom; hide with 100px buffer
       const dockBottomPosition = windowHeight - 40;
-
-      // Hide dock if footer's top is above the dock's position
-      // Adding a buffer of 100px to start hiding earlier for smoother transition
       setIsHidden(footerRect.top < dockBottomPosition + 100);
     };
 
-    // Initial check
     handleScroll();
-
-    // Add scroll listener
     window.addEventListener("scroll", handleScroll);
-    // Also listen to resize in case viewport changes
     window.addEventListener("resize", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, [isHome]);
+  }, [isHome, isMobile]);
+
+  // Positioning:
+  //   mobile (all pages)  → bottom-10
+  //   desktop home        → bottom-10
+  //   desktop non-home    → top-6
+  // Slide direction when hiding follows the same rule.
+  const dockIsBottom = isHome || isMobile;
 
   return (
     <nav
       className={cn(
         "fixed left-1/2 -translate-x-1/2 transition-all duration-300 motion-reduce:transition-none z-50",
-        isHome ? "bottom-10" : "top-6",
+        // Mobile: always bottom. Desktop: home → bottom, else → top.
+        isHome ? "bottom-10" : "bottom-10 md:bottom-auto md:top-6",
         isHidden
           ? cn(
             "opacity-0 pointer-events-none",
-            isHome ? "translate-y-20" : "-translate-y-20",
+            dockIsBottom ? "translate-y-20" : "-translate-y-20",
           )
           : "opacity-100",
       )}

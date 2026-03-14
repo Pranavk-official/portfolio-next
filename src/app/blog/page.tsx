@@ -24,7 +24,7 @@ interface BlogPageProps {
     searchParams: Promise<{
         page?: string;
         search?: string;
-        tag?: string;
+        tags?: string;
     }>;
 }
 
@@ -51,10 +51,10 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     const params = await searchParams;
     const page = Number(params.page) || 1;
     const search = params.search || '';
-    const tag = params.tag || '';
+    const tags = params.tags || '';
 
     const [{ posts, total, totalPages, error }, allTags] = await Promise.all([
-        getFilteredPosts(page, 9, search, tag),
+        getFilteredPosts(page, 9, search, tags),
         getAllTags(),
     ]);
 
@@ -78,7 +78,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                         <p className="text-lg text-muted-foreground">
                             {error
                                 ? "Posts unavailable"
-                                : `${total} ${total === 1 ? "post" : "posts"}${search ? ` matching "${search}"` : ""}${tag ? ` tagged with "${tag}"` : ""}`
+                                : (() => {
+                                    const selectedTags = tags
+                                        .split(',')
+                                        .map((t) => t.trim())
+                                        .filter(Boolean);
+                                    const tagLabel = selectedTags.length > 0
+                                        ? ` tagged with ${selectedTags.map((t) => `"${t}"`).join(', ')}`
+                                        : '';
+                                    return `${total} ${total === 1 ? 'post' : 'posts'}${search ? ` matching "${search}"` : ''}${tagLabel}`;
+                                })()
                             }
                         </p>
                     </BlurFade>
@@ -118,7 +127,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                                 <CardContent className="pt-6">
                                     <p className="text-xl text-muted-foreground">
                                         No posts found
-                                        {(search || tag) && '. Try adjusting your filters.'}
+                                        {(search || tags) && '. Try adjusting your filters.'}
                                     </p>
                                 </CardContent>
                             </Card>

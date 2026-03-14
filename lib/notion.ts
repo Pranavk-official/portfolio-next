@@ -254,7 +254,7 @@ export async function getFilteredPosts(
   page: number = 1,
   pageSize: number = 9,
   search: string = "",
-  tag: string = ""
+  tags: string = ""
 ): Promise<FilteredPostsResult> {
   if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATA_SOURCE_ID) {
     return { posts: [], total: 0, totalPages: 1, error: "credentials_missing" };
@@ -279,9 +279,15 @@ export async function getFilteredPosts(
     );
   }
 
-  // Apply tag filter
-  if (tag && tag.trim()) {
-    filtered = filtered.filter((post) => post.tags.includes(tag));
+  // Apply tag filter (OR logic — post must include at least one selected tag)
+  const selectedTags = tags
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
+  if (selectedTags.length > 0) {
+    filtered = filtered.filter((post) =>
+      selectedTags.some((t) => post.tags.includes(t))
+    );
   }
 
   // Calculate pagination
