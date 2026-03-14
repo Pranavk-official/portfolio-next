@@ -14,6 +14,59 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "dil-se-bakery",
+    title: "Dil Se Bakery",
+    year: "Nov 2025",
+    shortDescription:
+      "Production-grade bakery e-commerce app with order queuing, inventory management, and Kanban admin dashboard.",
+    fullDescription:
+      "A full-stack, production-grade e-commerce application for a bakery, featuring sophisticated business logic for order queuing, real-time inventory control, and a comprehensive admin dashboard. Includes guest cart with automatic merging, intelligent pickup time scheduling, Redis-based concurrency control, and a Docker-ready deployment setup.",
+    technologies: [
+      "Next.js 16",
+      "TypeScript",
+      "PostgreSQL",
+      "Redis",
+      "Prisma",
+      "Jotai",
+      "TanStack Query",
+      "Tailwind CSS",
+      "Shadcn UI",
+      "Zod",
+      "Cloudinary",
+      "Docker",
+      "Bun",
+    ],
+    features: [
+      "Smart guest cart with automatic merging upon login and real-time stock validation",
+      "Intelligent pickup time slot scheduler using sequential order queuing with baking duration logic",
+      "Kanban-style admin order management with status flow: Pending → Preparing → Ready → Completed",
+      "Redis Mutex concurrency control to prevent race conditions and token bucket rate limiting for API protection",
+      "Full CRUD inventory management with soft delete, image upload via Cloudinary, and bento grid admin dashboard",
+    ],
+    githubUrl: "https://github.com/Pranavk-official/dil_se",
+    category: "web-app",
+    imageUrl: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1900&h=1080&fit=crop&q=80",
+  },
+  {
+    id: "decidr-backend",
+    title: "Decidr — Backend for Mobile App",
+    year: "Jun 2025 – Sep 2025",
+    shortDescription:
+      "TypeScript + Hono backend API powering real-time decision evaluation and adaptive personalization.",
+    fullDescription:
+      "High-performance backend API built with TypeScript and Hono framework, designed for mobile apps requiring real-time decision evaluation, feature gating, and adaptive personalization with optimized edge-friendly performance.",
+    technologies: ["TypeScript", "Node.js (Hono)", "Zod", "PostgreSQL"],
+    features: [
+      "Designed and implemented RESTful endpoints optimized for low-latency mobile usage",
+      "Built secure token-based authentication and multi-tenant authorization middleware",
+      "Structured decision/rule models with validation, versioning, and serialization",
+      "Optimized backend architecture for cold start reduction and edge-friendly performance",
+    ],
+    // githubUrl: "https://github.com/Pranavk-official",
+    category: "mobile",
+    imageUrl: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=1900&h=1080&fit=crop&q=80",
+  },
+  {
     id: "zrato-learning",
     title: "Zrato Learning Platform",
     year: "Feb 2025 – Jun 2025",
@@ -71,25 +124,6 @@ export const projects: Project[] = [
     liveUrl: "https://drdhruva.com",
     category: "web-app",
     imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1900&h=1080&fit=crop&q=80",
-  },
-  {
-    id: "decidr-backend",
-    title: "Decidr — Backend for Mobile App",
-    year: "Jun 2025 – Sep 2025",
-    shortDescription:
-      "TypeScript + Hono backend API powering real-time decision evaluation and adaptive personalization.",
-    fullDescription:
-      "High-performance backend API built with TypeScript and Hono framework, designed for mobile apps requiring real-time decision evaluation, feature gating, and adaptive personalization with optimized edge-friendly performance.",
-    technologies: ["TypeScript", "Node.js (Hono)", "Zod", "PostgreSQL"],
-    features: [
-      "Designed and implemented RESTful endpoints optimized for low-latency mobile usage",
-      "Built secure token-based authentication and multi-tenant authorization middleware",
-      "Structured decision/rule models with validation, versioning, and serialization",
-      "Optimized backend architecture for cold start reduction and edge-friendly performance",
-    ],
-    // githubUrl: "https://github.com/Pranavk-official",
-    category: "mobile",
-    imageUrl: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=1900&h=1080&fit=crop&q=80",
   },
   {
     id: "genexp",
