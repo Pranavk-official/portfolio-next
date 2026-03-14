@@ -44,7 +44,7 @@ const SkillSection = () => {
         </div>
 
         {/* Cards area — marquee fills this block */}
-        <div className="relative max-w-6xl mx-auto pb-20">
+        <div className="relative max-w-6xl mx-auto py-8 flex items-center min-h-[650px]">
           {/* Background Scroll Velocity */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <ScrollVelocityContainer className="opacity-[0.07] h-full flex flex-col justify-between">
@@ -70,13 +70,14 @@ const SkillSection = () => {
             <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l" />
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="relative z-10 w-full flex flex-wrap justify-center gap-6">
             {skillCategories.map((category, index) => (
-              <SkillCategory
-                key={category.id}
-                category={category}
-                index={index}
-              />
+              <div key={category.id} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                <SkillCategory
+                  category={category}
+                  index={index}
+                />
+              </div>
             ))}
           </div>
         </div>
