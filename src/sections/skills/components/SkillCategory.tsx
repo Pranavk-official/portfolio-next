@@ -21,19 +21,11 @@ export function SkillCategory({ category, index }: SkillCategoryProps) {
                     {category.name}
                 </h3>
 
-                {/* Skills Grid - equal sized cards */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {category.skills.map((skill, i) => {
-                        const total = category.skills.length;
-                        const isLastAlone = i === total - 1 && total % 3 === 1;
-                        return (
-                            <SkillCard
-                                key={skill.name}
-                                skill={skill}
-                                className={isLastAlone ? "sm:col-start-2" : undefined}
-                            />
-                        );
-                    })}
+                {/* Skills */}
+                <div className="flex flex-wrap gap-2">
+                    {category.skills.map((skill) => (
+                        <SkillCard key={skill.name} skill={skill} />
+                    ))}
                 </div>
             </div>
         </BlurFade>

@@ -39,6 +39,7 @@ import { BiGitBranch } from "react-icons/bi";
 import { HiOutlineCubeTransparent } from "react-icons/hi";
 // import { MdOutlineArchitecture } from "react-icons/md";
 import type { IconType } from "react-icons";
+import { FaJava } from "react-icons/fa6";
 
 export interface Skill {
   name: string;
@@ -71,7 +72,7 @@ export const skillCategories: SkillCategory[] = [
       // { name: "Redux", icon: SiRedux },
       { name: "Zustand", icon: FaCubes },
       // { name: "EJS", icon: FaCode },
-      { name: "Figma", icon: SiFigma },
+      // { name: "Figma", icon: SiFigma },
     ],
   },
   {
@@ -85,11 +86,11 @@ export const skillCategories: SkillCategory[] = [
       // { name: "REST API", icon: TbApi },
       // add FastAPI in here since i know python use proper fastapi icon instead of generic api icon
       { name: "FastAPI", icon: SiFastapi },
-      { name: "gRPC", icon: TbNetwork },
-      { name: "Microservices", icon: TbHexagons },
-      { name: "Passport", icon: SiPassport },
-      { name: "JWT", icon: SiJsonwebtokens },
-      { name: "WebSockets", icon: SiSocketdotio },
+      // { name: "gRPC", icon: TbNetwork },
+      // { name: "Microservices", icon: TbHexagons },
+      // { name: "Passport", icon: SiPassport },
+      // { name: "JWT", icon: SiJsonwebtokens },
+      // { name: "WebSockets", icon: SiSocketdotio },
       { name: "Firebase", icon: SiFirebase },
     ],
   },
@@ -114,11 +115,11 @@ export const skillCategories: SkillCategory[] = [
       { name: "Docker", icon: SiDocker },
       { name: "Kubernetes", icon: SiKubernetes },
       { name: "AWS EC2", icon: SiAmazonec2 },
-      { name: "Nginx", icon: SiNginx },
-      { name: "CI/CD", icon: BiGitBranch },
-      { name: "Vercel", icon: SiVercel },
-      { name: "Render", icon: SiRender },
-      { name: "Buf", icon: HiOutlineCubeTransparent },
+      // { name: "Nginx", icon: SiNginx },
+      // { name: "CI/CD", icon: BiGitBranch },
+      // { name: "Vercel", icon: SiVercel },
+      // { name: "Render", icon: SiRender },
+      // { name: "Buf", icon: HiOutlineCubeTransparent },
     ],
   },
   {
@@ -130,7 +131,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "TypeScript", icon: SiTypescript },
       { name: "Python", icon: SiPython },
       { name: "PHP", icon: SiPhp },
-
+      { name: "Java", icon: FaJava },
     ],
   }
   // {

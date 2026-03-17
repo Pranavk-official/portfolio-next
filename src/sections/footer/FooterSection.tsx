@@ -1,6 +1,5 @@
 "use client";
 
-import AnimatedText from "@components/ui/cursor-follow-text";
 import { Meteors } from "@components/ui/meteors";
 import { dockItems } from "@/src/sections/config/dockItems";
 import Link from "next/link";
@@ -26,7 +25,7 @@ function FooterSection() {
 
   return (
     <footer
-      className="footer-bg relative border 2xl:h-[550px] w-full sm:w-[95%] mx-auto rounded-lg overflow-hidden radial-gradient-bg pb-20 sm:pb-16
+      className="footer-bg relative border w-full sm:w-[95%] mx-auto rounded-lg overflow-hidden radial-gradient-bg pb-14
                     [--gradient-center:#f3f4f6] [--gradient-edge:#f3f4f6]
                     dark:[--gradient-center:#02081765] dark:[--gradient-edge:#020817]"
     >
@@ -61,20 +60,13 @@ function FooterSection() {
               href={social.href}
               target={social.external ? "_blank" : undefined}
               rel={social.external ? "noopener noreferrer" : undefined}
-              className="bg-background sm:w-auto w-full grid place-content-center h-16 sm:h-20 2xl:p-10 p-3 rounded-lg hover:bg-muted transition-colors"
+              className="bg-background sm:w-auto w-full grid place-content-center h-10 sm:h-12 p-2.5 rounded-lg hover:bg-muted transition-colors"
               aria-label={social.label}
             >
-              <social.icon className="sm:w-16 sm:h-16 w-12 h-12 text-primary" />
+              <social.icon className="w-5 h-5 text-primary" />
             </Link>
           ))}
         </div>
-      </div>
-
-      <div className="lg:flex hidden">
-        <AnimatedText
-          text="PRANAV K"
-          className="2xl:text-[10rem] text-[12vw]"
-        />
       </div>
 
       {/* Footer Credit */}

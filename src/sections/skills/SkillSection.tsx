@@ -23,28 +23,23 @@ const SkillSection = () => {
     >
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         {/* Section Header */}
-        <div className="mb-12 text-center">
-          <ScrollElement
-            viewport={{ amount: 0.5, margin: "0px 0px -100px 0px" }}
-            className="mx-auto max-w-3xl"
+        <div className="mb-12 text-center mx-auto max-w-3xl">
+          <h2
+            id="skills-heading"
+            className="text-4xl font-bold tracking-tight md:text-5xl"
           >
-            <h2
-              id="skills-heading"
-              className="text-4xl font-bold tracking-tight md:text-5xl"
-            >
-              <span className="text-foreground">Technical </span>
-              <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Skills.
-              </span>
-            </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Here are some of the skills I have:
-            </p>
-          </ScrollElement>
+            <span className="text-foreground">Technical </span>
+            <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              Skills.
+            </span>
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Here are some of the skills I have:
+          </p>
         </div>
 
         {/* Cards area — marquee fills this block */}
-        <div className="relative max-w-6xl mx-auto py-8 flex items-center min-h-[650px]">
+        <div className="relative max-w-6xl mx-auto py-8 pb-16">
           {/* Background Scroll Velocity */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <ScrollVelocityContainer className="opacity-[0.07] h-full flex flex-col justify-between">
