@@ -3,7 +3,7 @@
 import { ContactForm } from "@components/shared/ContactForm";
 import { BlurFade } from "@components/ui/blur-fade";
 import ScrollElement from "@components/ui/scroll-animation";
-import { Mail, MapPin } from "lucide-react";
+import { ArrowRight, Mail, MapPin } from "lucide-react";
 
 const ContactSection = () => {
     return (
@@ -40,7 +40,7 @@ const ContactSection = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto items-start">
                     {/* Contact info */}
                     <BlurFade delay={0.1} inView direction="left">
-                        <div className="space-y-8">
+                        <div className="space-y-8 text-center lg:text-left">
                             <div>
                                 <h3 className="text-2xl font-semibold mb-4">
                                     Let&apos;s work together
@@ -53,30 +53,27 @@ const ContactSection = () => {
                             </div>
 
                             {/* Contact details */}
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10">
+                            <div className="space-y-3">
+                                <a
+                                    href="mailto:pranavkcse+portfolio@gmail.com"
+                                    className="flex items-center gap-4 rounded-xl border border-border/50 bg-card/50 px-4 py-3 backdrop-blur-sm transition-colors hover:border-primary/40 hover:bg-card/80"
+                                >
+                                    <div className="flex items-center justify-center w-11 h-11 shrink-0 rounded-lg bg-primary/10">
                                         <Mail className="w-5 h-5 text-primary" />
                                     </div>
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Email</p>
-                                        <a
-                                            // href="mailto:hello@pranavk.dev"
-                                            href="mailto:pranavkcse+portfolio@gmail.com"
-                                            className="font-medium hover:text-primary transition-colors"
-                                        >
-                                            {/* hello@pranavk.dev */}
-                                            pranavkcse@gmail.com
-                                        </a>
+                                    <div className="flex-1 text-left">
+                                        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Email</p>
+                                        <p className="font-medium">pranavkcse@gmail.com</p>
                                     </div>
-                                </div>
+                                    <ArrowRight className="w-4 h-4 shrink-0 text-muted-foreground" />
+                                </a>
 
-                                <div className="flex items-center gap-4">
-                                    <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10">
+                                <div className="flex items-center gap-4 rounded-xl border border-border/50 bg-card/50 px-4 py-3 backdrop-blur-sm">
+                                    <div className="flex items-center justify-center w-11 h-11 shrink-0 rounded-lg bg-primary/10">
                                         <MapPin className="w-5 h-5 text-primary" />
                                     </div>
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Location</p>
+                                    <div className="flex-1 text-left">
+                                        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Location</p>
                                         <p className="font-medium">Kerala, India</p>
                                     </div>
                                 </div>
