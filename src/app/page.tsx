@@ -42,8 +42,8 @@ export default function Home() {
       {/* <Services /> */}
       <Project />
       <Experience />
-      <LatestArticles />
       <Achievements />
+      <LatestArticles />
       <Contact />
       <Footer />
     </>

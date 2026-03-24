@@ -69,7 +69,7 @@ const ProjectsSection = () => {
 
         {/* Projects Grid */}
         <Spotlight
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="max-w-7xl w-full mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
           ProximitySpotlight
           CursorFlowGradient
         >
