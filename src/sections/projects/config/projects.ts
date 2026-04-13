@@ -14,6 +14,27 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "rustylens",
+    title: "RustyLens",
+    year: "Apr 2026",
+    shortDescription:
+      "Lightweight open-source OCR tool for the Linux desktop — extract text from images with bounding-box overlays, similar to Google Lens.",
+    fullDescription:
+      "A lightweight, open-source OCR desktop application for Linux that uses Tesseract under the hood. Open an image or capture a screenshot via the XDG Portal and RustyLens extracts text with bounding-box word overlays, drag-to-select copying, and support for 100+ languages. Ships as a native binary, AppImage, or Flatpak.",
+    technologies: ["Rust", "GTK4", "libadwaita", "Tesseract", "Cairo", "Flatpak", "AppImage", "XDG Portal"],
+    features: [
+      "OCR text extraction supporting 100+ languages with auto-detection of all installed Tesseract language packs",
+      "Bounding-box overlay rendered via Cairo — click or drag across highlighted words to select and copy with Ctrl+C",
+      "Screenshot mode via XDG Desktop Portal (`rustylens --capture`) for immediate in-context OCR",
+      "Language selector dropdown with human-readable names; 'Auto (all)' uses every installed pack simultaneously",
+      "Cross-distro installer (Arch, Ubuntu, Fedora) with native binary, AppImage, and Flatpak distribution formats",
+    ],
+    githubUrl: "https://github.com/Pranavk-official/rustylens",
+    liveUrl: "https://pranavk-official.github.io/rustylens/",
+    category: "tool",
+    imageUrl: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1900&h=1080&fit=crop&q=80",
+  },
+  {
     id: "dil-se-bakery",
     title: "Dil Se Bakery",
     year: "Nov 2025",
