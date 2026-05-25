@@ -105,6 +105,20 @@ export function NavDock() {
         <Dock direction="middle">
           {dockItems
             .filter((item) => !item.showOnlyWhenNotHome || !isHome)
+            .filter((item) => !(item.hideOnMobileHome && isHome && isMobile))
+            .filter((item) => {
+              if (!item.hideOnPaths) return true;
+              return !item.hideOnPaths.some(
+                (p) => pathname === p || pathname.startsWith(`${p}/`),
+              );
+            })
+            .filter((item) => {
+              // Hide the dock item that points to the current page.
+              // Skip externals, anchors, and the separator.
+              if (item.external || item.id === "separator") return true;
+              if (item.href.includes("#")) return true;
+              return item.href !== pathname && !pathname.startsWith(`${item.href}/`);
+            })
             .map((item) =>
               item.id === "separator" ? (
                 <Separator

@@ -18,6 +18,10 @@ export interface DockItem {
   href: string;
   external?: boolean;
   showOnlyWhenNotHome?: boolean;
+  /** Paths (exact or prefix with trailing `/`) on which this item should be hidden. */
+  hideOnPaths?: string[];
+  /** Hide this item on the home page when viewport is mobile-sized. */
+  hideOnMobileHome?: boolean;
 }
 
 export const dockItems: DockItem[] = [
@@ -58,6 +62,8 @@ export const dockItems: DockItem[] = [
     icon: () => null,
     label: "separator",
     href: "#",
+    hideOnPaths: ["/wallpapers"],
+    hideOnMobileHome: true,
   },
   {
     id: "github",
@@ -65,6 +71,8 @@ export const dockItems: DockItem[] = [
     label: "GitHub",
     href: "https://github.com/Pranavk-Official",
     external: true,
+    hideOnPaths: ["/wallpapers"],
+    hideOnMobileHome: true,
   },
   {
     id: "twitter",
@@ -72,6 +80,8 @@ export const dockItems: DockItem[] = [
     label: "Twitter",
     href: "https://x.com/@Arch_Lad_",
     external: true,
+    hideOnPaths: ["/wallpapers"],
+    hideOnMobileHome: true,
   },
   {
     id: "email",
@@ -79,6 +89,8 @@ export const dockItems: DockItem[] = [
     label: "Email",
     href: "mailto:pranavkcse@gmail.com",
     external: true,
+    hideOnPaths: ["/wallpapers"],
+    hideOnMobileHome: true,
   },
   {
     id: "linkedin",
@@ -86,6 +98,8 @@ export const dockItems: DockItem[] = [
     label: "LinkedIn",
     href: "https://linkedin.com/in/pranav-k-cse",
     external: true,
+    hideOnPaths: ["/wallpapers"],
+    hideOnMobileHome: true,
   },
   // TODO: Create a Link Tree Page
 ];
