@@ -7,6 +7,7 @@ import ExperienceSection from "@sections/experience/ExperienceSection";
 import AchievementsSection from "@sections/achievements/AchievementsSection";
 import LatestArticles from "@sections/articles/LatestArticlesSection";
 import ContactSection from "@sections/contact/ContactSection";
+import WallpapersSection from "@sections/wallpapers/WallpapersSection";
 import Footer from "@sections/footer/FooterSection";
 import { BlurFade } from "@components/ui/blur-fade";
 
@@ -30,6 +31,10 @@ const Contact = () => {
     return <BlurFade delay={0.25 * 2} inView direction="up" > <ContactSection /></BlurFade >;
 }
 
+const Wallpapers = () => {
+    return <BlurFade delay={0.25 * 2} inView direction="up" > <WallpapersSection /></BlurFade >;
+}
+
 export {
     Hero,
     AboutMe,
@@ -40,5 +45,6 @@ export {
     Achievements,
     LatestArticles,
     Contact,
+    Wallpapers,
     Footer
 };

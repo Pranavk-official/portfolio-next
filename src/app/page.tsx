@@ -10,6 +10,7 @@ import {
   LatestArticles,
   Achievements,
   Contact,
+  Wallpapers,
   Footer,
 } from "@sections/index";
 
@@ -44,6 +45,7 @@ export default function Home() {
       <Experience />
       <Achievements />
       <LatestArticles />
+      <Wallpapers />
       <Contact />
       <Footer />
     </>

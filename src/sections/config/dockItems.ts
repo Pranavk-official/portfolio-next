@@ -7,6 +7,7 @@ import {
   FaFileAlt,
   FaHome,
   FaLaptopCode,
+  FaImages,
 } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 
@@ -38,6 +39,12 @@ export const dockItems: DockItem[] = [
     icon: FaLaptopCode,
     label: "My Works",
     href: "/#projects",
+  },
+  {
+    id: "wallpapers",
+    icon: FaImages,
+    label: "Wallpapers",
+    href: "/wallpapers",
   },
   {
     id: "resume",
