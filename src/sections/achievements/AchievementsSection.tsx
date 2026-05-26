@@ -58,17 +58,17 @@ const AchievementsSection = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [firstCardBlur, firstCardOpacity]);
 
-  // Mobile fallback - scroll stacking effect
+  // Mobile - scroll stacking effect (mirrors desktop behavior in a single-column layout)
   if (isMobile) {
     return (
       <section
         ref={containerRef}
-        className="relative bg-background overflow-x-hidden"
+        className="relative bg-background overflow-x-clip"
         aria-labelledby="achievements-heading"
       >
-        {/* Header Section */}
+        {/* Section Header - Sticky with fade out and blur */}
         <motion.section
-          className="h-screen w-full grid place-content-center sticky top-0"
+          className="sticky top-0 h-screen w-full grid place-content-center z-0"
           style={{
             opacity: headerOpacity,
             scale: scale,
@@ -89,33 +89,41 @@ const AchievementsSection = () => {
           </div>
         </motion.section>
 
-        {/* Stacking Cards */}
-        {achievements.map((achievement, index) => {
-          // Simple rotation pattern: 0 = rotate-6, 1 = none, 2 = -rotate-6, 3 = none
-          const getRotation = (idx: number) => {
-            const pattern = idx % 4;
-            if (pattern === 0) return "rotate-6";
-            if (pattern === 2) return "-rotate-6";
-            return "";
-          };
+        {/* Stacking Cards Section */}
+        <section className="relative z-10 w-full bg-background">
+          <div className="grid gap-2 px-4">
+            {achievements.map((achievement, index) => {
+              // Simple rotation pattern: 0 = rotate-6, 1 = none, 2 = -rotate-6, 3 = none
+              const getRotation = (idx: number) => {
+                const pattern = idx % 4;
+                if (pattern === 0) return "rotate-6";
+                if (pattern === 2) return "-rotate-6";
+                return "";
+              };
 
-          return (
-            <motion.section
-              key={achievement.id}
-              className="h-screen w-full grid place-content-center sticky top-0 px-4"
-              style={{
-                filter: firstCardBlur,
-                opacity: firstCardOpacity,
-              }}
-            >
-              <AchievementCard
-                achievement={achievement}
-                index={index}
-                rotation={getRotation(index)}
-              />
-            </motion.section>
-          );
-        })}
+              return (
+                <motion.figure
+                  key={achievement.id}
+                  className="sticky top-0 h-screen grid place-content-center"
+                  style={
+                    index === 0
+                      ? {
+                          filter: firstCardBlur,
+                          opacity: firstCardOpacity,
+                        }
+                      : undefined
+                  }
+                >
+                  <AchievementCard
+                    achievement={achievement}
+                    index={index}
+                    rotation={getRotation(index)}
+                  />
+                </motion.figure>
+              );
+            })}
+          </div>
+        </section>
       </section>
     );
   }
