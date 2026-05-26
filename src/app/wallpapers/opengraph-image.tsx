@@ -131,7 +131,7 @@ export default async function Image() {
                             borderRadius: 8,
                         }}
                     >
-                        {siteConfig.url}/wallpapers
+                        {`${siteConfig.url}/wallpapers`}
                     </div>
                 </div>
             </div>

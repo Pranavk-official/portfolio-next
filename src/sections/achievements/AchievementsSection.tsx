@@ -63,7 +63,7 @@ const AchievementsSection = () => {
     return (
       <section
         ref={containerRef}
-        className="relative bg-background"
+        className="relative bg-background overflow-x-hidden"
         aria-labelledby="achievements-heading"
       >
         {/* Header Section */}
