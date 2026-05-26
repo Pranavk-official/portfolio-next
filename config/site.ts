@@ -24,7 +24,7 @@ export const siteConfig = {
     github: "https://github.com/Pranavk-official",
     linkedin: "https://linkedin.com/in/pranav-k-cse",
     twitter: "https://twitter.com/@Arch_Lad_",
-    email: "mailto:contact@pranavkcse@gmail.com",
+    email: "mailto:pranavkcse@gmail.com",
   },
   author: {
     name: "Pranav K",

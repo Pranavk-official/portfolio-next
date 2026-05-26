@@ -1,4 +1,4 @@
-import { Trophy, Code, Zap, Rocket, Award } from "lucide-react";
+import { Trophy, Code, Zap, Rocket, Award, ShieldCheck } from "lucide-react";
 
 export interface Achievement {
   id: string;
@@ -21,9 +21,35 @@ export interface Achievement {
 
 export const achievements: Achievement[] = [
   {
+    id: "ksitm-esign-appreciation",
+    slug: "ksitm-esign-certificate-of-appreciation",
+    number: "01",
+    title: "Certificate of Appreciation — KSITM",
+    organization: "Kerala State IT Mission",
+    shortDescription:
+      "Recognized by the Kerala State IT Mission for contributions to the Aadhaar-based e-Sign Application, modernizing how government departments manage document signing.",
+    fullDescription:
+      "Honored to receive a Certificate of Appreciation from the Kerala State IT Mission (KSITM) for work on the Aadhaar-based e-Sign Application. Over several months, collaborated with Smt. Devi Thankappan and Shri. Ranjit V. (Implementation Manager, UIDAI), alongside colleague Milind Dinesh, to enhance how government departments manage document signing. Building software that influences real governance workflows for Kerala's digital infrastructure was an incredible experience.",
+    icon: ShieldCheck,
+    accentColor: "from-emerald-500 to-teal-600",
+    gradientFrom: "emerald-500",
+    gradientTo: "teal-600",
+    date: "December 2025",
+    location: "Thiruvananthapuram, Kerala",
+    highlights: [
+      "Certificate of Appreciation from Kerala State IT Mission",
+      "Contributed to the Aadhaar-based e-Sign Application",
+      "Collaborated with UIDAI Implementation Manager Shri. Ranjit V.",
+      "Worked alongside Smt. Devi Thankappan and Milind Dinesh",
+      "Enhanced document-signing workflows for government departments",
+    ],
+    embedUrl:
+      "https://www.linkedin.com/embed/feed/update/urn:li:share:7406731722714914816",
+  },
+  {
     id: "yip-state-winner",
     slug: "yip-state-level-winner",
-    number: "01",
+    number: "02",
     title: "YIP 4.0 State Level Winner",
     organization: "K-DISC",
     shortDescription:
