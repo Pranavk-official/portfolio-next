@@ -60,7 +60,7 @@ export const achievements: Achievement[] = [
     accentColor: "from-yellow-500 to-amber-600",
     gradientFrom: "yellow-500",
     gradientTo: "amber-600",
-    date: "2025",
+    date: "January 2025",
     location: "Thiruvananthapuram, Kerala",
     highlights: [
       "State Level Winner at YIP 4.0 (Idea ID 3141)",
