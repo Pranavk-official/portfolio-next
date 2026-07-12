@@ -15,6 +15,9 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
     title: "Blog",
     description: "Insights, tutorials, and updates about web development, design, and technology.",
+    alternates: {
+        canonical: "/blog",
+    },
 };
 
 // Enable ISR with 600-second revalidation

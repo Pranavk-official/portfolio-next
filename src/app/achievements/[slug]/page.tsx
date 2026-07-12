@@ -41,6 +41,9 @@ export async function generateMetadata({
   return {
     title: achievement.title,
     description: achievement.shortDescription,
+    alternates: {
+      canonical: `/achievements/${slug}`,
+    },
     openGraph: {
       title: `${achievement.title} | Pranav K`,
       description: achievement.shortDescription,

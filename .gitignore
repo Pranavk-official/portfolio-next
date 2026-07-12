@@ -43,3 +43,6 @@ next-env.d.ts
 # Custom
 temp/
 .kiro/
+
+# Local-only post drafts staged for Notion
+drafts/

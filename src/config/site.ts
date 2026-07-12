@@ -8,7 +8,7 @@ const getBaseUrl = () => {
   }
 
   // Default production URL
-  return "https://pranavk-nu.vercel.app";
+  return "https://pranavk.site";
 };
 
 const baseUrl = getBaseUrl();
