@@ -87,7 +87,7 @@ export const dockItems: DockItem[] = [
     id: "email",
     icon: FaEnvelope,
     label: "Email",
-    href: "mailto:pranavkcse@gmail.com",
+    href: "mailto:me@pranavk.site",
     external: true,
     hideOnPaths: ["/wallpapers"],
     hideOnMobileHome: true,
