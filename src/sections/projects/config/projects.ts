@@ -14,6 +14,42 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "coro",
+    title: "Coro",
+    year: "Oct 2026",
+    shortDescription:
+      "Self-hosted video conferencing that feels like Google Meet — share a code, admit guests, call in the browser over WebRTC.",
+    fullDescription:
+      "A self-hosted video conferencing app for small groups. Start an instant, later, or scheduled meeting, share an abc-defg-hij code or link, and admit people from a waiting room. Everything runs in the browser over a WebRTC mesh; a single Node process serves the Next.js UI, the Hono HTTP API, and Socket.IO signaling. Ships with one `docker compose up`.",
+    technologies: [
+      "Next.js 16",
+      "TypeScript",
+      "WebRTC",
+      "Socket.IO",
+      "Hono",
+      "Prisma",
+      "PostgreSQL",
+      "Redis",
+      "better-auth",
+      "HeroUI",
+      "Tailwind CSS",
+      "TanStack Query",
+      "Playwright",
+      "Docker",
+    ],
+    features: [
+      "Instant, later, or scheduled meetings with Meet-style codes and an 'Add to calendar' link",
+      "Pre-join screen with camera preview, mic level meter, device pickers, and remembered preferences",
+      "Guests join without accounts via a waiting room; host can admit, deny, lock, password-protect, or end for everyone",
+      "In-call screen share, active-speaker highlight, pinning, live device switching, and keyboard shortcuts",
+      "Sign in with Google, GitHub, magic link, or email + password; Redis-backed rate limits on every route and socket event",
+    ],
+    githubUrl: "https://github.com/Pranavk-official/coro",
+    liveUrl: "https://coro.pranavk.site",
+    category: "web-app",
+    imageUrl: "/assets/projects/coro.png",
+  },
+  {
     id: "rustylens",
     title: "RustyLens",
     year: "Apr 2026",
